@@ -1,6 +1,7 @@
-from django.shortcuts import render,get_object_or_404
+from django.shortcuts import render,redirect,get_object_or_404
 from django.http import HttpResponse,JsonResponse
-from inicio.models import Line
+from .models import Line
+from .forms import LineForm
 
 # Create your views here.
 def index(request):
@@ -11,6 +12,18 @@ def index(request):
         "title":title,
         "emptyList":emptyList
     })
+
+def childs(request):
+    return render(request,'child.html')
+
+def form(request):
+    if request.method == "GET":
+        return render(request,'form.html',{
+            'form':LineForm()
+        })
+    else:
+        Line.objects.create(name=request.POST["name"],code=request.POST["code"])
+        return redirect("/form/")
 
 def ping(request):
     return HttpResponse("pong")
