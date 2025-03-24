@@ -1,4 +1,21 @@
 <h2>{{title}}</h2>
 <p>
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam beatae totam dolorum est, maiores commodi ducimus, labore perferendis corporis repellendus, vero ipsa. Suscipit, excepturi voluptates. Itaque voluptatum commodi nisi corporis!
+  Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam beatae totam
+  dolorum est, maiores commodi ducimus, labore perferendis corporis repellendus,
+  vero ipsa. Suscipit, excepturi voluptates. Itaque voluptatum commodi nisi
+  corporis!
 </p>
+
+<div>Listado</div>
+<ul>
+  {% for line in lines %}
+  <li>{{line.name}}</li>
+  {% endfor %}
+</ul>
+{% if emptyList %}
+<div>Vacio</div>
+{% else %}
+<div>No Vacio</div>
+{% endif %}
+
+{# Buscar en Jinja para plantillas}

@@ -1,16 +1,21 @@
 # Turnero
+
 Turnero para una clinica
 
 ## Python Env
+
 ```source env\Scripts\activate```
+
 ```env\Scripts\activate```
 
+```pip install -r requirements.txt ```
+
 ## Run
+
 ```python manage.py runserver 3000```
 
-# Comandos
 ## Migracion
-```
-python manage.py makemigrations
-python manage.py migrate
-```
+
+```python manage.py makemigrations```
+
+```python manage.py migrate```

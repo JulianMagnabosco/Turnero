@@ -5,8 +5,11 @@ from inicio.models import Line
 # Create your views here.
 def index(request):
     title="Index Variable"
+    lines = list(Line.objects.values())
+    emptyList = len(lines)<=0
     return render(request,'index.html',{
-        "title":title
+        "title":title,
+        "emptyList":emptyList
     })
 
 def ping(request):
@@ -18,7 +21,7 @@ def hello(request,name):
 
 
 def lines(request):
-    lines = list(Line.objects.all())
+    lines = list(Line.objects.values())
     return JsonResponse(lines,safe=False)
 
 def line(request,id):
