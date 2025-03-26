@@ -4,6 +4,8 @@ Turnero para una clinica
 
 ## Python Env
 
+```py -m venv venv\```
+
 ```source env\Scripts\activate```
 
 ```env\Scripts\activate```
