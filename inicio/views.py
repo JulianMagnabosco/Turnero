@@ -40,3 +40,10 @@ def lines(request):
 def line(request,id):
     line = get_object_or_404(Line,id=id)
     return HttpResponse(line.name)
+
+
+def chat(request):
+    return render(request, "chat.html")
+
+def room(request, room_name):
+    return render(request, "room.html", {"room_name": room_name})
