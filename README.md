@@ -21,3 +21,7 @@ Turnero para una clinica
 ```python manage.py makemigrations```
 
 ```python manage.py migrate```
+
+## Redis Channel
+
+```docker run --rm -p 6379:6379 redis:7```

@@ -33,8 +33,8 @@ from inicio.routing import websocket_urlpatterns
 application = ProtocolTypeRouter(
     {
         "http": django_asgi_app,
-        'websocket': AuthMiddlewareStack(
+        'websocket': AllowedHostsOriginValidator(AuthMiddlewareStack(
             URLRouter(websocket_urlpatterns)
-        ),
+        )),
     }
 )
