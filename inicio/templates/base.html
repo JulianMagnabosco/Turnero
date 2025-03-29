@@ -3,41 +3,89 @@
 {% load static %}
 
 {% block content %}
-    <div class="container container-center">
-        <div class="flex turn-choose-list">
-            {% for option in options %}
-            <button class="turn-button {% cycle "bg-blue" "bg-red" "bg-green" %}" data-code="{{option.code}}">
-                {{option.code}}<br>
-                <div>{{option.name}}</div>
-            </button>
-            {%endfor%}
-        </div>
+<div class="container container-center">
+    <div class="flex turn-choose-list">
+        {% for option in options %}
+        <button class="turn-button {% cycle "bg-blue" "bg-red" "bg-green" %}" data-code="{{option.code}}">
+            {{option.code}}<br>
+            <div>{{option.name}}</div>
+        </button>
+        {%endfor%}
     </div>
+</div>
 
-    <div class="popup">
-        <div class="popup">
-        
-        </div>
-        <div class="flex">
-            <button class="button-1" id="yes-button">
-                SI
-            </button>
-            <button class="button-1" id="no-button">
-                NO
-            </button>
-        </div>
+<div class="popup" id="popup">
+    <h2 id="pop-title">
+        ¿Quieres programar un turno para ?
+    </h2>
+    <div class="flex">
+        <button class="button-1" id="yes-button">
+            SI
+        </button>
+        <button class="button-1" id="no-button">
+            NO
+        </button>
     </div>
-    <script>
-        const buttons = document.querySelectorAll('.turn-button');
+</div>
+<script>
+    $(document).ready(function () {
+        $('#popup').toggle();
+        let codeSelected = ""
+        $(".turn-button").click(function () {
+            codeSelected = $(this).attr("data-code")
+            $('#pop-title').text(`¿Quieres programar un turno para ${codeSelected}`);
+            $('#popup').toggle();
+        });
+        $("#yes-button").click(function () {
+            $.post("demo_test_post.asp",
+                {
+                    name: "Donald Duck",
+                    city: "Duckburg"
+                },
+                function (data, status) {
+                    alert("Data: " + data + "\nStatus: " + status);
+                });
+        });
+        $("#no-button").click(function () {
 
-        function open(code){
-            console.log(code);
-        }
+        });
 
-        buttons.forEach((button, i) => {
-            button.addEventListener('click', () => { 
-                open(button.getAttribute("data-code"));
-             })
-        })
-    </script>
+    });
+    // {% comment %} const buttons = document.querySelectorAll('.turn-button');
+    // const title = document.querySelector('#pop-title');
+    // const popup = document.querySelector('#popup');
+    // let codeSelected = ""
+    // function open(name, code) {
+    //     title.innerText = `¿Quieres programar un turno para ${name}? `;
+    //     codeSelected = code
+    //     popup.class.append()
+    // }
+
+    // function sayYes() {
+    //     // Creating Our XMLHttpRequest object 
+    //     let xhr = new XMLHttpRequest();
+
+    //     // Making our connection  
+    //     let url = window.location.origin + '/api/addturn/';
+    //     xhr.open("POST", url, true);
+
+    //     // function execute after request is successful 
+    //     xhr.onreadystatechange = function () {
+    //         if (this.readyState == 4 && this.status == 200) {
+    //             console.log(this.responseText);
+    //         }
+    //     }
+    //     // Sending our request 
+    //     xhr.send();
+    // }
+    // function sayNo() {
+
+    // } {% endcomment %}
+
+    // {% comment %} buttons.forEach((button, i) => {
+    //     button.addEventListener('click', () => {
+    //         open(button.getAttribute("data-code"));
+    //     })
+    // }) {% endcomment %}
+</script>
 {% endblock %}
