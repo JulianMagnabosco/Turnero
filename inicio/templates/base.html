@@ -1,6 +1,43 @@
-<div>
-    Base div
-</div>
+{% extends 'index.html' %}
+
+{% load static %}
 
 {% block content %}
+    <div class="container container-center">
+        <div class="flex turn-choose-list">
+            {% for option in options %}
+            <button class="turn-button {% cycle "bg-blue" "bg-red" "bg-green" %}" data-code="{{option.code}}">
+                {{option.code}}<br>
+                <div>{{option.name}}</div>
+            </button>
+            {%endfor%}
+        </div>
+    </div>
+
+    <div class="popup">
+        <div class="popup">
+        
+        </div>
+        <div class="flex">
+            <button class="button-1" id="yes-button">
+                SI
+            </button>
+            <button class="button-1" id="no-button">
+                NO
+            </button>
+        </div>
+    </div>
+    <script>
+        const buttons = document.querySelectorAll('.turn-button');
+
+        function open(code){
+            console.log(code);
+        }
+
+        buttons.forEach((button, i) => {
+            button.addEventListener('click', () => { 
+                open(button.getAttribute("data-code"));
+             })
+        })
+    </script>
 {% endblock %}

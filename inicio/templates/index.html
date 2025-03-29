@@ -1,23 +1,42 @@
-<h2>{{title}}</h2>
-<p>
-  Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam beatae totam
-  dolorum est, maiores commodi ducimus, labore perferendis corporis repellendus,
-  vero ipsa. Suscipit, excepturi voluptates. Itaque voluptatum commodi nisi
-  corporis!
-</p>
+{% load static %}
+<!DOCTYPE html>
+<html>
 
-<div>Listado</div>
-<ul>
-  {% for line in lines %}
-  <li>{{line.name}}</li>
-  {% endfor %}
-</ul>
-{% if emptyList %}
-<div>Vacio</div>
-{% else %}
-<div>No Vacio</div>
-{% endif %}
+<head>
+  <meta charset="utf-8" />
+  <title>Mi app</title>
+  <link rel="stylesheet" href="{% static 'styles.css' %}">
+</head>
 
-<a href="{% url 'childs' %}">Ir a childs</a>
+<body>
+  <nav>
+    <div>
+      <a class="navbrand" href="#">Turnero</a>
+    </div>
+  </nav>
+  {% block content %}
+  {% endblock %}
+{% comment %} 
+  <script>
+    let toggle = false
+    const element = document.getElementsByClassName("nav-bar")[0]
+    const button = document.getElementsByClassName("nav-bar-button")[0]
+    const otherbuttons = Array.from(element.getElementsByTagName("a"))
 
-{# Buscar en Jinja para plantillas #}
+    function toggleOpen() {
+      element.classList.add('open');
+      if (toggle) {
+        element.classList.remove('open');
+      }
+      toggle = !toggle
+    }
+    function toggleClose() {
+      element.classList.remove('open');
+    }
+
+    button.addEventListener('click', toggleOpen);
+    otherbuttons.forEach((ob) => ob.addEventListener('click', toggleClose));
+  </script> {% endcomment %}
+</body>
+
+</html>

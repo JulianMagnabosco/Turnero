@@ -1,0 +1,150 @@
+:root {
+  font-size: 1.25rem;
+  font-family: Arial, sans-serif;
+
+  --principal-color: #00abee;
+  --secondary-color: #00abee;
+  --principal-bg-color: #f3f3f3;
+  --principal-bg-color: #e4e4e4;
+
+  --small-screen: 856px;
+}
+body {
+  background-color: var(--principal-bg-color);
+  margin: 0;
+}
+
+nav {
+  background: var(--principal-color);
+  padding: 1rem 2rem;
+  position: sticky;
+  top: 0;
+}
+/* nav div {
+  display: none;
+  text-align: center;
+} */
+nav.open div {
+  display: block;
+  text-align: left;
+}
+@media (min-width: 856px) {
+  nav div {
+    display: block;
+    text-align: left;
+  }
+}
+nav div a {
+  margin: 0rem 0.4rem;
+  padding: 0.5rem;
+  font-weight: bold;
+  color: white;
+}
+.navbrand {
+  text-decoration: none;
+  color: white;
+  font-size: larger;
+  font-weight: bolder;
+}
+.hidden-button {
+  display: flex;
+  justify-content: end;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  text-shadow: 2px 2px black;
+}
+
+img,
+svg {
+  vertical-align: middle;
+}
+
+a {
+  text-decoration: none;
+}
+ul {
+  padding-right: 1rem;
+}
+
+
+/*------------------- Principal----------------------- */
+
+.container {
+  padding: 1.5rem;
+  /* animation: 0.3s ease-out 1s backwards fade-in; */
+}
+@media (min-width: 824px) {
+  .container {
+    width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@media (min-width: 1424px) {
+  .container {
+    width: 1000px;
+  }
+}
+
+.container-center{
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.button-1 {
+  padding: 0.75rem;
+  border-radius: 1rem;
+  display: inline-block;
+  border: none;
+  color: white;
+  background-color: var(--principal-color);
+  transition: 0.2s all;
+  backface-visibility: hidden;
+  cursor: pointer;
+}
+.button-1:hover {
+  background-color: var(--principal-color);
+}
+
+
+/* media */
+
+.flex {
+  display: flex;
+  gap: 1rem;
+}
+.turn-choose-list > *{
+  flex: 1 1 100px;
+}
+
+
+.turn,.turn-button {
+  padding: 5rem;
+  border-radius: 1rem;
+  display: inline-block;
+  border: none;
+  color: white;
+  font-size: 5rem;
+  background-color: var(--principal-color);
+  transition: 0.2s all;
+  backface-visibility: hidden;
+}
+
+
+.turn-button div{
+  font-size: 1rem;
+}
+
+.turn-button{
+  cursor: pointer;
+}
