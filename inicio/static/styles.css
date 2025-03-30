@@ -117,23 +117,26 @@ ul {
 /* media */
 
 .bg-red{
-  background-color: red;
+  background-color: rgb(194, 60, 60);
 }
 .bg-green{
-  background-color: green;
+  background-color: rgb(40, 180, 40);
 }
 .bg-blue{
-  background-color: blue;
+  background-color: rgb(38, 38, 180);
+}
+.bg-violet{
+  background-color: rgb(175, 38, 180);
 }
 
 .flex {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   gap: 1rem;
-  flex-wrap: wrap;
 }
 .turn-choose-list > *{
-  flex: 1 1 100px;
+  flex: 20rem 1 100px;
 }
 
 
@@ -155,6 +158,7 @@ ul {
 
 .turn-button{
   cursor: pointer;
+
 }
 
 .popup{

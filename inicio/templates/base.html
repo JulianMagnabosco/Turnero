@@ -6,7 +6,7 @@
 <div class="container container-center">
     <div class="flex turn-choose-list">
         {% for option in options %}
-        <button class="turn-button {% cycle 'bg-blue' 'bg-red' 'bg-green' %}" 
+        <button class="turn-button {% cycle 'bg-blue' 'bg-red' 'bg-green' 'bg-violet' %}" 
         data-code="{{option.code}}" data-name="{{option.name}}">
             {{option.code}}<br>
             <div>{{option.name}}</div>
@@ -54,27 +54,26 @@
         });
 
         $(".yes-button").click(function () {
-            $.post("demo_test_post.asp",
+            const url = window.location.origin + '/api/addturn/';
+            $.post(url,
                 {
-                    name: "Donald Duck",
-                    city: "Duckburg"
+                    code: codeSelected,
                 },
                 function (data, status) {
-                    $('#choose-popup').hide();
-                    $('#state-state').show();
                     $('#state-title').text(`Turno para ${$(this).attr("data-name")} programado`);
-                    codeSelected = ""
                 }).fail(function () {
+                    $('#state-title').text(`Error Inesperado, Se imprimira el ticket igualmente`);
+                }).always(function() {
                     $('#choose-popup').hide();
                     $('#state-popup').show();
-                    $('#state-title').text(`Error Inesperado`);
                     codeSelected = ""
                 });
         });
 
         $(".no-button").click(function () {
             codeSelected = ""
-            $('.popup').hide();
+            console.log($(this).parent().parent());
+            $(this).parent().parent().hide();
         });
 
     });
