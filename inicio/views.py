@@ -5,7 +5,10 @@ from .forms import LineForm
 
 # Create your views here.
 def base(request):
-    options = ({"code":"OC","name":""},
+    options = ({"code":"OC","name":"OC"},
+               {"code":"P","name":"Pediatria"},
+               {"code":"P","name":"Pediatria"},
+               {"code":"P","name":"Pediatria"},
                {"code":"P","name":"Pediatria"})
     return render(request, 'base.html', {"options": options})
 

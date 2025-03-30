@@ -6,7 +6,8 @@
 <div class="container container-center">
     <div class="flex turn-choose-list">
         {% for option in options %}
-        <button class="turn-button {% cycle "bg-blue" "bg-red" "bg-green" %}" data-code="{{option.code}}">
+        <button class="turn-button {% cycle 'bg-blue' 'bg-red' 'bg-green' %}" 
+        data-code="{{option.code}}" data-name="{{option.name}}">
             {{option.code}}<br>
             <div>{{option.name}}</div>
         </button>
@@ -14,40 +15,66 @@
     </div>
 </div>
 
-<div class="popup" id="popup">
-    <h2 id="pop-title">
+<div class="popup" id="choose-popup">
+    <h2 class="pop-title" id="choose-title">
         ¿Quieres programar un turno para ?
     </h2>
     <div class="flex">
-        <button class="button-1" id="yes-button">
+        <button class="big-button yes-button">
             SI
         </button>
-        <button class="button-1" id="no-button">
+        <button class="big-button no-button">
             NO
         </button>
     </div>
 </div>
+
+<div class="popup" id="state-popup">
+    <h2 class="pop-title" id="state-title">
+        Parace que hubo un error, contacte con servicio tecnico.
+    </h2>
+    <div class="flex">
+        <button class="big-button no-button">
+            OK
+        </button>
+    </div>
+</div>
+
 <script>
     $(document).ready(function () {
-        $('#popup').toggle();
+        $('.popup').hide();
         let codeSelected = ""
+
         $(".turn-button").click(function () {
+            if(codeSelected) return
+
             codeSelected = $(this).attr("data-code")
-            $('#pop-title').text(`¿Quieres programar un turno para ${codeSelected}`);
-            $('#popup').toggle();
+            $('#choose-popup').show();
+            $('#choose-title').text(`¿Quieres programar un turno para ${$(this).attr("data-name")}?`);
         });
-        $("#yes-button").click(function () {
+
+        $(".yes-button").click(function () {
             $.post("demo_test_post.asp",
                 {
                     name: "Donald Duck",
                     city: "Duckburg"
                 },
                 function (data, status) {
-                    alert("Data: " + data + "\nStatus: " + status);
+                    $('#choose-popup').hide();
+                    $('#state-state').show();
+                    $('#state-title').text(`Turno para ${$(this).attr("data-name")} programado`);
+                    codeSelected = ""
+                }).fail(function () {
+                    $('#choose-popup').hide();
+                    $('#state-popup').show();
+                    $('#state-title').text(`Error Inesperado`);
+                    codeSelected = ""
                 });
         });
-        $("#no-button").click(function () {
 
+        $(".no-button").click(function () {
+            codeSelected = ""
+            $('.popup').hide();
         });
 
     });

@@ -5,7 +5,7 @@
   --principal-color: #00abee;
   --secondary-color: #00abee;
   --principal-bg-color: #f3f3f3;
-  --principal-bg-color: #e4e4e4;
+  --secondary-bg-color: #e4e4e4;
 
   --small-screen: 856px;
 }
@@ -17,8 +17,9 @@ body {
 nav {
   background: var(--principal-color);
   padding: 1rem 2rem;
-  position: sticky;
+  position: fixed;
   top: 0;
+  width: 100%;
 }
 /* nav div {
   display: none;
@@ -99,27 +100,37 @@ ul {
   justify-content: center;
 }
 
-.button-1 {
-  padding: 0.75rem;
+.big-button {
+  padding: 1rem 2rem;
   border-radius: 1rem;
   display: inline-block;
   border: none;
   color: white;
+  font-size: 2rem;
   background-color: var(--principal-color);
   transition: 0.2s all;
   backface-visibility: hidden;
   cursor: pointer;
 }
-.button-1:hover {
-  background-color: var(--principal-color);
-}
 
 
 /* media */
 
+.bg-red{
+  background-color: red;
+}
+.bg-green{
+  background-color: green;
+}
+.bg-blue{
+  background-color: blue;
+}
+
 .flex {
   display: flex;
+  justify-content: center;
   gap: 1rem;
+  flex-wrap: wrap;
 }
 .turn-choose-list > *{
   flex: 1 1 100px;
@@ -127,13 +138,12 @@ ul {
 
 
 .turn,.turn-button {
-  padding: 5rem;
+  padding: 4svw;
   border-radius: 1rem;
   display: inline-block;
   border: none;
   color: white;
-  font-size: 5rem;
-  background-color: var(--principal-color);
+  font-size: 8svw;
   transition: 0.2s all;
   backface-visibility: hidden;
 }
@@ -150,7 +160,15 @@ ul {
 .popup{
   padding: 2rem;
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 50%;
+  left: 50%;
   transform: translate(-50%,-50%);
+  background-color: var(--secondary-bg-color);
+  border-radius: 2rem;
+  z-index: 100;
+  text-align: center;
+}
+
+.pop-title{
+  margin-bottom: 2rem;
 }
