@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Turnero</title>
+  <link href="style.css" rel="stylesheet">
+  <link href="libs/bootstrap/css/bootstrap.css" rel="stylesheet">
+  <script src="libs/bootstrap/js/bootstrap.js"></script>
+  <script type="text/javascript" src="libs/jquery-3.7.1.min.js"></script>
+</head>
+
+<body>
+  <nav class="navbar bg-primary-subtle">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Turnero</a>
+    </div>
+  </nav>
+
+  <div class="container">
+
+    <div class="row mt-5" id="button-list">
+      <div class="col-lg-4 col-6 button-turn text-center p-5">
+        <button class="btn btn-primary p-5 w-100 h-100" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+          <div class="code" style="font-size: 8rem;">OC</div>
+          <div class="name fs-1" >PEdiatria</div>
+        </button>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+      aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered fs-1">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-2" id="staticBackdropLabel">Pedir ticket</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body fs-4" id="choose-title">
+            ¿Pedir un turno para?
+          </div>
+          <div class="modal-footer justify-content-between">
+            <button type="button" class="btn btn-primary fs-2 px-3">SI</button>
+            <button type="button" class="btn btn-secondary fs-2 px-3" data-bs-dismiss="modal">NO</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- <button type="button" class="btn btn-primary" id="liveToastBtn">Show live toast</button> -->
+
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+      <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+          <img src="..." class="rounded me-2" alt="...">
+          <strong class="me-auto">Error</strong>
+          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+          Parace que hubo un error, contacte con servicio tecnico.
+        </div>
+      </div>
+    </div>
+
+    <script src="main.js">
+    </script>
+</body>
+
+</html>
