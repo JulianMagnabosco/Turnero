@@ -15,13 +15,19 @@ $(document).ready(function () {
     e.children().css("backgroundColor", option.color);
     e.children().attr("data-code", option.code);
     e.children().attr("data-name", option.name);
-    e.children().click(function () {
-      codeSelected = $(this).attr("data-code");
-      $("#choose-title").text(`¿Quieres programar un turno para ${option.name}?`);
-    });
 
     e.clone().appendTo("#button-list");
   });
+
+  $(".button-turn")
+    .children()
+    .click(function (e) {
+      codeSelected = $(this).data("code");
+      nameSelected = $(this).data("name");
+      $("#choose-title").html(
+        `¿Quieres programar un turno para <b>${nameSelected}</b>?`
+      );
+    });
 
   $(".yes-button").click(function () {
     const url = window.location.origin + "/api/addturn/";
@@ -31,26 +37,63 @@ $(document).ready(function () {
         code: codeSelected,
       },
       function (data, status) {
+        $("#state-type").text(`Exito`);
+        $("#liveToast").addClass(`bg-success`);
+        $("#liveToast").removeClass(`bg-danger`);
         $("#state-title").text(
           `Turno para ${$(this).attr("data-name")} programado`
         );
-      }
-    )
+      })
       .fail(function () {
+        $("#state-type").text(`Error`);
+        $("#liveToast").removeClass(`bg-success`);
+        $("#liveToast").addClass(`bg-danger`);
         $("#state-title").text(
-          `Error Inesperado, Se imprimira el ticket igualmente`
+          `A ocurrido algo inesperado, Se imprimira el ticket igualmente`
         );
       })
       .always(function () {
-        $("#choose-popup").hide();
-        $("#state-popup").show();
         codeSelected = "";
+        $("#state-popup").children().show();
+        setTimeout(function () {
+          callPrinter()
+        }, 1000);
       });
   });
 
-  $(".no-button").click(function () {
+  $("#state-popup").click(function () {
     codeSelected = "";
-    console.log($(this).parent().parent());
-    $(this).parent().parent().hide();
+    $("#state-popup").children().hide();
   });
+
+  function callPrinter(){
+    const url = window.location.origin + "/api/addturn/";
+    $.post(
+      url,
+      {
+        code: codeSelected,
+      },
+      function (data, status) {
+        $("#state-type").text(`Exito`);
+        $("#liveToast").addClass(`bg-success`);
+        $("#liveToast").removeClass(`bg-danger`);
+        $("#state-title").text(
+          `Ticket impreso`
+        );
+      })
+      .fail(function () {
+        $("#state-type").text(`Error`);
+        $("#liveToast").addClass(`bg-danger`);
+        $("#liveToast").removeClass(`bg-success`);
+        $("#state-title").text(
+          `No se pudo imprimir`
+        );
+      })
+      .always(function () {
+        $("#state-popup").children().show();
+        setTimeout(function () {
+          $("#state-popup").children().hide();
+        }, 2000);
+      });
+  }
 });
