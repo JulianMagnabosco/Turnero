@@ -7,6 +7,7 @@ $(document).ready(function () {
 
   let codeSelected = "";
   let lastNumber = 1;
+  let active=false
 
   let e = $(".button-turn").clone();
   $(".button-turn").hide();
@@ -31,9 +32,10 @@ $(document).ready(function () {
     });
 
   $(".yes-button").click(function () {
-    const url = window.location.origin + "/api/addturn/";
+    if(active)return
+    active = true
     $.post(
-      url,
+      apiUrl,
       {
         code: codeSelected,
       },
@@ -90,6 +92,7 @@ $(document).ready(function () {
         codeSelected = "";
       })
       .always(function () {
+        active=false
         $("#state-popup").children().show();
         setTimeout(function () {
           $("#state-popup").children().hide();
