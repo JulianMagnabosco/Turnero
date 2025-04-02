@@ -6,6 +6,7 @@ $(document).ready(function () {
   ];
 
   let codeSelected = "";
+  let lastNumber = 1;
 
   let e = $(".button-turn").clone();
   $(".button-turn").hide();
@@ -37,14 +38,18 @@ $(document).ready(function () {
         code: codeSelected,
       },
       function (data, status) {
+        console.log(data)
+        lastNumber=data["ticketNumber"]
         $("#state-type").text(`Exito`);
         $("#liveToast").addClass(`bg-success`);
         $("#liveToast").removeClass(`bg-danger`);
         $("#state-title").text(
           `Turno para ${$(this).attr("data-name")} programado`
         );
-      })
+      }
+    )
       .fail(function () {
+        lastNumber++
         $("#state-type").text(`Error`);
         $("#liveToast").removeClass(`bg-success`);
         $("#liveToast").addClass(`bg-danger`);
@@ -53,41 +58,36 @@ $(document).ready(function () {
         );
       })
       .always(function () {
-        codeSelected = "";
         $("#state-popup").children().show();
         setTimeout(function () {
-          callPrinter()
+          callPrinter();
         }, 1000);
       });
   });
 
   $("#state-popup").click(function () {
-    codeSelected = "";
     $("#state-popup").children().hide();
   });
 
-  function callPrinter(){
-    const url = window.location.origin + "/api/addturn/";
+  function callPrinter() {
+    console.log(printerBody(codeSelected,lastNumber))
     $.post(
-      url,
-      {
-        code: codeSelected,
-      },
+      printerUrl,
+      printerBody(codeSelected,lastNumber),
       function (data, status) {
         $("#state-type").text(`Exito`);
         $("#liveToast").addClass(`bg-success`);
         $("#liveToast").removeClass(`bg-danger`);
-        $("#state-title").text(
-          `Ticket impreso`
-        );
-      })
+        $("#state-title").text(`Ticket impreso`);
+        codeSelected = "";
+      }
+    )
       .fail(function () {
         $("#state-type").text(`Error`);
         $("#liveToast").addClass(`bg-danger`);
         $("#liveToast").removeClass(`bg-success`);
-        $("#state-title").text(
-          `No se pudo imprimir`
-        );
+        $("#state-title").text(`No se pudo imprimir`);
+        codeSelected = "";
       })
       .always(function () {
         $("#state-popup").children().show();

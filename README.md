@@ -2,17 +2,24 @@
 
 Turnero para una clinica
 
+## Requisitos
+
+- PluginImpresora: https://parzibyte.me/http-esc-pos-desktop-docs/es/
+- Docker
+
+## Impresora Totem
+
+```plugin.exe --puerto 2811``` o ```plugin.exe --port 2811```
+
 ## Python Env
 
 ```py -m venv venv\```
 
-```source env/Scripts/activate```
-
-```env/Scripts/activate```
+```source env/Scripts/activate``` o ```env/Scripts/activate```
 
 ```pip install -r requirements.txt ```
 
-## Run
+## Ejecutar
 
 ```python manage.py runserver 3000```
 
