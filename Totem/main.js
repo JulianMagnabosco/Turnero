@@ -6,7 +6,8 @@ $(document).ready(function () {
   ];
 
   let codeSelected = "";
-  let lastNumber = 1;
+  let nameSelected = "";
+  let lastNumber = 0;
   let active=false
 
   let e = $(".button-turn").clone();
@@ -72,10 +73,9 @@ $(document).ready(function () {
   });
 
   function callPrinter() {
-    console.log(printerBody(codeSelected,lastNumber))
-    $.post(
-      printerUrl,
-      printerBody(codeSelected,lastNumber),
+    console.log(printerUrl(codeSelected,nameSelected,lastNumber))
+    $.get(
+      printerUrl(codeSelected,nameSelected,lastNumber),
       function (data, status) {
         $("#state-type").text(`Exito`);
         $("#liveToast").addClass(`bg-success`);
