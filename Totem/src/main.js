@@ -1,4 +1,14 @@
+const escpos = require('../');
+
+const device  = new escpos.USB();
+// const device  = new escpos.RawBT();
+// const device  = new escpos.Network('localhost');
+// const device  = new escpos.Serial('/dev/usb/lp0');
+const printer = new escpos.Printer(device);
+
 $(document).ready(function () {
+
+
   const options = [
     { code: "CO", name: "CO", color: "rgb(179 0 0)" },
     { code: "P", name: "Pediatria", color: "rgb(0 179 0)" },
@@ -8,7 +18,7 @@ $(document).ready(function () {
   let codeSelected = "";
   let nameSelected = "";
   let lastNumber = 0;
-  let active=false
+  let active = false;
 
   let e = $(".button-turn").clone();
   $(".button-turn").hide();
@@ -33,16 +43,16 @@ $(document).ready(function () {
     });
 
   $(".yes-button").click(function () {
-    if(active)return
-    active = true
+    if (active) return;
+    active = true;
     $.post(
       apiUrl,
       {
         code: codeSelected,
       },
       function (data, status) {
-        console.log(data)
-        lastNumber=data["ticketNumber"]
+        console.log(data);
+        lastNumber = data["ticketNumber"];
         $("#state-type").text(`Exito`);
         $("#liveToast").addClass(`bg-success`);
         $("#liveToast").removeClass(`bg-danger`);
@@ -52,7 +62,7 @@ $(document).ready(function () {
       }
     )
       .fail(function () {
-        lastNumber++
+        lastNumber++;
         $("#state-type").text(`Error`);
         $("#liveToast").removeClass(`bg-success`);
         $("#liveToast").addClass(`bg-danger`);
@@ -73,30 +83,49 @@ $(document).ready(function () {
   });
 
   function callPrinter() {
-    console.log(printerUrl(codeSelected,nameSelected,lastNumber))
-    $.get(
-      printerUrl(codeSelected,nameSelected,lastNumber),
-      function (data, status) {
-        $("#state-type").text(`Exito`);
-        $("#liveToast").addClass(`bg-success`);
-        $("#liveToast").removeClass(`bg-danger`);
-        $("#state-title").text(`Ticket impreso`);
-        codeSelected = "";
-      }
-    )
-      .fail(function () {
-        $("#state-type").text(`Error`);
-        $("#liveToast").addClass(`bg-danger`);
-        $("#liveToast").removeClass(`bg-success`);
-        $("#state-title").text(`No se pudo imprimir`);
-        codeSelected = "";
+    console.log(printerUrl(codeSelected, nameSelected, lastNumber));
+
+    device.open(function(err){
+
+      printer
+      .getStatuses(statuses => {
+        statuses.forEach(status => {
+            console.log(status.toJSON());
+        })
       })
-      .always(function () {
-        active=false
-        $("#state-popup").children().show();
-        setTimeout(function () {
-          $("#state-popup").children().hide();
-        }, 2000);
-      });
+      .font('a')
+      .align('ct')
+      .size(2, 2)
+      .text(`${lastNumber}\n`) // default encoding set is GB18030
+      .size(1, 1)
+      .text(`${nameSelected}-${codeSelected}\n`) // default encoding set is GB18030
+      .cut()
+      .close();
+    });
+
+    // $.get(
+    //   printerUrl(codeSelected, nameSelected, lastNumber),
+    //   function (data, status) {
+    //     $("#state-type").text(`Exito`);
+    //     $("#liveToast").addClass(`bg-success`);
+    //     $("#liveToast").removeClass(`bg-danger`);
+    //     $("#state-title").text(`Ticket impreso`);
+    //     codeSelected = "";
+    //   }
+    // )
+    //   .fail(function () {
+    //     $("#state-type").text(`Error`);
+    //     $("#liveToast").addClass(`bg-danger`);
+    //     $("#liveToast").removeClass(`bg-success`);
+    //     $("#state-title").text(`No se pudo imprimir`);
+    //     codeSelected = "";
+    //   })
+    //   .always(function () {
+        active = false;
+    //     $("#state-popup").children().show();
+    //     setTimeout(function () {
+    //       $("#state-popup").children().hide();
+    //     }, 2000);
+    //   });
   }
 });
