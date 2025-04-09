@@ -1,0 +1,68 @@
+<div class="container mx-auto mb-4 mt-10">
+  <div class="flex items-center">
+      <form class="bg-white rounded-lg p-4 shadow-lg flex w-full max-w-6xl self-center mx-auto">
+          <input type="text" name="text" id="text" placeholder="Busqueda..." [(ngModel)]="text"
+              class="w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-current-2 focus:border-current-1 rounded-e-none">
+          <button (click)="charge()"
+              class="bg-current rounded-md text-white p-2 rounded-s-none transition-all hover:scale-105 hover:rounded-md hover:brightness-110">Buscar</button>
+      </form>
+  </div>
+  <div class="bg-white rounded-lg mt-4 p-4 shadow-lg overflow-x-scroll">
+
+      <table class="table-auto w-full">
+          <thead>
+              <tr>
+                  <th>
+                      Id
+                  </th>
+                  <th>
+                      Nombre
+                  </th>
+                  <th>
+                      Rol
+                  </th>
+                  <th>
+                      Email
+                  </th>
+                  <th>
+                      Acciones
+                  </th>
+              </tr>
+          </thead>
+          <tbody>
+
+              <tr *ngFor="let item of products" class="shadow-md *:text-center hover:bg-blue-700 cursor-pointer">
+                  <td>
+                      {{item.id}}
+                  </td>
+                  <td >
+                      {{item.username}} <span class="font-bold">{{!item.enabled?" (Eliminado)":""}}</span>
+                  </td>
+                  <td >
+                      {{item.role}} 
+                  </td>
+                  <td>
+                      {{item.email}}
+                  </td>
+                  <td class="w-40">
+
+                      <button (click)="deleteUser(item.id)"
+                          class="text-current m-2 transition-all hover:scale-105 hover:rounded-md hover:brightness-110">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="currentColor"
+                              stroke="currentColor" class="size-8">
+                              <path
+                                  d="M135.2 17.7C140.6 6.8 151.7 0 163.8 0L284.2 0c12.1 0 23.2 6.8 28.6 17.7L320 32l96 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 96C14.3 96 0 81.7 0 64S14.3 32 32 32l96 0 7.2-14.3zM32 128l384 0 0 320c0 35.3-28.7 64-64 64L96 512c-35.3 0-64-28.7-64-64l0-320zm96 64c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16z" />
+                          </svg> 
+                      </button>
+                  </td>
+              </tr>
+          </tbody>
+      </table>
+
+      <div class="col-span-full row-span-2" *ngIf="elements==0">
+          <div class="text-center text-6xl">OOPS!</div>
+          <div class="text-center text-3xl">No hay nada</div>
+      </div>
+  </div>
+
+</div>
