@@ -11,8 +11,11 @@ urlpatterns = [
     path("chat/", views.chat, name="index"),
     path("chat/<str:room_name>/", views.room, name="room"),
 
+    path("api/trigger/", views.trigger_mensaje),
+
     path("api/lines/", views.getAll),
     path("api/line/", views.addLine),
+    path("api/line/<int:id>/", views.deleteLine),
     path("api/ticket/", views.addTicket),
-    path("api/ticket/<int:id>/", views.takeTicket),
+    path("api/ticket/<int:id>/", views.deleteTicket),
 ]

@@ -5,7 +5,14 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User
 from django.db import IntegrityError
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
+
+from django.http import JsonResponse
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
+
 from .models import Line,Ticket
+import json
 
 def base(request):
     return redirect('signin')
@@ -53,6 +60,13 @@ def lines_show(request):
 
 
 #WebSocket
+def trigger_mensaje(request):
+    channel_layer = get_channel_layer()
+    async_to_sync(channel_layer.group_send)(
+        "chat_lobby",
+        {"type": "chat.message", "message": "HOllas"}
+    )
+    return JsonResponse({"status": "mensaje enviado por WebSocket"})
 
 def chat(request):
     return render(request, "chat.html")
@@ -68,27 +82,43 @@ def getAll(request):
     lineListValues=list()
     for l in lineList:
         lineListValues.append(l.json())
-    return JsonResponse({"lines":lineListValues})
 
-def addTicket(request):
-    if request.method == "POST":
-        line = Line.objects.first(code=request.POST["code"])
-        Ticket.save(Ticket(Ticket.objects.count(),line))
-        return JsonResponse(Line.objects.v(),safe=False)
-    else :
-        getAll(request)
+    channel_layer = get_channel_layer()
+    async_to_sync(channel_layer.group_send)(
+        "chat_lobby",
+        {
+            "type": "chat.message", 
+            "message": lineListValues
+        }
+    )
+    return JsonResponse({"data": lineListValues})
 
+@csrf_exempt
 def addLine(request):
     if request.method == "POST":
-        Line.save(Line(request.POST["name"],request.POST["code"]))
-        return JsonResponse(Line.objects.all(),safe=False)
-    else :
-        getAll(request)
+        body = json.loads(request.body)
+        newline = Line(name=body["name"],code=body["code"])
+        Line.save(newline)
+    return getAll(request)
 
-def takeTicket(request,id):
+@csrf_exempt
+def addTicket(request):
+    if request.method == "POST":
+        body = json.loads(request.body)
+        line = get_object_or_404(Line,code=body["code"])
+        Ticket.save(Ticket(number=Ticket.objects.filter(line=line).count()+1,line=line))
+    return getAll(request)
+
+@csrf_exempt
+def deleteLine(request,id):
     if request.method == "DELETE":
-        line = Ticket.objects.first(pk=id)
-        Ticket.save(Ticket(Ticket.objects.count(),line))
-        return JsonResponse(Line.objects.all(),safe=False)
-    else :
-        getAll(request)
+        line = get_object_or_404(Line,pk=id)
+        Line.delete(line)
+    return getAll(request)
+
+@csrf_exempt
+def deleteTicket(request,id):
+    if request.method == "DELETE":
+        ticket = get_object_or_404(Ticket,pk=id)
+        Ticket.delete(ticket)
+    return getAll(request)

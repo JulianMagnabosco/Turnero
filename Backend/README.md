@@ -12,9 +12,9 @@ Turnero para una clinica
 
 ## Python Env
 
-```py -m venv venv\```
+```py -m venv .venv\```
 
-```source env/Scripts/activate``` o ```env/Scripts/activate```
+```source .venv/Scripts/activate``` o ```.venv/Scripts/activate```
 
 ```pip install -r requirements.txt ```
 
