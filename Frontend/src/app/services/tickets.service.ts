@@ -7,26 +7,26 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class TicketsService {
-  private baseUrl = environment.apiUrl+"/api/frame";
+  private baseUrl = 'http://'+environment.apiUrl+"api/";
 
   constructor(private http: HttpClient) {
   }
 
-  getAll(data:any=""):Observable<any>{
-    return this.http.get(this.baseUrl+"/product/list",{params:data});
+  getAll():Observable<any>{
+    return this.http.get(this.baseUrl+"lines/");
   }
   
   get(id:string):Observable<any>{
-    return this.http.get(this.baseUrl+"/product/"+id);
+    return this.http.get(this.baseUrl+"product/"+id);
   }
   add(data:any):Observable<any>{
-    return this.http.post(this.baseUrl+"/product",data);
+    return this.http.post(this.baseUrl+"product/",data);
   }
   edit(id:string,data:any):Observable<any>{
-    return this.http.put(this.baseUrl+"/product/"+id,data);
+    return this.http.put(this.baseUrl+"product/"+id,data);
   }
   delete(id:string):Observable<any>{
-    return this.http.delete(this.baseUrl+"/product/"+id);
+    return this.http.delete(this.baseUrl+"product/"+id);
   }
   
   // cart(){

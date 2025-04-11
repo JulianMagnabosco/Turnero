@@ -2,10 +2,6 @@
 
 Turnero para una clinica
 
-## Usuario
-
-
-
 ## Impresora Totem
 
 ```plugin.exe --puerto 2811``` o ```plugin.exe --port 2811```
@@ -18,10 +14,6 @@ Turnero para una clinica
 
 ```pip install -r requirements.txt ```
 
-## Ejecutar
-
-```python manage.py runserver 3000```
-
 ## Migracion
 
 ```python manage.py makemigrations```
@@ -31,3 +23,7 @@ Turnero para una clinica
 ## Redis Channel
 
 ```docker run --rm -p 6379:6379 redis:7```
+
+## Ejecutar
+
+```python manage.py runserver 3000```

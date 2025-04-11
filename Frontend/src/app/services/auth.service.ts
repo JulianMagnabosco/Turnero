@@ -9,7 +9,7 @@ import { environment } from '../../environments/environment';
 })
 export class AuthService {
 
-  private baseUrl = environment.apiUrl + "/api/";
+  private baseUrl = 'http://'+environment.apiUrl + "api/";
 
   constructor(private client: HttpClient) {
   }
@@ -34,18 +34,18 @@ export class AuthService {
     return this.client.post(this.baseUrl +"signin/", data);
   }
 
-  registerUser(data: any):Observable<any>{
+  register(data: any):Observable<any>{
     return this.client.post(this.baseUrl + "signup/", data);
   }
 
-  testRegisterUser(data: any):Observable<any>{
-    return this.client.post(this.baseUrl + "test/register", data);
+  testRegister(data: any):Observable<any>{
+    return this.client.post(this.baseUrl + "test/register/", data);
   }
 
   requestChangePassword(email: any):Observable<any>{
     return this.client.post(this.baseUrl + "reset/req?email="+ email, null);
   }
   changePassword(data: any):Observable<any>{
-    return this.client.post(this.baseUrl + "reset", data);
+    return this.client.post(this.baseUrl + "reset/", data);
   }
 }

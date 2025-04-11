@@ -61,7 +61,7 @@ export class RegisterComponent implements OnInit,OnDestroy{
     }
 
     this.subs.add(
-      this.service.registerUser(user).subscribe(
+      this.service.register(user).subscribe(
         {
           next: value => {
             alert("La usuario fue registrado con éxito")
@@ -82,7 +82,7 @@ export class RegisterComponent implements OnInit,OnDestroy{
     }
     console.log(user)
     this.subs.add(
-      this.service.testRegisterUser(user).subscribe(
+      this.service.testRegister(user).subscribe(
         {
           next: value => {
             this.tips=value;

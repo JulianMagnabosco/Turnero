@@ -4,6 +4,7 @@ import { TicketList } from '../../models/ticket-list';
 import { TicketsService } from '../../services/tickets.service';
 import { NgClass, NgFor } from '@angular/common';
 import { Ticket } from '../../models/ticket';
+import { WebSocketService } from '../../services/web-socket.service';
 
 @Component({
   selector: 'app-display-list',
@@ -19,11 +20,11 @@ export class DisplayListComponent implements OnInit,OnDestroy {
     new TicketList([new Ticket(),new Ticket(),new Ticket()],"C","Clinica"),
   ];
 
-  constructor(private service:TicketsService) {
-    console.log(this.list)
+  constructor(private service:TicketsService, private webSocket:WebSocketService) {
+    
   }
   ngOnInit(): void {
-    // this.charge();
+    this.charge();
   }
 
   ngOnDestroy(): void {
@@ -33,15 +34,30 @@ export class DisplayListComponent implements OnInit,OnDestroy {
     this.subs.add(
       this.service.getAll().subscribe({
         next: (value) => {
-          this.list = value;
+          this.list = value["data"];
+          console.log(value)
         },
         error: (err) => {
+          console.log(err)
           alert(
             'Error inesperado en el servidor, revise su conexion a internet'
           );
         },
       })
     );
+
+    return
+    
+    this.subs.add(this.webSocket.getMessages().subscribe({
+      next: (value) => {
+        this.list = value["message"];
+      },
+      error: (err) => {
+        alert(
+          'Error inesperado en el servidor, revise su conexion a internet'
+        );
+      },
+    }))
   }
 
 }

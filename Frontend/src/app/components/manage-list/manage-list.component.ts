@@ -3,11 +3,12 @@ import { Subscription } from 'rxjs';
 import { TicketList } from '../../models/ticket-list';
 import { TicketsService } from '../../services/tickets.service';
 import { Ticket } from '../../models/ticket';
+import { NgFor } from '@angular/common';
 
 
 @Component({
   selector: 'app-manage-list',
-  imports: [],
+  imports: [NgFor],
   templateUrl: './manage-list.component.html',
   styleUrl: './manage-list.component.css'
 })

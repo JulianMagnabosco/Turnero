@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.db import IntegrityError
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
+from django.middleware.csrf import get_token
 
 from django.http import JsonResponse
 from channels.layers import get_channel_layer
@@ -76,8 +77,49 @@ def room(request, room_name):
 
 
 #API
+@csrf_exempt
+def api_signout(request):
+    if not request.user.is_authenticated:
+        return JsonResponse({"login": False},status=401)
+    logout(request)
+    return JsonResponse({"login": True})
 
+
+@csrf_exempt
+def api_signin(request):
+    if request.method == 'POST':
+        body = json.loads(request.body)
+        user = authenticate(
+            request, username=body['username'], password=body['password'])
+        if user is None:
+            return JsonResponse({"login": False})
+
+        login(request, user)
+        userJson = {"id":user.id,"username":user.username,"email":user.email,"role":"ADMIN"}
+        return JsonResponse({"login": True, "user": userJson, "token": get_token(request)})
+    
+@csrf_exempt
+def api_signup(request):
+    if request.method == 'POST':
+        body = json.loads(request.body)
+
+        if body["password1"] == body["password2"]:
+            try:
+                user = User.objects.create_user(
+                    body["username"], password=body["password1"])
+                user.save()
+                login(request, user)
+                return JsonResponse({"register": True, "user": user, "token": get_token(request)})
+            except IntegrityError:
+                return JsonResponse({"register": False, "error": "Username already exist"})
+
+        return JsonResponse({"register": False, "error": "Passwords did not match."})
+
+@csrf_exempt
 def getAll(request):
+    if not request.user.is_authenticated:
+        return JsonResponse({"login": False},status=401)
+    
     lineList=list(Line.objects.all())
     lineListValues=list()
     for l in lineList:
@@ -95,6 +137,8 @@ def getAll(request):
 
 @csrf_exempt
 def addLine(request):
+    if not request.user.is_authenticated:
+        return JsonResponse({"login": False},status=401)
     if request.method == "POST":
         body = json.loads(request.body)
         newline = Line(name=body["name"],code=body["code"])
@@ -103,6 +147,8 @@ def addLine(request):
 
 @csrf_exempt
 def addTicket(request):
+    if not request.user.is_authenticated:
+        return JsonResponse({"login": False},status=401)
     if request.method == "POST":
         body = json.loads(request.body)
         line = get_object_or_404(Line,code=body["code"])
@@ -111,6 +157,8 @@ def addTicket(request):
 
 @csrf_exempt
 def deleteLine(request,id):
+    if not request.user.is_authenticated:
+        return JsonResponse({"login": False},status=401)
     if request.method == "DELETE":
         line = get_object_or_404(Line,pk=id)
         Line.delete(line)
@@ -118,6 +166,8 @@ def deleteLine(request,id):
 
 @csrf_exempt
 def deleteTicket(request,id):
+    if not request.user.is_authenticated:
+        return JsonResponse({"login": False},status=401)
     if request.method == "DELETE":
         ticket = get_object_or_404(Ticket,pk=id)
         Ticket.delete(ticket)

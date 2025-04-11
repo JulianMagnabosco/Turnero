@@ -38,21 +38,18 @@ export class LoginComponent implements OnInit,OnDestroy{
       return;
     }
 
-
     this.subs.add(
       this.service.login(this.form.value).subscribe(
         {
           next: value => {
-            // alert("Inicio de secion éxitoso");
-
+            console.log(value)
             this.service.setData(value["user"],value["token"])
 
             this.router.navigate(["/home"])
           },
           error: err => {
             if(err["status"]==401){
-              alert("No existe usuario con esas credenciales"
-              );
+              alert("No existe usuario con esas credenciales");
               // alert("No existe usuario con esas credenciales")
             }else {
               alert("Error inesperado en el servidor, revise su conexion a internet");

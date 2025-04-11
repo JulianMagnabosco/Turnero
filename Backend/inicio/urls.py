@@ -13,6 +13,9 @@ urlpatterns = [
 
     path("api/trigger/", views.trigger_mensaje),
 
+    path('api/signup/', views.api_signup),
+    path('api/logout/', views.api_signout),
+    path('api/signin/', views.api_signin),
     path("api/lines/", views.getAll),
     path("api/line/", views.addLine),
     path("api/line/<int:id>/", views.deleteLine),

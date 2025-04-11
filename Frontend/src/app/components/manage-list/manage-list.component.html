@@ -6,8 +6,8 @@
             <div class="text-4xl font-bold overflow-hidden">{{line.name}}</div>
         </div>
 
-        <div class="text-center text-4xl bg-gray-400 p-1 rounded-md mt-1 mx-2" *ngFor="let ticket of line.list; index as j">
-            {{line.code}}{{ticket.num}}
+        <div class="text-center text-4xl bg-gray-400 p-1 rounded-md mt-1 mx-2" *ngFor="let ticket of line.tickets; index as j">
+            {{line.code}}{{ticket.number}}
         </div>
 
         <button class="p-5 text-center rounded-2xl hover:brightness-75 absolute w-full bottom-0 left-0" 

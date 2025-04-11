@@ -13,10 +13,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   if(isPlatformBrowser(platformId)){
     let token = sessionStorage.getItem("app.token");
     if (token && !req.url.includes("login")) {
-      req = req.clone({
-        setHeaders: {
-          Authorization: `Bearer ${token}`
-        },
+      req = req.clone({withCredentials:true
       });
     }
   }

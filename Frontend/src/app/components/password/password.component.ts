@@ -59,7 +59,7 @@ export class PasswordComponent implements OnInit,OnDestroy{
       "email": this.emailForm.controls['email'].value||"a"
     }
     this.subs.add(
-      this.authService.testRegisterUser(user).subscribe(
+      this.authService.testRegister(user).subscribe(
         {
           next: value => {
             this.tips=value;
