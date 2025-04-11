@@ -8,7 +8,7 @@ import { NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterLink, NgIf, NgSwitch,NgSwitchCase,NgSwitchDefault],
+  imports: [ReactiveFormsModule, NgIf, NgSwitch,NgSwitchCase,NgSwitchDefault],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
 })

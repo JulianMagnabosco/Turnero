@@ -9,7 +9,7 @@ import { environment } from '../../environments/environment';
 })
 export class AuthService {
 
-  private baseUrl = environment.apiUrl + "/api/auth/";
+  private baseUrl = environment.apiUrl + "/api/";
 
   constructor(private client: HttpClient) {
   }
@@ -31,11 +31,11 @@ export class AuthService {
     sessionStorage.setItem("app.token","");
   }
   login(data: any):Observable<any>{
-    return this.client.post(this.baseUrl +"login", data);
+    return this.client.post(this.baseUrl +"signin/", data);
   }
 
   registerUser(data: any):Observable<any>{
-    return this.client.post(this.baseUrl + "register", data);
+    return this.client.post(this.baseUrl + "signup/", data);
   }
 
   testRegisterUser(data: any):Observable<any>{

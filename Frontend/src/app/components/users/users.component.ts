@@ -10,7 +10,7 @@ import { User } from '../../models/user';
 @Component({
   selector: 'app-users',
   standalone: true,
-  imports: [NgIf,NgFor,FormsModule,NgClass],
+  imports: [NgIf,NgFor,FormsModule],
   templateUrl: './users.component.html',
   styleUrl: './users.component.css'
 })

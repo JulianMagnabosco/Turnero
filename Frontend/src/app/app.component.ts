@@ -8,7 +8,7 @@ import { environment } from '../environments/environment';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RouterLink,NgIf,NgFor],
+  imports: [RouterOutlet, RouterLink,NgIf],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

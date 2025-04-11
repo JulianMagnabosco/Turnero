@@ -1,6 +1,6 @@
 export class Ticket {
   id=0;
-  code="";
-  name="";
-  num=0;
+  code="CodigoTicket";
+  name="nombreTicket";
+  num=1;
 }
