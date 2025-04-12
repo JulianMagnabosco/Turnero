@@ -6,9 +6,9 @@ import { User } from '../models/user';
 export const authGuard: CanActivateFn = (route, state) => {
   const platformId = inject(PLATFORM_ID);
   if(isPlatformBrowser(platformId)){
-    let token = sessionStorage.getItem("app.token");
+    let user = sessionStorage.getItem("app.user");
     const router = inject(Router)
-    if(token){
+    if(user){
       return true
     }
     router.navigate(["/login"])
@@ -19,16 +19,16 @@ export const authGuard: CanActivateFn = (route, state) => {
 export const authGuardAdmin: CanActivateFn = (route, state) => {
   const platformId = inject(PLATFORM_ID);
   if(isPlatformBrowser(platformId)){
-    let token = sessionStorage.getItem("app.token");
+    let dataUser = sessionStorage.getItem("app.user");
     let user:User|undefined;
     try {
-      user= JSON.parse( sessionStorage.getItem("app.user") || "");
+      user= JSON.parse( dataUser || "");
     }catch (e) {
       user= undefined
     }
     const router = inject(Router)
-    if(token && user){
-      if(user.role=="ROLE_ADMIN"){
+    if(user){
+      if(user.role=="ADMIN"){
         return true
       }else{
         if(confirm("No posee los permisos para acceder a esta pagina")){

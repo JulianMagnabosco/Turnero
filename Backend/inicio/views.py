@@ -92,7 +92,7 @@ def api_signin(request):
         user = authenticate(
             request, username=body['username'], password=body['password'])
         if user is None:
-            return JsonResponse({"login": False})
+            return JsonResponse({"login": False},status=401)
 
         login(request, user)
         userJson = {"id":user.id,"username":user.username,"email":user.email,"role":"ADMIN"}
@@ -111,14 +111,14 @@ def api_signup(request):
                 login(request, user)
                 return JsonResponse({"register": True, "user": user, "token": get_token(request)})
             except IntegrityError:
-                return JsonResponse({"register": False, "error": "Username already exist"})
+                return JsonResponse({"register": False, "error": "Username already exist"},status=401)
 
-        return JsonResponse({"register": False, "error": "Passwords did not match."})
+        return JsonResponse({"register": False, "error": "Passwords did not match."},status=401)
 
 @csrf_exempt
 def getAll(request):
-    if not request.user.is_authenticated:
-        return JsonResponse({"login": False},status=401)
+    # if not request.user.is_authenticated:
+    #     return JsonResponse({"login": False},status=401)
     
     lineList=list(Line.objects.all())
     lineListValues=list()

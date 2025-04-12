@@ -42,8 +42,7 @@ export class LoginComponent implements OnInit,OnDestroy{
       this.service.login(this.form.value).subscribe(
         {
           next: value => {
-            console.log(value)
-            this.service.setData(value["user"],value["token"])
+            this.service.setData(value["user"])
 
             this.router.navigate(["/home"])
           },

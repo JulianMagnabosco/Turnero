@@ -22,20 +22,18 @@ export class AuthService {
     }
   }
 
-  setData(user:User,token:string){
+  setData(user:User){
     sessionStorage.setItem("app.user",JSON.stringify(user));
-    sessionStorage.setItem("app.token",token);
   }
   logout(){
     sessionStorage.setItem("app.user","");
-    sessionStorage.setItem("app.token","");
   }
   login(data: any):Observable<any>{
-    return this.client.post(this.baseUrl +"signin/", data);
+    return this.client.post(this.baseUrl +"signin/", data, {withCredentials: true});
   }
 
   register(data: any):Observable<any>{
-    return this.client.post(this.baseUrl + "signup/", data);
+    return this.client.post(this.baseUrl + "signup/", data, {withCredentials: true});
   }
 
   testRegister(data: any):Observable<any>{
