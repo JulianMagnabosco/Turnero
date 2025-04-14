@@ -14,6 +14,9 @@
           [class.border-red-500]="(form.controls['username'].touched || form.controls['username'].dirty) && form.controls['username'].invalid">
         <div class="text-red-500 text-sm"
           *ngIf="(form.controls['username'].touched || form.controls['username'].dirty)">
+          <div *ngIf="form.controls['username'].hasError('required')">
+            Obligatorio.
+          </div>
           <div *ngIf="form.controls['username'].hasError('maxlength')">
             El nombre no puede superar los 20 caracteres.
           </div>
@@ -28,20 +31,23 @@
           [class.border-red-500]="(form.controls['password'].touched || form.controls['password'].dirty) && form.controls['password'].invalid">
         <div class="text-red-500 text-sm"
           *ngIf="(form.controls['password'].touched || form.controls['password'].dirty)">
+          <div *ngIf="form.controls['password'].hasError('required')">
+            Obligatorio.
+          </div>
           <div *ngIf="form.controls['password'].hasError('maxlength')">
             La contraseña no puede superar los 20 caracteres.
           </div>
         </div>
       </div>
-      <div class="text-center m-4">
+      <!-- <div class="text-center m-4">
         <a routerLink="/password"
           class="text-blue-500 hover:underline hover:decoration-rose-950 cursor-pointer">¿Olvidaste tu contraseña?</a>
-      </div>
+      </div> -->
 
       <div class="text-center m-4">
         <button
-          class="bg-blue-500 rounded-md text-white p-2 transition-all hover:scale-105 hover:rounded-md hover:brightness-110"
-          type="submit">        
+          class="bg-blue-500 rounded-md text-white p-2 transition-all hover:brightness-110 disabled:opacity-50"
+          type="submit" [disabled]="form.invalid || loading">        
           Iniciar Sesión
         </button>
       </div>

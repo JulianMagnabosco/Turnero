@@ -6,7 +6,7 @@ import { User } from '../models/user';
 export const authGuard: CanActivateFn = (route, state) => {
   const platformId = inject(PLATFORM_ID);
   if(isPlatformBrowser(platformId)){
-    let user = sessionStorage.getItem("app.user");
+    let user = localStorage.getItem("app.user");
     const router = inject(Router)
     if(user){
       return true
@@ -19,7 +19,7 @@ export const authGuard: CanActivateFn = (route, state) => {
 export const authGuardAdmin: CanActivateFn = (route, state) => {
   const platformId = inject(PLATFORM_ID);
   if(isPlatformBrowser(platformId)){
-    let dataUser = sessionStorage.getItem("app.user");
+    let dataUser = localStorage.getItem("app.user");
     let user:User|undefined;
     try {
       user= JSON.parse( dataUser || "");

@@ -16,17 +16,17 @@ export class AuthService {
 
   get user():User|undefined{
     try {
-      return JSON.parse( sessionStorage.getItem("app.user") || "");
+      return JSON.parse( localStorage.getItem("app.user") || "");
     }catch (e) {
       return undefined
     }
   }
 
   setData(user:User){
-    sessionStorage.setItem("app.user",JSON.stringify(user));
+    localStorage.setItem("app.user",JSON.stringify(user));
   }
   logout(){
-    sessionStorage.setItem("app.user","");
+    localStorage.setItem("app.user","");
   }
   login(data: any):Observable<any>{
     return this.client.post(this.baseUrl +"signin/", data, {withCredentials: true});
