@@ -130,7 +130,10 @@ def getAll(request):
         "chat_lobby",
         {
             "type": "chat.message", 
-            "message": lineListValues
+            "message": {
+                "data":lineListValues,
+                "type": "update"
+            }
         }
     )
     return JsonResponse({"data": lineListValues})
@@ -152,7 +155,8 @@ def addTicket(request):
     if request.method == "POST":
         body = json.loads(request.body)
         line = get_object_or_404(Line,code=body["code"])
-        Ticket.save(Ticket(number=Ticket.objects.filter(line=line).count()+1,line=line))
+        newNumber = line.getTickets().last().number
+        Ticket.save(Ticket(number=newNumber+1,line=line))
     return getAll(request)
 
 @csrf_exempt

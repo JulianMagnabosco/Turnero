@@ -1,7 +1,11 @@
 import json
 
 from channels.generic.websocket import AsyncWebsocketConsumer
+from django.shortcuts import aget_object_or_404
+from asgiref.sync import sync_to_async
+from channels.layers import get_channel_layer
 
+from .models import Line,Ticket
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
@@ -22,6 +26,21 @@ class ChatConsumer(AsyncWebsocketConsumer):
         text_data_json = json.loads(text_data)
         message = text_data_json["message"]
 
+        if(message["type"]=="add"):
+            line = await aget_object_or_404(Line,code=message["code"])
+            list = Ticket.objects.filter(line=line)
+
+            last = await sync_to_async(list.last)()
+            lastNumber = last.number+1 if not last is None else 1
+            await Ticket.asave(Ticket(number=lastNumber,line=line))
+
+            await self.getAll()
+        elif(message["type"]=="call",message["type"]=="del"):
+            ticket = await aget_object_or_404(Ticket,pk=message["id"])
+            await Ticket.adelete(ticket)
+
+            await self.getAll()
+
         # Send message to room group
         await self.channel_layer.group_send(
             self.room_group_name, {"type": "chat.message", "message": message}
@@ -33,3 +52,19 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         # Send message to WebSocket
         await self.send(text_data=json.dumps({"message": message}))
+        
+    async def getAll(self):
+    # if not request.user.is_authenticated:
+    #     return JsonResponse({"login": False},status=401)
+    
+        lineList=Line.objects.all()
+        lineListValues=list()
+        async for l in lineList:
+            lineListValues.append(await l.ajson())
+
+        await self.send(text_data=json.dumps({
+            "message": {
+                "data":lineListValues,
+                "type": "update"
+            }
+        }))
