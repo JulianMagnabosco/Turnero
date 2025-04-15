@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { TicketList } from '../../models/ticket-list';
 import { TicketsService } from '../../services/tickets.service';
-import { NgClass, NgFor } from '@angular/common';
+import { NgClass, NgFor, NgIf } from '@angular/common';
 import { Ticket } from '../../models/ticket';
 import { WebSocketService } from '../../services/web-socket.service';
 
@@ -14,10 +14,11 @@ import { WebSocketService } from '../../services/web-socket.service';
 })
 export class DisplayListComponent implements OnInit,OnDestroy {
   subs: Subscription = new Subscription();
+  loading=false
   list: TicketList[] = [
-    new TicketList([new Ticket(),new Ticket(),new Ticket()],"CO","CO"),
-    new TicketList([new Ticket(),new Ticket(),new Ticket()],"P","Pediatria"),
-    new TicketList([new Ticket(),new Ticket(),new Ticket()],"C","Clinica"),
+    // new TicketList([new Ticket(),new Ticket(),new Ticket()],"CO","CO"),
+    // new TicketList([new Ticket(),new Ticket(),new Ticket()],"P","Pediatria"),
+    // new TicketList([new Ticket(),new Ticket(),new Ticket()],"C","Clinica"),
   ];
 
   constructor(private service:TicketsService, private webSocket:WebSocketService) {
@@ -31,26 +32,30 @@ export class DisplayListComponent implements OnInit,OnDestroy {
     this.subs.unsubscribe();
   }
   charge() {
+    this.loading=true
     this.subs.add(
       this.service.getAll().subscribe({
         next: (value) => {
           this.list = value["data"];
-          console.log(value)
         },
         error: (err) => {
-          console.log(err)
           alert(
             'Error inesperado en el servidor, revise su conexion a internet'
           );
         },
+        complete: ()=>{
+          this.loading=false
+        }
       })
     );
 
-    return
     
-    this.subs.add(this.webSocket.getMessages().subscribe({
+    this.subs.add(
+      this.webSocket.getMessages().subscribe({
       next: (value) => {
-        this.list = value["message"];
+        if(value["message"]["type"]=="update"){
+          this.list = value["message"]["data"];
+        }
       },
       error: (err) => {
         alert(

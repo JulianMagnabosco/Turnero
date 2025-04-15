@@ -8,12 +8,13 @@ import { Router, RouterLink } from '@angular/router';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule,NgIf,RouterLink],
+  imports: [ReactiveFormsModule,NgIf],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
 export class LoginComponent implements OnInit,OnDestroy{
   private subs: Subscription = new Subscription();
+  loading=false
   form: FormGroup;
 
   constructor(private fb: FormBuilder, protected service: AuthService, private router: Router) {
@@ -25,7 +26,7 @@ export class LoginComponent implements OnInit,OnDestroy{
   }
 
   ngOnInit(): void {
-
+    this.form.updateValueAndValidity()
   }
 
   ngOnDestroy(): void {
@@ -37,13 +38,13 @@ export class LoginComponent implements OnInit,OnDestroy{
       this.form.markAllAsTouched();
       return;
     }
-
+    this.loading=true
     this.subs.add(
       this.service.login(this.form.value).subscribe(
         {
           next: value => {
             this.service.setData(value["user"])
-
+            this.loading=false
             this.router.navigate(["/home"])
           },
           error: err => {
@@ -53,7 +54,8 @@ export class LoginComponent implements OnInit,OnDestroy{
             }else {
               alert("Error inesperado en el servidor, revise su conexion a internet");
             }
-          }
+            this.loading=false
+          },
         }
       )
     );

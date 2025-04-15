@@ -1,8 +1,8 @@
-<div class="flex h-[calc(100vh-100px)] justify-center gap-2">
+<div class="flex h-[calc(100vh-100px)] justify-center gap-2" [hidden]="loading">
     <div class="bg-gray-300 p-1 rounded-2xl w-[20svw] relative" *ngFor="let line of list; index as i">
         <div class="p-5 text-center rounded-2xl" 
         [class]="{'bg-blue-300':i%3==0,'bg-amber-300':i%3==1,'bg-green-400':i%3==2}">
-            <div class="text-8xl">{{line.code}}</div>
+            <div class="text-8xl text-nowrap">{{line.code}}</div>
             <div class="text-4xl font-bold overflow-hidden text-nowrap">{{line.name}}</div>
         </div>
 
