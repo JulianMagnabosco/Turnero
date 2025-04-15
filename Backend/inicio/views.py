@@ -147,8 +147,6 @@ def addLine(request):
 
 @csrf_exempt
 def addTicket(request):
-    if not request.user.is_authenticated:
-        return JsonResponse({"login": False},status=401)
     if request.method == "POST":
         body = json.loads(request.body)
         line = get_object_or_404(Line,code=body["code"])

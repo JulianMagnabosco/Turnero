@@ -2,11 +2,7 @@
 
 Turnero para una clinica
 
-## Impresora Totem
-
-```plugin.exe --puerto 2811``` o ```plugin.exe --port 2811```
-
-## Python Env
+## Python Enviroment
 
 ```py -m venv .venv\```
 
@@ -20,7 +16,7 @@ Turnero para una clinica
 
 ```python manage.py migrate```
 
-## Redis Channel
+## Docker Redis Channel
 
 ```docker run --rm -p 6379:6379 redis:7```
 
