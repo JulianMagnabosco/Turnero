@@ -5,10 +5,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Turnero</title>
-  <link href="src/style.css" rel="stylesheet">
-  <link href="libs/bootstrap/css/bootstrap.css" rel="stylesheet">
-  <script src="libs/bootstrap/js/bootstrap.js"></script>
-  <script type="text/javascript" src="libs/jquery-3.7.1.min.js"></script>
+  <link rel="stylesheet" href="./src/style.css">
+  <link href="/libs/bootstrap/css/bootstrap.css" rel="stylesheet">
+  <script src="/libs/bootstrap/js/bootstrap.js"></script>
+  <script type="text/javascript" src="/libs/jquery-3.7.1.min.js"></script>
 </head>
 
 <body>
@@ -20,11 +20,11 @@
 
   <div class="container">
 
-    <div class="row mt-5" id="button-list">
-      <div class="col-lg-4 col-6 button-turn text-center p-4">
-        <button class="btn btn-primary p-5 w-100 h-100" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-          <div class="code" style="font-size: 8rem;">OC</div>
-          <div class="name fs-1" >PEdiatria</div>
+    <div class="mt-5" id="button-list">
+      <div class="button-turn text-center p-4 py-2">
+        <button class="btn btn-primary p-5 w-100 h-100 fs-1" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+          <span class="name">TestName</span>
+          (<span class="code">TEST</span>)
         </button>
       </div>
     </div>
@@ -63,8 +63,7 @@
       </div>
     </div>
 
-    <script src="src/config.js"></script>
-    <script src="src/main.js"></script>
+    <script type="module" src="/src/main.js"></script>
 </body>
 
 </html>

@@ -1,19 +1,17 @@
 {
   "name": "totem",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
+  "version": "1.0.0",
+  "description": "",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
   "scripts": {
-    "dev": "vite --port 3000",
-    "build": "vite build",
-    "preview": "vite preview"
-  },
-  "devDependencies": {
-    "vite": "^6.2.0"
+    "dev": "node index.js"
   },
   "dependencies": {
     "escpos": "^3.0.0-alpha.6",
     "escpos-usb": "^3.0.0-alpha.4",
-    "usb": "^1.9.2"
+    "usb": "^1.9.2",
+    "express": "^5.1.0"
   }
 }
