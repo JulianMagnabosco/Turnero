@@ -2,6 +2,7 @@ const express = require('express')
 const app = express()
 const port = 3000
 
+//escpos
 const escpos = require('escpos');
 escpos.USB = require('escpos-usb');
 
@@ -14,6 +15,7 @@ try{
 } catch {
     console.log("Sin impresora")
 }
+//json
 
 const fs = require('fs');
 let config = {}
@@ -23,6 +25,7 @@ fs.readFile('config.json', function(err, data) {
     config = JSON.parse(data); 
 }); 
 
+//express
 app.use(express.json());
 
 app.listen(port, () => {
@@ -46,9 +49,9 @@ app.get('/totem/', (req, res) =>
 
 app.post('/totem/ticket', (req, res) => {
     console.log(req.body)
-    nameSelected = req.body["name"]
-    codeSelected = req.body["code"]
-    lastNumber = req.body["lastNumber"]
+    const nameSelected = req.body["name"]
+    const codeSelected = req.body["code"]
+    const lastNumber = req.body["lastNumber"]
 
     if (!nameSelected || !codeSelected || !lastNumber){
         res.status(400).send({
@@ -66,19 +69,16 @@ app.post('/totem/ticket', (req, res) => {
 
     device.open(function(error){
         printer
-        .getStatuses(statuses => {
-          statuses.forEach(status => {
-              console.log(status.toJSON());
-          })
-        })
         .font('a')
         .align('ct')
         .size(2, 2)
-        .text(`${lastNumber}\n`) // default encoding set is GB18030
+        .text(`${codeSelected} ${lastNumber}\n`) // default encoding set is GB18030
         .size(1, 1)
-        .text(`${nameSelected}-${codeSelected}\n`)
-        .cut()
-        .close();
+        .text(`${nameSelected}\n`)
+  		.qrimage('https://www.cpvs.com.ar/', function(err){
+    		this.cut();
+    		this.close();
+  		});
       });
       res.send({
         message: 'Impreso',
