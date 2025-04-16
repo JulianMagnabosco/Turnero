@@ -75,10 +75,8 @@ app.post('/totem/ticket', (req, res) => {
         .text(`${codeSelected} ${lastNumber}\n`) // default encoding set is GB18030
         .size(1, 1)
         .text(`${nameSelected}\n`)
-  		.qrimage('https://www.cpvs.com.ar/', function(err){
-    		this.cut();
-    		this.close();
-  		});
+    	.cut()
+    	.close();
       });
       res.send({
         message: 'Impreso',

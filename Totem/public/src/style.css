@@ -14,3 +14,11 @@
   border-right: 0;
   background-color: #8070d4;
 }
+
+@-moz-document url-prefix(){
+  html{
+    scrollbar-width: 100px;
+    scrollbar-color: purple white;
+    scrollbar-width:auto;
+  }
+}

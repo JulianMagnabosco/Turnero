@@ -9,7 +9,7 @@ $(document).ready(function () {
     { code: "P", name: "Pediatria" },
     { code: "C", name: "coso" },
   ];
-  let colors = ["rgb(179 0 179)", "rgb(0 179 179)", "rgb(100 200 0)"];
+  let colors = ["rgb(92 0 179)", "rgb(0 128 179)"];
 
   let codeSelected = "";
   let nameSelected = "";
@@ -17,6 +17,28 @@ $(document).ready(function () {
 
   let active = false;
   let timer = null;
+
+  $("#scroll-up").click(function (){
+    scroll=0
+    window.scroll({
+      top: 0,
+      left: 0,
+      behavior: "smooth",
+    });
+  })
+
+
+  let scroll = 0
+  let step = 150
+  $("#scroll-down").click(function (){
+    scroll+=step
+    
+    window.scroll({
+      top: scroll,
+      left: 0,
+      behavior: "smooth",
+    });
+  })
 
   let e = $(".button-turn").clone(true, true);
   $(".button-turn").hide();
