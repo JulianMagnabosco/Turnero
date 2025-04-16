@@ -23,6 +23,8 @@ fs.readFile('config.json', function(err, data) {
     config = JSON.parse(data); 
 }); 
 
+app.use(express.json());
+
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
 })
@@ -43,9 +45,10 @@ app.get('/totem/', (req, res) =>
 
 
 app.post('/totem/ticket', (req, res) => {
-    nameSelected = req.query["name"]
-    codeSelected = req.query["code"]
-    lastNumber = req.query["lastNumber"]
+    console.log(req.body)
+    nameSelected = req.body["name"]
+    codeSelected = req.body["code"]
+    lastNumber = req.body["lastNumber"]
 
     if (!nameSelected || !codeSelected || !lastNumber){
         res.status(400).send({
