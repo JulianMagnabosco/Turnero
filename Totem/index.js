@@ -18,9 +18,20 @@ try{
 //json
 
 const fs = require('fs');
-let config = {}
-fs.readFile('config.json', function(err, data) { 
-    if (err) throw err; 
+let config = {
+    "API_URL":"http://localhost:8000/api/addturn/",
+    "LINES":[
+        { "code": "CO", "name": "CO", "color": "rgb(179 0 0)" },
+        { "code": "P", "name": "Pediatria", "color": "rgb(0 179 0)" },
+        { "code": "C", "name": "coso", "color": "rgb(179 0 179)" }
+    ]
+  }
+  
+fs.readFile('confg.json', function(err, data) { 
+    if (err) {
+        console.log("Sin config")
+        return
+    }
 
     config = JSON.parse(data); 
 }); 
