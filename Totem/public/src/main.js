@@ -5,9 +5,7 @@ $(document).ready(function () {
   const printerUrl = totemUrl + "ticket/";
 
   let options = [
-    { code: "CO", name: "CO" },
-    { code: "P", name: "Pediatria" },
-    { code: "C", name: "coso" },
+    { code: "CO", name: "CO",lastNumber:1 },
   ];
   let colors = ["rgb(92 0 179)", "rgb(0 128 179)"];
 
@@ -17,6 +15,8 @@ $(document).ready(function () {
 
   let active = false;
   let timer = null;
+
+  let tryAgainList = []
 
   $("#scroll-up").click(function (){
     scroll=0
@@ -60,6 +60,7 @@ $(document).ready(function () {
     $(".button-turn")
       .children()
       .click(function (e) {
+        if (active) return;
         codeSelected = $(this).data("code");
         nameSelected = $(this).data("name");
         console.log($(this).data("code"));
@@ -76,12 +77,15 @@ $(document).ready(function () {
       type: "POST",
       url: apiUrl,
       dataType: "json",
+      contentType: "application/json",
       // async: false,
       data: '{"code": "' + codeSelected + '"}',
     })
       .done(function (data, status) {
         console.log(data);
         lastNumber = data["ticketNumber"];
+        const op = options.find((e)=>e.code==codeSelected)
+        op.lastNumber = lastNumber
         $("#state-type").text(`Exito`);
         $("#liveToast").addClass(`bg-success`);
         $("#liveToast").removeClass(`bg-danger`);
@@ -90,12 +94,18 @@ $(document).ready(function () {
         );
       })
       .fail(function () {
-        lastNumber++;
+        const op = options.find((e)=>e.code==codeSelected)
+        lastNumber = (op.lastNumber)? op.lastNumber+1: 1;
+        op.lastNumber = lastNumber
+        console.log(op.lastNumber);
+
+        tryAgainList.push({code:codeSelected,lastNumber:lastNumber})
+
         $("#state-type").text(`Error`);
         $("#liveToast").removeClass(`bg-success`);
         $("#liveToast").addClass(`bg-danger`);
         $("#state-title").text(
-          `A ocurrido algo inesperado, Se imprimira el ticket igualmente`
+          `No se pudo llamar al servidor, Se imprimira el ticket igualmente`
         );
       })
       .always(function () {
@@ -152,5 +162,28 @@ $(document).ready(function () {
           $("#state-popup").children().hide();
         }, 1000);
       });
+  }
+
+  let tryAgainInterval = setInterval(()=>{tryAgain()},2000)
+  function tryAgain(){
+    console.log()
+    $.ajax({
+      type: "POST",
+      url: apiUrl+"/list",
+      dataType: "json",
+      contentType: "application/json",
+      // async: false,
+    data: JSON.stringify(tryAgainList),
+    })
+      .done(function (data, status) {
+        // delete tryAgainList[index]
+        // tryAgainList.splice(index)
+        data["list"].forEach((e)=>{
+          tryAgainList.splice(tryAgainList.findIndex((r)=>{e.code==r.code&&e.lastNumber==r.lastNumber}))
+        })
+      })
+      .fail(function (data, status) {
+        console.log("Reintento fallido: "+tryAgainList.length);
+      })
   }
 });

@@ -21,13 +21,13 @@ const fs = require('fs');
 let config = {
     "API_URL":"http://localhost:8000/api/addturn/",
     "LINES":[
-        { "code": "CO", "name": "CO", "color": "rgb(179 0 0)" },
-        { "code": "P", "name": "Pediatria", "color": "rgb(0 179 0)" },
-        { "code": "C", "name": "coso", "color": "rgb(179 0 179)" }
+        { "code": "CO", "name": "CO", "lastNumber": 1 },
+        { "code": "P", "name": "Pediatria", "lastNumber": 5 },
+        { "code": "CO", "name": "CO", "lastNumber": 10 }
     ]
   }
   
-fs.readFile('confg.json', function(err, data) { 
+fs.readFile('config.json', function(err, data) { 
     if (err) {
         console.log("Sin config")
         return
@@ -67,6 +67,13 @@ app.post('/totem/ticket', (req, res) => {
     if (!nameSelected || !codeSelected || !lastNumber){
         res.status(400).send({
           message: 'Faltan datos',
+        });
+        return
+    }
+    if (config.PRINTER_OFF){
+        console.log("Impresora Apagada")
+        res.status(500).send({
+          message: 'Impresora Apagada',
         });
         return
     }

@@ -1,0 +1,2 @@
+#!/bin/bash
+exec sudo node index.js & firefox --kiosk=localhost:3000  
