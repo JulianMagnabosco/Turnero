@@ -164,16 +164,19 @@ $(document).ready(function () {
       });
   }
 
-  let tryAgainInterval = setInterval(()=>{tryAgain()},2000)
+  setTimeout(()=>{tryAgain()},2000)
   function tryAgain(){
-    console.log()
+    if(tryAgainList.length<=0){
+      setTimeout(()=>{tryAgain()},2000)
+      return
+    }
     $.ajax({
       type: "POST",
-      url: apiUrl+"/list",
+      url: apiUrl+"list/",
       dataType: "json",
       contentType: "application/json",
       // async: false,
-    data: JSON.stringify(tryAgainList),
+    data: JSON.stringify({"list":tryAgainList}),
     })
       .done(function (data, status) {
         // delete tryAgainList[index]
@@ -184,6 +187,9 @@ $(document).ready(function () {
       })
       .fail(function (data, status) {
         console.log("Reintento fallido: "+tryAgainList.length);
+      })
+      .always(function (){
+        setTimeout(()=>{tryAgain()},2000)
       })
   }
 });

@@ -20,5 +20,6 @@ urlpatterns = [
     path("api/line/", views.addLine),
     path("api/line/<int:id>/", views.deleteLine),
     path("api/ticket/", views.addTicket),
+    path("api/ticket/list/", views.addTicketList),
     path("api/ticket/<int:id>/", views.deleteTicket),
 ]

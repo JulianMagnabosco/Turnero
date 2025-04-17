@@ -61,10 +61,12 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:4200",
+CORS_ALLOWED_ORIGIN_REGEXES  = [
+    r"^http.+\:4200.*$",
+    r"^http.+\:4000.*$"
 ]
 CORS_ALLOW_CREDENTIALS=True
+# CORS_URLS_REGEX = r"^((?!addTurn).)*$"
 
 ROOT_URLCONF = 'turnero.urls'
 

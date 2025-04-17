@@ -155,6 +155,18 @@ def addTicket(request):
         line = get_object_or_404(Line,code=body["code"])
         newNumber = line.getTickets().last().number
         Ticket.save(Ticket(number=newNumber+1,line=line))
+        getAll(request)
+        return JsonResponse({"ticketNumber": newNumber+1})
+    return getAll(request)
+
+
+@csrf_exempt
+def addTicketList(request):
+    if request.method == "POST":
+        body = json.loads(request.body)
+        for item in body["list"]:
+            line = get_object_or_404(Line,code=item["code"])
+            Ticket.save(Ticket(number=int(item["lastNumber"]),line=line))
     return getAll(request)
 
 @csrf_exempt
