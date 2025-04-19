@@ -59,7 +59,6 @@ export class ManageListComponent  implements OnInit,OnDestroy {
     this.subs.add(
       this.webSocket.getMessages().subscribe({
       next: (value) => {
-        console.log(value["message"]["type"])
         if(value["message"]["type"]=="update"){
           this.saveData(value["message"]["data"])
         }else if(value["message"]["type"]=="call"){
@@ -72,6 +71,12 @@ export class ManageListComponent  implements OnInit,OnDestroy {
         );
       },
     }))
+  }
+
+  selectTicket(event:PointerEvent,ticket:Ticket,line:TicketList){
+    if(event.ctrlKey){
+      ticket.selected=!ticket.selected
+    }
   }
 
   callticket(line:TicketList) {
