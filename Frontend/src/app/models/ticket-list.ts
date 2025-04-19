@@ -7,6 +7,8 @@ export class TicketList {
   code=""
   name=""
 
+  hasSelections=false
+
   constructor(tickets: Ticket[],code:string,name:string){
     this.tickets=tickets
     this.code=code

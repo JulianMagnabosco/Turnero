@@ -5,6 +5,7 @@ import { TicketsService } from '../../services/tickets.service';
 import { Ticket } from '../../models/ticket';
 import { NgFor } from '@angular/common';
 import { WebSocketService } from '../../services/web-socket.service';
+import { tick } from '@angular/core/testing';
 
 
 @Component({
@@ -29,8 +30,8 @@ export class ManageListComponent  implements OnInit,OnDestroy {
   constructor(private service:TicketsService, private webSocket:WebSocketService) {
   }
   ngOnInit(): void {
-    this.charge();
     this.audio.loop=true
+    this.charge();
   }
 
   ngOnDestroy(): void {
@@ -59,10 +60,11 @@ export class ManageListComponent  implements OnInit,OnDestroy {
     this.subs.add(
       this.webSocket.getMessages().subscribe({
       next: (value) => {
+        console.log(value)
         if(value["message"]["type"]=="update"){
           this.saveData(value["message"]["data"])
         }else if(value["message"]["type"]=="call"){
-          this.playSound()
+          this._callticket(value["message"])
         }
       },
       error: (err) => {
@@ -73,16 +75,36 @@ export class ManageListComponent  implements OnInit,OnDestroy {
     }))
   }
 
-  selectTicket(event:PointerEvent,ticket:Ticket,line:TicketList){
+  selectTicket(event:PointerEvent|MouseEvent,ticket:Ticket, line:TicketList){
     if(event.ctrlKey){
       ticket.selected=!ticket.selected
     }
+    
+    if(event.shiftKey){
+      ticket.selected=!ticket.selected
+    }
+
+    line.hasSelections=!!line.tickets.find((t)=>{return t.selected})
+  }
+
+  
+  
+  deleteSelected(line:TicketList){
+    let message = {
+      "type": "dellist",
+      "tickets": line.tickets.filter(t=>{return t.selected}).map(t=>{return {"id":t.id}})
+    }
+    line.hasSelections=false
+    
+    this.webSocket.sendMessage({"message":message});
   }
 
   callticket(line:TicketList) {
     let message = {
       "type": "call",
-      "id": line.tickets[0].id
+      "id": line.tickets[0].id,
+      "number": line.tickets[0].number,
+      "line": line.id
     }
 
     line.selectedTicket=line.tickets[0]
@@ -92,6 +114,25 @@ export class ManageListComponent  implements OnInit,OnDestroy {
     },this.timer*1000)
     
     this.webSocket.sendMessage({"message":message});
+  }
+  _callticket(data: any) {
+    this.list.forEach((l) => {
+      if (l.id == data["line"]) {
+        const ticket = new Ticket(data["number"])
+        console.log(ticket)
+        l.selectedTicket = ticket;
+        this.audio.play();
+
+        clearTimeout(this.timeout);
+        setTimeout(() => {
+          l.selectedTicket = undefined;
+        }, this.timer * 1000);
+        this.timeout = setTimeout(() => {
+          this.audio.pause();
+        }, this.timer * 1000);
+        return
+      }
+    });
   }
 
   addticket(code:string) {
@@ -125,6 +166,7 @@ export class ManageListComponent  implements OnInit,OnDestroy {
     let newList: TicketList[] = data
     newList.forEach((line)=>{
       let oldLine = this.list.find((e)=>{return e.code==line.code})
+      line.tickets.map((t)=>{t.selected=false;return t})
       if(oldLine){
         oldLine.tickets=line.tickets
       }else{

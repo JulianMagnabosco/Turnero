@@ -1,9 +1,15 @@
-<div class="flex h-[calc(100vh-100px)] justify-center gap-2" [hidden]="loading">
+<div class="flex h-[calc(100vh-100px)] justify-center gap-2 overflow-y-hidden" [hidden]="loading">
     <div class="bg-gray-300 p-1 rounded-2xl w-[20svw] relative" *ngFor="let line of list; index as i">
         <div class="p-5 text-center rounded-2xl" 
         [class]="{'bg-blue-300':i%3==0,'bg-amber-300':i%3==1,'bg-green-400':i%3==2}">
             <div class="text-8xl text-nowrap">{{line.code}}</div>
             <div class="text-4xl font-bold overflow-hidden text-nowrap">{{line.name}}</div>
+        </div>
+        
+        <div class="text-center text-5xl bg-yellow-300 p-1 rounded-md mt-1 mx-2 relative"
+            [hidden]="!line.selectedTicket">
+            <div>{{line.code}}{{line.selectedTicket?.number}}</div>
+            <div class="absolute top-0 left-0 w-full animate-ping  bg-yellow-300 p-1 rounded-md z-50">{{line.code}}{{line.selectedTicket?.number}}</div>
         </div>
 
         <div class="text-center  text-4xl bg-gray-400 p-3 rounded-md mt-1 mx-2" *ngFor="let ticket of line.tickets; index as j">

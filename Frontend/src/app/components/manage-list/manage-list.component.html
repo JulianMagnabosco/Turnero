@@ -7,29 +7,34 @@
             <div class="text-4xl font-bold overflow-hidden text-nowrap">{{line.name}}</div>
         </div>
 
+        <div [class.opacity-0]="!line.hasSelections" class=" p-1">                
+            <button class="bg-red-400 text-xl cursor-pointer p-1 px-2 rounded-md hover:brightness-75" (click)="deleteSelected(line)">X Quitar Seleccion</button>
+        </div>
+
         <div class="text-center text-5xl bg-yellow-300 p-1 rounded-md mt-1 mx-2 relative"
             [hidden]="!line.selectedTicket">
             <div>{{line.code}}{{line.selectedTicket?.number}}</div>
             <div class="absolute top-0 left-0 w-full animate-ping  bg-yellow-300 p-1 rounded-md z-50">{{line.code}}{{line.selectedTicket?.number}}</div>
         </div>
 
-        <div class="text-center text-4xl bg-gray-400 p-1 rounded-md mt-1 mx-2 relative hover:brightness-75 hover:*:first:block"
-            *ngFor="let ticket of line.tickets; index as j" (click)="selectTicket($event,ticket)">
+        <div class="text-center text-4xl outline-blue-800 p-1 rounded-md bg-gray-400 mt-1 mx-2 relative hover:brightness-75 hover:*:first:block"
+            [class.outline-2]="ticket.selected"
+            *ngFor="let ticket of line.tickets; index as j" (click)="selectTicket($event,ticket,line)">
             <span class="absolute top-0 left-full overflow-hidden hidden">
                 <button class="bg-red-400 text-2xl cursor-pointer p-1 px-2 rounded-md hover:brightness-75" (click)="deleteTicket(ticket.id)">X</button>
             </span>
             {{line.code}}{{ticket.number}}
         </div>
 
-        <div class="absolute text-2xl bottom-0 left-0 space-y-1 p-2 w-full">
-            <button class="p-3 text-center rounded-2xl hover:brightness-75 w-full"
+        <div class="absolute bottom-0 left-0 space-y-1 p-2 w-full">
+            <button class="p-3 font-bold text-center rounded-xl hover:brightness-75 w-full"
                 [class]="{'bg-blue-300':i%3==0,'bg-amber-300':i%3==1,'bg-green-400':i%3==2}"
                 (click)="callticket(line)" [hidden]="line.tickets.length<=0">
                 Siguiente turno→
             </button>
 
 
-            <button class="p-3 text-center rounded-2xl hover:brightness-75 w-full"
+            <button class="p-3 text-center rounded-xl hover:brightness-75 w-full"
                 [class]="{'bg-blue-300':i%3==0,'bg-amber-300':i%3==1,'bg-green-400':i%3==2}"
                 (click)="addticket(line.code)">
                 + Agregar turno
