@@ -1,6 +1,6 @@
 $(document).ready(function () {
   console.log(window.location);
-  let apiUrl = "http://localhost:8000/api/addturn/";
+  let apiUrl = "http://localhost:8000/api/ticket/";
   const totemUrl = window.location.href + "totem/";
   const printerUrl = totemUrl + "ticket/";
 
@@ -14,30 +14,20 @@ $(document).ready(function () {
   let lastNumber = 0;
 
   let active = false;
-  let timer = null;
+  let timerPopups = 2000;
 
   let tryAgainList = []
 
   $("#scroll-up").click(function (){
     scroll=0
-    window.scroll({
-      top: 0,
-      left: 0,
-      behavior: "smooth",
-    });
+    window.scroll({top: 0,left: 0,behavior: "smooth",});
   })
-
 
   let scroll = 0
   let step = 150
   $("#scroll-down").click(function (){
     scroll+=step
-    
-    window.scroll({
-      top: scroll,
-      left: 0,
-      behavior: "smooth",
-    });
+    window.scroll({top: scroll,left: 0,behavior: "smooth",});
   })
 
   let e = $(".button-turn").clone(true, true);
@@ -60,19 +50,24 @@ $(document).ready(function () {
     $(".button-turn")
       .children()
       .click(function (e) {
+        console.log($(this).data("code"));
         if (active) return;
+        active = true;
         codeSelected = $(this).data("code");
         nameSelected = $(this).data("name");
-        console.log($(this).data("code"));
-        $("#choose-title").html(
-          `¿Quieres programar un turno para <b>${nameSelected}</b>?`
-        );
+        
+        getTicket();
       });
   });
 
-  $(".yes-button").click(function () {
-    if (active) return;
-    active = true;
+  $("#state-popup").click(function () {
+    $("#state-popup").hide();
+  });
+  $("#printer-popup").click(function () {
+    $("#printer-popup").hide();
+  });
+
+  function getTicket(){
     $.ajax({
       type: "POST",
       url: apiUrl,
@@ -87,10 +82,10 @@ $(document).ready(function () {
         const op = options.find((e)=>e.code==codeSelected)
         op.lastNumber = lastNumber
         $("#state-type").text(`Exito`);
-        $("#liveToast").addClass(`bg-success`);
-        $("#liveToast").removeClass(`bg-danger`);
+        $("#state-popup").addClass(`bg-success`);
+        $("#state-popup").removeClass(`bg-danger`);
         $("#state-title").text(
-          `Turno para ${$(this).attr("data-name")} programado`
+          `Turno para ${codeSelected} programado`
         );
       })
       .fail(function () {
@@ -102,23 +97,21 @@ $(document).ready(function () {
         tryAgainList.push({code:codeSelected,lastNumber:lastNumber})
 
         $("#state-type").text(`Error`);
-        $("#liveToast").removeClass(`bg-success`);
-        $("#liveToast").addClass(`bg-danger`);
+        $("#state-popup").removeClass(`bg-success`);
+        $("#state-popup").addClass(`bg-danger`);
         $("#state-title").text(
           `No se pudo llamar al servidor, Se imprimira el ticket igualmente`
         );
       })
       .always(function () {
-        $("#state-popup").children().show();
-        timer = setTimeout(function () {
-          callPrinter();
-        }, 1000);
-      });
-  });
 
-  $("#state-popup").click(function () {
-    $("#state-popup").children().hide();
-  });
+        $("#state-popup").show();
+        callPrinter();
+        setTimeout(function () {
+          $("#state-popup").hide();
+        }, timerPopups);
+      });
+  }
 
   function callPrinter() {
     // console.log(printerUrl(codeSelected, nameSelected, lastNumber));
@@ -146,21 +139,19 @@ $(document).ready(function () {
         // $("#state-title").text(`Ticket impreso`);
       })
       .fail(function () {
-        $("#state-type").text(`Error`);
-        $("#liveToast").addClass(`bg-danger`);
-        $("#liveToast").removeClass(`bg-success`);
-        $("#state-title").text(`No se pudo imprimir`);
+        $("#printer-state-type").text(`Error`);
+        $("#printer-popup").addClass(`bg-danger`);
+        $("#printer-popup").removeClass(`bg-success`);
+        $("#printer-state-title").text(`No se pudo imprimir`);
       })
       .always(function () {
         codeSelected = "";
         active = false;
 
-        $("#state-popup").children().show();
-
-        clearTimeout(timer);
-        timer = setTimeout(function () {
-          $("#state-popup").children().hide();
-        }, 1000);
+        $("#printer-popup").show();
+        setTimeout(function () {
+          $("#printer-popup").hide();
+        }, timerPopups);
       });
   }
 

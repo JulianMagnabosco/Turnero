@@ -12,7 +12,7 @@
 </head>
 
 <body>
-  <nav class="navbar bg-primary-subtle">
+  <nav class="navbar position-sticky top-0 start-0 bg-primary-subtle">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">Turnero</a>
     </div>
@@ -33,42 +33,32 @@
 
     <div class="mt-5" id="button-list">
       <div class="button-turn text-center p-4 py-2">
-        <button class="btn btn-primary p-5 w-100 h-100 fs-1" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+        <button class="btn btn-primary p-5 w-100 h-100 fs-1" >
           <span class="name">TestName</span>
           (<span class="code">TEST</span>)
         </button>
       </div>
     </div>
 
-    <!-- Modal -->
-    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-      aria-labelledby="staticBackdropLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered fs-1">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h1 class="modal-title fs-2" id="staticBackdropLabel">Pedir ticket</h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body fs-4" id="choose-title">
-            ¿Pedir un turno para?
-          </div>
-          <div class="modal-footer justify-content-between">
-            <button type="button" class="btn btn-primary fs-2 px-3 yes-button" data-bs-dismiss="modal">SI</button>
-            <button type="button" class="btn btn-secondary fs-2 px-3" data-bs-dismiss="modal">NO</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <!-- <button type="button" class="btn btn-primary" id="liveToastBtn">Show live toast</button> -->
 
-    <div class="toast-container position-fixed bottom-0 end-0 p-3 " id="state-popup">
-      <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-container position-fixed bottom-0 end-0 p-3 ">
+      <div class="toast mb-1" role="alert" aria-live="assertive" aria-atomic="true" id="state-popup">
         <div class="toast-header fs-1">
           <strong class="me-auto" id="state-type">Error</strong>
           <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
         <div class="toast-body  fs-2" id="state-title">
+          Parace que hubo un error, contacte con servicio tecnico.
+        </div>
+      </div>
+
+      <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" id="printer-popup">
+        <div class="toast-header fs-1">
+          <strong class="me-auto" id="printer-state-type">Error</strong>
+          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body  fs-2" id="printer-state-title">
           Parace que hubo un error, contacte con servicio tecnico.
         </div>
       </div>

@@ -19,7 +19,7 @@ try{
 
 const fs = require('fs');
 let config = {
-    "API_URL":"http://localhost:8000/api/addturn/",
+    "API_URL":"http://localhost:8000/api/ticket/",
     "LINES":[
         { "code": "CO", "name": "CO", "lastNumber": 1 },
         { "code": "P", "name": "Pediatria", "lastNumber": 5 },

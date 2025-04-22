@@ -5,7 +5,6 @@ import { TicketsService } from '../../services/tickets.service';
 import { Ticket } from '../../models/ticket';
 import { NgFor } from '@angular/common';
 import { WebSocketService } from '../../services/web-socket.service';
-import { tick } from '@angular/core/testing';
 
 
 @Component({
@@ -76,13 +75,25 @@ export class ManageListComponent  implements OnInit,OnDestroy {
   }
 
   selectTicket(event:PointerEvent|MouseEvent,ticket:Ticket, line:TicketList){
-    if(event.ctrlKey){
+    if(event.shiftKey){
+      const firstItem = line.tickets.find((t)=>{return t.selected})
+      console.log(firstItem)
+      if (firstItem){
+        const firstIndex = line.tickets.indexOf(firstItem)
+        const secondIndex = line.tickets.indexOf(ticket)
+        const startIndex = Math.min(firstIndex,secondIndex);
+        const endIndex = Math.max(firstIndex,secondIndex);
+        line.tickets.slice(startIndex,endIndex+1).forEach((v)=>{
+          v.selected=true
+        })
+      }else{
+        ticket.selected=true
+      }
+    }
+    else{
       ticket.selected=!ticket.selected
     }
     
-    if(event.shiftKey){
-      ticket.selected=!ticket.selected
-    }
 
     line.hasSelections=!!line.tickets.find((t)=>{return t.selected})
   }
