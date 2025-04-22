@@ -1,10 +1,16 @@
 <div class="flex min-h-[calc(100vh-100px)] justify-center gap-2" [class.hidden]="listSelected==''">
-    <div class="bg-gray-300 p-1 rounded-2xl w-1/5 relative" *ngFor="let line of list; index as i"
-        [style.z-index]="10-i" [class.hidden]="listSelected!=line.code && listSelected!='all'">
-        <div class="p-5 text-center rounded-t-xl "
+    <div class="bg-gray-300 p-1 rounded-2xl relative" 
+        *ngFor="let line of list; index as i" [style.z-index]="10-i" 
+        [class]="{'w-[15svw]':listSelected=='all','w-[30svw]':listSelected!='all',
+        'hidden':listSelected!=line.code&&listSelected!='all'}">
+        <div class="p-3 text-center rounded-t-xl "
             [class]="{'bg-blue-300':i%3==0,'bg-amber-300':i%3==1,'bg-green-400':i%3==2}">
-            <div class="text-8xl text-nowrap">{{line.code}}</div>
-            <div class="text-4xl font-bold overflow-hidden text-nowrap">{{line.name}}</div>
+            <div class="text-nowrap" [class]="{'text-6xl':listSelected=='all','text-8xl':listSelected!='all'}">
+                {{line.code}}
+            </div>
+            <div class="font-bold min-h-[3.5rem]" [class]="{'text-lg':listSelected=='all','text-4xl':listSelected!='all'}">
+                {{line.name}}
+            </div>
         </div>
         <button
             class="p-3 font-bold text-center rounded-b-xl disabled:brightness-75 hover:brightness-75 w-full border-t-2 border-black"

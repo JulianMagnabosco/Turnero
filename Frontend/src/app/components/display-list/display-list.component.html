@@ -1,9 +1,9 @@
 <div class="flex h-[calc(100vh-100px)] justify-center gap-2 overflow-y-hidden" [hidden]="loading">
-    <div class="bg-gray-300 p-1 rounded-2xl w-[20svw] relative" *ngFor="let line of list; index as i">
+    <div class="bg-gray-300 p-1 rounded-2xl w-[15svw] relative" *ngFor="let line of list; index as i">
         <div class="p-5 text-center rounded-2xl" 
         [class]="{'bg-blue-300':i%3==0,'bg-amber-300':i%3==1,'bg-green-400':i%3==2}">
-            <div class="text-8xl text-nowrap">{{line.code}}</div>
-            <div class="text-4xl font-bold overflow-hidden text-nowrap">{{line.name}}</div>
+            <div class="text-7xl text-nowrap">{{line.code}}</div>
+            <div class="text-xl font-bold min-h-[3.5rem]">{{line.name}}</div>
         </div>
         
         <div class="text-center text-5xl bg-yellow-300 p-1 rounded-md mt-1 mx-2 relative"
