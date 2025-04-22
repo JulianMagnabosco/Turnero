@@ -44,9 +44,7 @@ export class DisplayListComponent implements OnInit, OnDestroy {
           this.list = value['data'];
         },
         error: (err) => {
-          alert(
-            'Error inesperado en el servidor, revise su conexion a internet'
-          );
+          console.error("Reintentando")
         },
         complete: () => {
           this.loading = false;
@@ -65,9 +63,8 @@ export class DisplayListComponent implements OnInit, OnDestroy {
           }
         },
         error: (err) => {
-          alert(
-            'Error inesperado en el servidor, revise su conexion a internet'
-          );
+          console.error("Reintentando")
+          this.charge()
         },
       })
     );

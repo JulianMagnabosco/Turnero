@@ -167,7 +167,8 @@ def addTicketList(request):
         for item in body["list"]:
             line = get_object_or_404(Line,code=item["code"])
             Ticket.save(Ticket(number=int(item["lastNumber"]),line=line))
-    return getAll(request)
+    getAll(request)
+    return JsonResponse({"list":body["list"]})
 
 @csrf_exempt
 def deleteLine(request,id):

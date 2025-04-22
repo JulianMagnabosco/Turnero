@@ -1,7 +1,7 @@
 $(document).ready(function () {
   console.log(window.location);
   let apiUrl = "http://localhost:8000/api/ticket/";
-  const totemUrl = window.location.href + "totem/";
+  const totemUrl = window.location.origin + "/totem/";
   const printerUrl = totemUrl + "ticket/";
 
   let options = [
@@ -17,6 +17,7 @@ $(document).ready(function () {
   let timerPopups = 2000;
 
   let tryAgainList = []
+  tryAgainList=JSON.parse(localStorage.getItem("data"))
 
   $("#scroll-up").click(function (){
     scroll=0
@@ -34,7 +35,7 @@ $(document).ready(function () {
   $(".button-turn").hide();
 
   $.get(totemUrl, function (data) {
-    console.log(data);
+    console.log(totemUrl);
     apiUrl = data["apiUrl"];
     options = data["lines"];
     options.forEach(function (option, index) {
@@ -45,7 +46,7 @@ $(document).ready(function () {
       e.children().attr("data-name", option.name);
 
       e.clone().appendTo("#button-list");
-    });
+    })
 
     $(".button-turn")
       .children()
@@ -58,7 +59,9 @@ $(document).ready(function () {
         
         getTicket();
       });
-  });
+  }).fail(function (){
+    alert("Servidor desconectado")
+  });;
 
   $("#state-popup").click(function () {
     $("#state-popup").hide();
@@ -157,6 +160,10 @@ $(document).ready(function () {
 
   setTimeout(()=>{tryAgain()},2000)
   function tryAgain(){
+    console.log("JSON: "+localStorage.getItem("data"))
+    if(!tryAgainList){
+      tryAgainList=[]
+    }
     if(tryAgainList.length<=0){
       setTimeout(()=>{tryAgain()},2000)
       return
@@ -180,6 +187,7 @@ $(document).ready(function () {
         console.log("Reintento fallido: "+tryAgainList.length);
       })
       .always(function (){
+        localStorage.setItem("data",JSON.stringify(tryAgainList))
         setTimeout(()=>{tryAgain()},2000)
       })
   }
