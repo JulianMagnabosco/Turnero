@@ -63,10 +63,10 @@ class ChatConsumer(AsyncWebsocketConsumer):
     # if not request.user.is_authenticated:
     #     return JsonResponse({"login": False},status=401)
     
-        lineList=Line.objects.all()
+        lineList=Ticket.objects.all()
         lineListValues=list()
-        async for l in lineList:
-            lineListValues.append(await l.ajson())
+        for l in lineList:
+            lineListValues.append(l.json())
 
         await self.channel_layer.group_send(
             self.room_group_name, {"type": "chat.message", 

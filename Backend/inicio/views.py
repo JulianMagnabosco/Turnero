@@ -65,7 +65,7 @@ def trigger_mensaje(request):
     channel_layer = get_channel_layer()
     async_to_sync(channel_layer.group_send)(
         "chat_lobby",
-        {"type": "chat.message", "message": "HOllas"}
+        {"type": "chat.message", "message": "Holas"}
     )
     return JsonResponse({"status": "mensaje enviado por WebSocket"})
 
@@ -117,13 +117,11 @@ def api_signup(request):
 
 @csrf_exempt
 def getAll(request):
-    # if not request.user.is_authenticated:
-    #     return JsonResponse({"login": False},status=401)
-    
-    lineList=list(Line.objects.all())
-    lineListValues=list()
-    for l in lineList:
-        lineListValues.append(l.json())
+    ticketList=list(Ticket.objects.all())
+
+    listValues=list()
+    for t in ticketList:
+        listValues.append(t.json())
 
     channel_layer = get_channel_layer()
     async_to_sync(channel_layer.group_send)(
@@ -131,12 +129,12 @@ def getAll(request):
         {
             "type": "chat.message", 
             "message": {
-                "data":lineListValues,
+                "data": listValues,
                 "type": "update"
             }
         }
     )
-    return JsonResponse({"data": lineListValues})
+    return JsonResponse({"data": listValues})
 
 @csrf_exempt
 def addLine(request):

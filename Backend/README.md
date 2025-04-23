@@ -12,7 +12,7 @@ Turnero para una clinica
 
 ## Migracion
 
-```python manage.py makemigrations```
+```python manage.py makemigrations``` o ```python manage.py makemigrations --update```
 
 ```python manage.py migrate```
 
