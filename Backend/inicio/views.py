@@ -65,7 +65,7 @@ def trigger_mensaje(request):
     channel_layer = get_channel_layer()
     async_to_sync(channel_layer.group_send)(
         "chat_lobby",
-        {"type": "chat.message", "message": "Holas"}
+        {"type": "chat.message", "message": {"data":"hola","type":"doupdate"}}
     )
     return JsonResponse({"status": "mensaje enviado por WebSocket"})
 

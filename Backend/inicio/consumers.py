@@ -26,6 +26,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
         text_data_json = json.loads(text_data)
         message = text_data_json["message"]
 
+        if message["type"]=="doupdate" :
+            await self.getAll()
+        
         if message["type"]=="add" :
             line = await aget_object_or_404(Line,code=message["code"])
             list = Ticket.objects.filter(line=line)
@@ -62,16 +65,15 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def getAll(self):
     # if not request.user.is_authenticated:
     #     return JsonResponse({"login": False},status=401)
-    
-        lineList=Ticket.objects.all()
-        lineListValues=list()
-        for l in lineList:
-            lineListValues.append(l.json())
+
+        listValues=list()
+        async for t in Ticket.objects.select_related("user").select_related("line").all():
+            listValues.append(t.json())
 
         await self.channel_layer.group_send(
             self.room_group_name, {"type": "chat.message", 
             "message": {
-                "data": lineListValues,
+                "data": listValues,
                 "type": "update"
             }
         })

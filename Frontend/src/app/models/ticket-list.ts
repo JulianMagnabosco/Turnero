@@ -2,7 +2,6 @@ import { Ticket } from "./ticket";
 
 export class TicketList {
   id=0;
-  selectedTicket: Ticket|undefined
   tickets: Ticket[]=[]
   code=""
   name=""

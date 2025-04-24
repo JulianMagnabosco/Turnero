@@ -15,7 +15,9 @@ import { WebSocketService } from '../../services/web-socket.service';
 export class DisplayListComponent implements OnInit, OnDestroy {
   subs: Subscription = new Subscription();
   loading = false;
-  list: TicketList[] = [
+
+  calledTicket:Ticket|undefined;
+  list: Ticket[] = [
     // new TicketList([new Ticket(),new Ticket(),new Ticket()],"CO","CO"),
     // new TicketList([new Ticket(),new Ticket(),new Ticket()],"P","Pediatria"),
     // new TicketList([new Ticket(),new Ticket(),new Ticket()],"C","Clinica"),
@@ -59,7 +61,7 @@ export class DisplayListComponent implements OnInit, OnDestroy {
           if (value['message']['type'] == 'update') {
             this.saveData(value['message']['data']);
           } else if (value['message']['type'] == 'call') {
-            this.callticket(value['message']);
+            this._callticket(value['message']);
           }
         },
         error: (err) => {
@@ -70,46 +72,61 @@ export class DisplayListComponent implements OnInit, OnDestroy {
     );
   }
 
-  callticket(data: any) {
-    this.list.forEach((l) => {
-      if (l.id == data["line"]) {
-        const ticket = new Ticket(data["number"])
-        console.log(ticket)
-        l.selectedTicket = ticket;
-        this.audio.play();
+  // callticket() {
+  //   let message = {
+  //     type: 'call',
+  //     id: this.list[0].id,
+  //     number: this.list[0].number
+  //   };
 
-        clearTimeout(this.timeout);
-        setTimeout(() => {
-          l.selectedTicket = undefined;
-        }, this.timer * 1000);
-        this.timeout = setTimeout(() => {
-          this.audio.pause();
-        }, this.timer * 1000);
-        return
-      }
-    });
+  //   this.calledTicket = new Ticket(this.list[0].code,this.list[0].number,this.list[0].code);
+  //   clearTimeout(this.timeout);
+  //   this.timeout = setTimeout(() => {
+  //     this.unsetSelected();
+  //   }, this.timer * 1000);
+
+  //   this.webSocket.sendMessage({ message: message });
+  // }
+
+  _callticket(data: any) {
+    this.calledTicket = new Ticket(data['code'],data['number'],data['user']);
+    this.playSound();
+
+    clearTimeout(this.timeout);
+    setTimeout(() => {
+      this.calledTicket = undefined;
+    }, this.timer * 1000);
+    
+    this.timeout = setTimeout(() => {
+      this.stopSound();
+    }, this.timer * 1000);
   }
 
-  unsetSelected(line: TicketList) {
-    line.selectedTicket = undefined;
-    this.audio.pause();
+  playSound(){
+    try{
+      this.audio.play();
+    }catch{
+      console.error("Error de audio")
+    }
+  }
+  stopSound(){
+    try{
+      this.audio.pause();
+    }catch{
+      console.error("Error de audio")
+    }
   }
 
   saveData(data: any) {
-    let newList: TicketList[] = data;
-    newList.forEach((line) => {
-      let oldLine = this.list.find((e) => {
-        return e.code == line.code;
+    let newList: Ticket[] = data;
+    newList.forEach((ticket) => {
+      let findTicket = this.list.find((e) => {
+        return e.id == ticket.id;
       });
-      line.tickets.map((t) => {
-        t.selected = false;
-        return t;
-      });
-      if (oldLine) {
-        oldLine.tickets = line.tickets;
-      } else {
-        this.list.push(line);
+      if(findTicket){
+        ticket.selected=findTicket.selected
       }
     });
+    this.list=newList;
   }
 }

@@ -1,69 +1,29 @@
-<div class="flex min-h-[calc(100vh-100px)] justify-center gap-2" [class.hidden]="listSelected==''">
-    <div class="bg-gray-300 p-1 rounded-2xl relative" 
-        *ngFor="let line of list; index as i" [style.z-index]="10-i" 
-        [class]="{'w-[15svw]':listSelected=='all','w-[30svw]':listSelected!='all',
-        'hidden':listSelected!=line.code&&listSelected!='all'}">
-        <div class="p-3 text-center rounded-t-xl "
-            [class]="{'bg-blue-300':i%3==0,'bg-amber-300':i%3==1,'bg-green-400':i%3==2}">
-            <div class="text-nowrap" [class]="{'text-6xl':listSelected=='all','text-8xl':listSelected!='all'}">
-                {{line.code}}
-            </div>
-            <div class="font-bold min-h-[3.5rem]" [class]="{'text-lg':listSelected=='all','text-4xl':listSelected!='all'}">
-                {{line.name}}
-            </div>
-        </div>
-        <button
-            class="p-3 font-bold text-center rounded-b-xl disabled:brightness-75 hover:brightness-75 w-full border-t-2 border-black"
-            [class]="{'bg-blue-300':i%3==0,'bg-amber-300':i%3==1,'bg-green-400':i%3==2}" (click)="callticket(line)"
-            [disabled]="line.tickets.length<=0">
-            Siguiente turno→
-        </button>
-        <button
-            class="p-3 text-center rounded-xl disabled:brightness-75 hover:brightness-75 w-full border-t-2 border-black"
-            [class]="{'bg-blue-300':i%3==0,'bg-amber-300':i%3==1,'bg-green-400':i%3==2}" (click)="addticket(line.code)"
-            [hidden]="line.tickets.length>0">
-            Nuevo turno+
-        </button>
-
-        <div [class.opacity-0]="!line.hasSelections" class="p-1">
-            <button class="overflow-hidden text-nowrap w-full
-            bg-red-400 text-xl enabled:cursor-pointer p-1 px-2 rounded-md hover:brightness-75"
-                (click)="deleteSelected(line)" [disabled]="!line.hasSelections">Quitar Seleccionados</button>
-        </div>
-
-        <div class="text-center text-5xl bg-yellow-300 p-1 rounded-md mt-1 mx-2 relative"
-            [hidden]="!line.selectedTicket">
-            <div>{{line.code}}{{line.selectedTicket?.number}}</div>
-            <div class="absolute top-0 left-0 w-full animate-ping  bg-yellow-300 p-1 rounded-md z-50">
-                {{line.code}}{{line.selectedTicket?.number}}</div>
-        </div>
-
-        <div class="text-center text-4xl outline-red-800 p-1 rounded-md bg-gray-400 mt-1 mx-2 relative
-         hover:brightness-75 hover:*:first:block select-none" [class.outline-2]="ticket.selected"
-            [class.brightness-75]="ticket.selected" *ngFor="let ticket of line.tickets; index as j"
-            (click)="selectTicket($event,ticket,line)">
-            <span class="absolute top-0 left-full overflow-hidden hidden">
-                <button class="bg-red-400 text-2xl cursor-pointer p-1 px-2 rounded-md hover:brightness-75"
-                    (click)="deleteTicket(ticket.id)">X</button>
+<div class="mb-4 text-center text-4xl">Gestión de Turnos</div>
+<div class="px-4 sm:px-8">
+    <div class="mb-2 bg-gray-200 flex items-center
+         divide-black divide-x-2 rounded-xl text-2xl overflow-hidden">
+        <button class=" bg-amber-300 p-4 px-4 enabled:hover:brightness-75" *ngIf="list[0]"
+        (click)="callticket()">Siguiente turno→ <span class="font-bold">{{list[0].code+"-"+list[0].number}}</span></button>
+        <span class="grow text-center">Turnos pendientes: <span class="font-bold">{{list.length}}</span></span>
+    </div>
+    <div [class.invisible]="!calledTicket" class="flex justify-center mb-2">
+        <span class="relative text-4xl p-2 rounded-xl bg-amber-300 text-center ">
+            {{calledTicket?.code+" - "+calledTicket?.number}}
+            <span class="absolute top-0 start-0 p-2 rounded-xl bg-amber-300 text-center animate-ping">
+                {{calledTicket?.code+" - "+calledTicket?.number}}
             </span>
-            {{line.code}}{{ticket.number}}
-        </div>
-
+        </span>
     </div>
-</div>
-
-<div class="flex flex-wrap justify-center gap-2"  [class.hidden]="listSelected!=''">
-    <div class="bg-gray-300 p-1 rounded-2xl w-[20svw] relative" *ngFor="let line of list; index as i"
-        [style.z-index]="10-i">
-        <div class="p-5 text-center rounded-xl hover:brightness-75" (click)="selectLine(line.code)"
-            [class]="{'bg-blue-300':i%3==0,'bg-amber-300':i%3==1,'bg-green-400':i%3==2}">
-            <div class="text-8xl text-nowrap">{{line.code}}</div>
-            <div class="text-4xl font-bold overflow-hidden text-nowrap">{{line.name}}</div>
-        </div>
-    </div>
-    <div class="bg-gray-300 p-1 rounded-2xl w-full relative">
-        <div class="p-5 text-center rounded-xl hover:brightness-75 bg-green-400" (click)="selectLine('all')">
-            <div class="text-8xl text-nowrap">Todos</div>
+    <div class="divide-black divide-y-2 bg-gray-200">
+        <div class="p-2 text-2xl hover:bg-gray-400 relative hover:*:last:inline"
+        [class]="{'bg-gray-300':ticket.selected}" *ngFor="let ticket of list" >
+            <span (click)="selectTicket($event,ticket)"
+            [class]="{'font-bold':ticket.selected}">
+                <span [hidden]="!ticket.selected">✓</span>
+                {{ticket.code+" - "+ticket.number}}
+            </span>
+            <button class="absolute top-0 end-0 p-2 bg-red-500 hidden hover:brightness-75" 
+            (click)="deleteTicket(ticket.id)" >X</button>
         </div>
     </div>
 </div>

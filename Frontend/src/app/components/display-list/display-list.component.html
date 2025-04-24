@@ -1,20 +1,21 @@
-<div class="flex h-[calc(100vh-100px)] justify-center gap-2 overflow-y-hidden" [hidden]="loading">
-    <div class="bg-gray-300 p-1 rounded-2xl w-[15svw] relative" *ngFor="let line of list; index as i">
-        <div class="p-5 text-center rounded-2xl" 
-        [class]="{'bg-blue-300':i%3==0,'bg-amber-300':i%3==1,'bg-green-400':i%3==2}">
-            <div class="text-7xl text-nowrap">{{line.code}}</div>
-            <div class="text-xl font-bold min-h-[3.5rem]">{{line.name}}</div>
-        </div>
-        
-        <div class="text-center text-5xl bg-yellow-300 p-1 rounded-md mt-1 mx-2 relative"
-            [hidden]="!line.selectedTicket">
-            <div>{{line.code}}{{line.selectedTicket?.number}}</div>
-            <div class="absolute top-0 left-0 w-full animate-ping  bg-yellow-300 p-1 rounded-md z-50">{{line.code}}{{line.selectedTicket?.number}}</div>
-        </div>
+<div class="p-4 grid overflow-hidden">
 
-        <div class="text-center  text-4xl bg-gray-400 p-3 rounded-md mt-1 mx-2" *ngFor="let ticket of line.tickets; index as j">
-            {{line.code}}{{ticket.number}}
+    <div>
+        <div [class.invisible]="!calledTicket" class="border-b-2 border-black bg-amber-300">
+            <div class="flex *:p-3 text-3xl font-bold relative">
+                <div class="w-1/2 text-end">{{calledTicket?.code+" - "+calledTicket?.number}}</div>
+                <div class="w-1/2 text-start bg-amber-400">{{calledTicket?.user||" ."}}</div>
+                <div class="bg-amber-500 opacity-50 absolute top-0 start-0 w-full h-full animate-ping"></div>
+            </div>
         </div>
+        <div class="divide-black divide-y-2 bg-gray-200">
+            <div class="flex *:w-1/2 *:p-3 text-2xl" *ngFor="let ticket of list">
+                <div class="text-end">{{ticket.code+" - "+ticket.number}}</div>
+                <div class="text-start bg-gray-300">{{ticket.user||" ."}}</div>
+            </div>
+        </div>
+    </div>
+    <div>
 
     </div>
 </div>

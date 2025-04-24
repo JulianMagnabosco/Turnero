@@ -36,6 +36,14 @@ class Ticket(models.Model):
             return {"id":self.pk,"code":self.line.code,"number":self.number,"user":self.user.username}
         else:
             return {"id":self.pk,"code":self.line.code,"number":self.number,"user":None}
+        
+    async def ajson(self):
+        newline = await sync_to_async(self.line)()
+        userline = await sync_to_async(self.user)()
+        if self.user:
+            return {"id":self.pk,"code":newline.code,"number":self.number,"user":userline.username}
+        else:
+            return {"id":self.pk,"code":newline.code,"number":self.number,"user":None}
 
     def __str__(self):
         return str(self.number)+"("+self.line.code+")"

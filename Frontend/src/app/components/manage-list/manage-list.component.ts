@@ -3,22 +3,24 @@ import { Subscription } from 'rxjs';
 import { TicketList } from '../../models/ticket-list';
 import { TicketsService } from '../../services/tickets.service';
 import { Ticket } from '../../models/ticket';
-import { NgFor } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import { WebSocketService } from '../../services/web-socket.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-manage-list',
-  imports: [NgFor],
+  imports: [NgFor,NgIf],
   templateUrl: './manage-list.component.html',
   styleUrl: './manage-list.component.css',
 })
 export class ManageListComponent implements OnInit, OnDestroy {
   subs: Subscription = new Subscription();
   loading = false;
+  hasSelections=false
 
-  listSelected:string=""
-  list: TicketList[] = [
+  calledTicket:Ticket|undefined;
+  lastSelectedTicket:Ticket|undefined;
+  list: Ticket[] = [
     // new TicketList([new Ticket(),new Ticket(),new Ticket()],"CO","CO"),
     // new TicketList([new Ticket(),new Ticket(),new Ticket()],"P","Pediatria"),
     // new TicketList([new Ticket(),new Ticket(),new Ticket()],"C","Clinica"),
@@ -30,30 +32,24 @@ export class ManageListComponent implements OnInit, OnDestroy {
 
   constructor(
     private service: TicketsService,
-    private webSocket: WebSocketService,
-    private router:Router,
-    private activeRoute:ActivatedRoute
+    private webSocket: WebSocketService
   ) {}
   ngOnInit(): void {
     this.audio.loop = true;
     this.charge();
-    this.subs.add(
-      this.activeRoute.queryParams.subscribe({
-        next: (value)=>{
-          this.listSelected=value["code"]||""
-        }
-      })
-    )
+    // this.subs.add(
+    //   this.activeRoute.queryParams.subscribe({
+    //     next: (value)=>{
+    //       this.listSelected=value["code"]||""
+    //     }
+    //   })
+    // )
   }
 
   ngOnDestroy(): void {
     this.subs.unsubscribe();
   }
 
-  selectLine(line:string){
-    console.log(this.router)
-    this.router.navigate(["manage"], { queryParams: { code: line } });
-  }
 
   charge() {
     console.log(this.subs);
@@ -101,20 +97,16 @@ export class ManageListComponent implements OnInit, OnDestroy {
 
   selectTicket(
     event: PointerEvent | MouseEvent,
-    ticket: Ticket,
-    line: TicketList
+    ticket: Ticket
   ) {
     if (event.shiftKey) {
-      const firstItem = line.tickets.find((t) => {
-        return t.selected;
-      });
-      console.log(firstItem);
+      const firstItem = this.lastSelectedTicket
       if (firstItem) {
-        const firstIndex = line.tickets.indexOf(firstItem);
-        const secondIndex = line.tickets.indexOf(ticket);
+        const firstIndex = this.list.indexOf(firstItem);
+        const secondIndex = this.list.indexOf(ticket);
         const startIndex = Math.min(firstIndex, secondIndex);
         const endIndex = Math.max(firstIndex, secondIndex);
-        line.tickets.slice(startIndex, endIndex + 1).forEach((v) => {
+        this.list.slice(startIndex, endIndex).forEach((v) => {
           v.selected = true;
         });
       } else {
@@ -124,15 +116,16 @@ export class ManageListComponent implements OnInit, OnDestroy {
       ticket.selected = !ticket.selected;
     }
 
-    line.hasSelections = !!line.tickets.find((t) => {
+    this.lastSelectedTicket=ticket
+    this.hasSelections = !!this.list.find((t) => {
       return t.selected;
     });
   }
 
-  deleteSelected(line: TicketList) {
+  deleteSelected() {
     let message = {
       type: 'dellist',
-      tickets: line.tickets
+      tickets: this.list
         .filter((t) => {
           return t.selected;
         })
@@ -140,45 +133,42 @@ export class ManageListComponent implements OnInit, OnDestroy {
           return { id: t.id };
         }),
     };
-    line.hasSelections = false;
+    this.hasSelections = false;
+    this.lastSelectedTicket = undefined;
 
     this.webSocket.sendMessage({ message: message });
   }
 
-  callticket(line: TicketList) {
+  callticket() {
     let message = {
       type: 'call',
-      id: line.tickets[0].id,
-      number: line.tickets[0].number,
-      line: line.id,
+      id: this.list[0].id,
+      number: this.list[0].number,
+      code: this.list[0].code,
+      user: this.list[0].user
     };
 
-    line.selectedTicket = line.tickets[0];
+    this.calledTicket = new Ticket(this.list[0].code,this.list[0].number,this.list[0].user);
     clearTimeout(this.timeout);
     this.timeout = setTimeout(() => {
-      this.unsetSelected(line);
+      this.unsetSelected();
     }, this.timer * 1000);
 
     this.webSocket.sendMessage({ message: message });
   }
-  _callticket(data: any) {
-    this.list.forEach((l) => {
-      if (l.id == data['line']) {
-        const ticket = new Ticket(data['number']);
-        console.log(ticket);
-        l.selectedTicket = ticket;
-        this.audio.play();
 
-        clearTimeout(this.timeout);
-        setTimeout(() => {
-          l.selectedTicket = undefined;
-        }, this.timer * 1000);
-        this.timeout = setTimeout(() => {
-          this.audio.pause();
-        }, this.timer * 1000);
-        return;
-      }
-    });
+  _callticket(data: any) {
+    this.calledTicket = new Ticket(data['code'],data['number'],data['user']);
+    this.playSound();
+
+    clearTimeout(this.timeout);
+    setTimeout(() => {
+      this.calledTicket = undefined;
+    }, this.timer * 1000);
+    
+    this.timeout = setTimeout(() => {
+      this.stopSound();
+    }, this.timer * 1000);
   }
 
   addticket(code: string) {
@@ -199,30 +189,37 @@ export class ManageListComponent implements OnInit, OnDestroy {
     this.webSocket.sendMessage({ message: message });
   }
 
-  playSound() {
-    this.audio.play();
+
+  playSound(){
+    try{
+      this.audio.play();
+    }catch{
+      console.error("Error de audio")
+    }
+  }
+  stopSound(){
+    try{
+      this.audio.pause();
+    }catch{
+      console.error("Error de audio")
+    }
   }
 
-  unsetSelected(line: TicketList) {
-    line.selectedTicket = undefined;
-    this.audio.pause();
+  unsetSelected() {
+    this.calledTicket = undefined;
+    this.stopSound();
   }
 
   saveData(data: any) {
-    let newList: TicketList[] = data;
-    newList.forEach((line) => {
-      let oldLine = this.list.find((e) => {
-        return e.code == line.code;
+    let newList: Ticket[] = data;
+    newList.forEach((ticket) => {
+      let findTicket = this.list.find((e) => {
+        return e.id == ticket.id;
       });
-      line.tickets.map((t) => {
-        t.selected = false;
-        return t;
-      });
-      if (oldLine) {
-        oldLine.tickets = line.tickets;
-      } else {
-        this.list.push(line);
+      if(findTicket){
+        ticket.selected=findTicket.selected
       }
     });
+    this.list=newList;
   }
 }
