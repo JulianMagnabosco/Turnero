@@ -117,10 +117,12 @@ def api_signup(request):
 
 @csrf_exempt
 def getAll(request):
-    ticketList=list(Ticket.objects.all())
+    username = request.user.username
+    listRaw0 = Ticket.objects.select_related("user").select_related("line") 
+    listRaw1 = listRaw0.filter(line__users__username=username).all() 
 
     listValues=list()
-    for t in ticketList:
+    for t in list(listRaw1):
         listValues.append(t.json())
 
     channel_layer = get_channel_layer()

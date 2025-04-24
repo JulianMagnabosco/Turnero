@@ -11,8 +11,8 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const router = inject(Router);
   const service = inject(AuthService);
   if(isPlatformBrowser(platformId)){
-    let token = localStorage.getItem("app.token");
-    if (token && !req.url.includes("signin")) {
+    let existUser = localStorage.getItem("app.user");
+    if (existUser && !req.url.includes("signin")) {
       req = req.clone({
         withCredentials:true
       });
