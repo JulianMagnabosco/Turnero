@@ -13,15 +13,23 @@
         <ng-container *ngIf="this.service.user">
           <a [routerLink]="['/manage']">Gestionar</a>
 
-          <a >{{"@"+service.user.username}}</a>
+          <ng-container *ngIf="this.service.user.admin">
+            <a [routerLink]="['/register']">Registrar usuario</a>
 
-          <button (click)="logout()">Salir
-          </button>
+            <a [routerLink]="['/users']">Gestionar usuarios</a>
+  
+          </ng-container>
+
+          <a [routerLink]="['/showuser']">{{"@"+service.user.username}}</a>
+
+          <button (click)="logout()">Salir </button>
 
         </ng-container>
+
         <ng-container *ngIf="!this.service.user">
 
           <a [routerLink]="['/login']">Iniciar Sesión </a>
+
         </ng-container>
       </div>
     </nav>

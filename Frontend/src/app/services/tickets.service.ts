@@ -13,21 +13,28 @@ export class TicketsService {
   }
 
   getAll():Observable<any>{
-    return this.http.get(this.baseUrl+"lines/");
+    return this.http.get(this.baseUrl+"tickets/");
   }
   
-  get(id:string):Observable<any>{
-    return this.http.get(this.baseUrl+"product/"+id);
+  getLines():Observable<any>{
+    return this.http.get(this.baseUrl+"lines/");
   }
-  add(data:any):Observable<any>{
-    return this.http.post(this.baseUrl+"product/",data);
+  setLines(data:any):Observable<any>{
+    return this.http.put(this.baseUrl+"lineusers/",data);
   }
-  edit(id:string,data:any):Observable<any>{
-    return this.http.put(this.baseUrl+"product/"+id,data);
-  }
-  delete(id:string):Observable<any>{
-    return this.http.delete(this.baseUrl+"product/"+id);
-  }
+  
+  // get(id:string):Observable<any>{
+  //   return this.http.get(this.baseUrl+"product/"+id);
+  // }
+  // add(data:any):Observable<any>{
+  //   return this.http.post(this.baseUrl+"product/",data);
+  // }
+  // edit(id:string,data:any):Observable<any>{
+  //   return this.http.put(this.baseUrl+"product/"+id,data);
+  // }
+  // delete(id:string):Observable<any>{
+  //   return this.http.delete(this.baseUrl+"product/"+id);
+  // }
   
   // cart(){
   //   try {

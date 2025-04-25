@@ -15,6 +15,8 @@ from asgiref.sync import async_to_sync
 from .models import Line,Ticket
 import json
 
+
+# TODO:eliminar todo haasta websocket
 def base(request):
     return redirect('signin')
 
@@ -78,6 +80,40 @@ def room(request, room_name):
 
 #API
 @csrf_exempt
+def user(request,id):
+    if not request.user.is_superuser:
+        return JsonResponse({"login": False},status=401)
+    
+    user = User.objects.get(id=id)
+    if not user:
+        return JsonResponse({"error":"No encontrado"},status=404)
+    userJson = {"id":user.id,"username":user.username,"admin":user.is_superuser}
+    if request.method == "DELETE":
+        user.delete()
+        return JsonResponse(userJson)
+    return JsonResponse(userJson)
+
+@csrf_exempt
+def getUsers(request):
+    if not request.user.is_superuser:
+        return JsonResponse({"login": False},status=401)
+    
+    users = User.objects.select_related("lines").values()
+    userList = list()
+    for u in list(users):
+        listRaw = Line.objects.filter(users__username=u["username"]).all() 
+
+        listValues=list()
+        for l in list(listRaw):
+            listValues.append({"name":l.name,"code":l.code})
+
+        userList.append({"id":u["id"],
+                         "username":u["username"],
+                         "admin":u["is_superuser"],
+                         "lines":listValues})
+    return JsonResponse({"list": userList})
+
+@csrf_exempt
 def api_signout(request):
     if not request.user.is_authenticated:
         return JsonResponse({"login": False},status=401)
@@ -95,7 +131,7 @@ def api_signin(request):
             return JsonResponse({"login": False},status=401)
 
         login(request, user)
-        userJson = {"id":user.id,"username":user.username,"email":user.email,"role":"ADMIN"}
+        userJson = {"id":user.id,"username":user.username,"email":user.email,"admin":user.is_superuser}
         return JsonResponse({"login": True, "user": userJson, "token": get_token(request)})
     
 @csrf_exempt
@@ -108,18 +144,31 @@ def api_signup(request):
                 user = User.objects.create_user(
                     body["username"], password=body["password1"])
                 user.save()
-                login(request, user)
-                return JsonResponse({"register": True, "user": user, "token": get_token(request)})
+                userJson = {"id":user.id,"username":user.username,"email":user.email,"admin":user.is_superuser}
+                return JsonResponse({"register": True, "user": userJson})
             except IntegrityError:
-                return JsonResponse({"register": False, "error": "Username already exist"},status=401)
+                return JsonResponse({"register": False, "error": "Username already exist"},status=400)
 
-        return JsonResponse({"register": False, "error": "Passwords did not match."},status=401)
+        return JsonResponse({"register": False, "error": "Passwords did not match."},status=400)
+
+@csrf_exempt
+def getLines(request):
+    listRaw = Line.objects.all() 
+
+    listValues=list()
+    for t in list(listRaw):
+        listValues.append(t.json())
+
+    return JsonResponse({"data": listValues})
 
 @csrf_exempt
 def getAll(request):
     username = request.user.username
-    listRaw0 = Ticket.objects.select_related("user").select_related("line") 
-    listRaw1 = listRaw0.filter(line__users__username=username).all() 
+    listRaw0 = Ticket.objects.select_related("user").select_related("line")
+    if not request.user.is_superuser:
+        listRaw1 = listRaw0.filter(line__users__username=username).all() 
+    else:
+        listRaw1 = listRaw0.all() 
 
     listValues=list()
     for t in list(listRaw1):

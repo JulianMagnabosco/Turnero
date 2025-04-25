@@ -7,7 +7,7 @@ class Line(models.Model):
     name=models.CharField(max_length=1000)
     code=models.CharField(max_length=100)
     
-    users = models.ManyToManyField(User)
+    users = models.ManyToManyField(User,blank=True)
     ticket_list=[]
 
     def json(self):

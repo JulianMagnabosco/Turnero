@@ -5,6 +5,8 @@ import { ActivatedRoute, Params, Router, RouterLink } from '@angular/router';
 import { NgClass, NgFor, NgIf } from '@angular/common';
 import { UserService } from '../../services/user.service';
 import { User } from '../../models/user';
+import { TicketList } from '../../models/ticket-list';
+import { TicketsService } from '../../services/tickets.service';
 
 
 @Component({
@@ -16,73 +18,67 @@ import { User } from '../../models/user';
 })
 export class UsersComponent implements OnInit,OnDestroy{
 
-  text:string="";
-
-  products:User[]=new Array(12).fill(new User);
-
-  pages=22
-  elements=21
-  actualpage=0
-
-  elementsPerPage=200
-  paginationDist=2;
+  users:User[]=[];
+  lines:TicketList[]=[];
 
   subs:Subscription=new Subscription;
+  selectedUser:User|undefined;
 
-  constructor(private activatedRoute:ActivatedRoute, private router:Router, private service:UserService ){
+  constructor(private service:UserService ,private ticketService:TicketsService ){
   }
   
   ngOnInit(): void {
-
-    this.subs.add(
-      this.activatedRoute.queryParams.subscribe({
-        next: value => {
-          this.text=value["text"]||""
-          this.actualpage=value["page"]||0
-          this.search()
-        }
-      })
-    )
+    this.charge()
   }
 
   ngOnDestroy(): void {
     this.subs.unsubscribe();
   }
 
-
-  charge(page:number=0){
-    this.actualpage=page
-    let data = {
-      "text": this.text,
-    }
-
-
-    var newParams: {[k: string]: any} = {};
-    if( data.text != "") newParams["text"] = data.text
-    newParams["page"] = this.actualpage
-
-
-    this.router.navigate([],{
-      relativeTo: this.activatedRoute,
-      queryParams: newParams as Params
-    })
-
+  selectLine(line:TicketList){
+    line.selected=!line.selected
+    console.log("ad")
   }
 
-  search(){
-    let data = {
-      "text": this.text,
-      "page": this.actualpage,
-      "size": this.elementsPerPage
+  applylines(){
+    if(!this.selectedUser) return
+    const data={
+      lines: this.lines.filter((l)=>{return l.selected}),
+      user: this.selectedUser?.id
     }
-    
     this.subs.add(
-      this.service.getAll(data).subscribe(
+      this.ticketService.setLines(data).subscribe(
         {
           next: value => {
-            this.pages=value["pages"]
-            this.products=value["list"]
-            this.elements=value["elements"]
+            alert("Exito")
+          },
+          error: err => {
+            alert("Error inesperado en el servidor, revise su conexion a internet");
+          }
+        }
+      )
+    );
+  }
+
+  charge(){
+    this.subs.add(
+      this.service.getAll().subscribe(
+        {
+          next: value => {
+            this.users=value["list"]
+          },
+          error: err => {
+            alert("Error inesperado en el servidor, revise su conexion a internet");
+          }
+        }
+      )
+    );
+    
+    this.subs.add(
+      this.ticketService.getLines().subscribe(
+        {
+          next: value => {
+            this.lines=value["data"]
           },
           error: err => {
             alert("Error inesperado en el servidor, revise su conexion a internet");
@@ -94,13 +90,13 @@ export class UsersComponent implements OnInit,OnDestroy{
 
 
   deleteUser(id:number){
-    if(confirm("¿Eliminar producto?")){
+    if(confirm("¿Eliminar usuario?")){
       this.subs.add(
         this.service.delete(id.toString()).subscribe({
           next: value => {
             alert("Eliminado");
             // alert("Añadido al carrito");
-            this.search()
+            this.charge()
           },
           error:err => {
             // alert("Hubo un error al añadir al carrito");

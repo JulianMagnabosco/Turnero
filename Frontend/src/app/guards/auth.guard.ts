@@ -28,7 +28,7 @@ export const authGuardAdmin: CanActivateFn = (route, state) => {
     }
     const router = inject(Router)
     if(user){
-      if(user.role=="ADMIN"){
+      if(user.admin){
         return true
       }else{
         if(confirm("No posee los permisos para acceder a esta pagina")){

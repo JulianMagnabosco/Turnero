@@ -1,65 +1,74 @@
 <div class="container mx-auto mb-4 mt-10">
-  <div class="flex items-center">
-      <form class="bg-white rounded-lg p-4 shadow-lg flex w-full max-w-6xl self-center mx-auto">
-          <input type="text" name="text" id="text" placeholder="Busqueda..." [(ngModel)]="text"
-              class="w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-400 focus:border-blue-500 rounded-e-none">
-          <button (click)="charge()"
-              class="bg-blue-500 rounded-md text-white p-2 rounded-s-none transition-all hover:brightness-110">Buscar</button>
-      </form>
-  </div>
+  <div class="text-2xl">Usuarios</div>
   <div class="bg-white rounded-lg mt-4 p-4 shadow-lg overflow-x-scroll">
+    <table class="table-auto w-full">
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Nombre</th>
+          <th>Es Admin</th>
+          <th>Lineas</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="let item of users"
+          class="shadow-md *:text-center hover:bg-blue-200"
+        >
+          <td>
+            {{ item.id }}
+          </td>
+          <td>
+            {{ item.username }}
+          </td>
+          <td>
+            {{ item.admin }}
+          </td>
+          <td>
+            <span *ngFor="let line of item.lines">{{line.name}}-</span>
+          </td>
+          <td class="flex items-center justify-center *:transition-all *:hover:brightness-75">
+            <button (click)="deleteUser(item.id)"
+              class="m-2 cursor-pointer" >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 448 512"
+                fill="red"
+                stroke="blue"
+                class="size-8" >
+                <path
+                  d="M135.2 17.7C140.6 6.8 151.7 0 163.8 0L284.2 0c12.1 0 23.2 6.8 28.6 17.7L320 32l96 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 96C14.3 96 0 81.7 0 64S14.3 32 32 32l96 0 7.2-14.3zM32 128l384 0 0 320c0 35.3-28.7 64-64 64L96 512c-35.3 0-64-28.7-64-64l0-320zm96 64c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16z"
+                />
+              </svg>
+            </button>
+            <button (click)="selectedUser=item" class="p-2 bg-gray-500">
+              Editar
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
 
-      <table class="table-auto w-full">
-          <thead>
-              <tr>
-                  <th>
-                      Id
-                  </th>
-                  <th>
-                      Nombre
-                  </th>
-                  <th>
-                      Rol
-                  </th>
-                  <th>
-                      Email
-                  </th>
-                  <th>
-                      Acciones
-                  </th>
-              </tr>
-          </thead>
-          <tbody>
-
-              <tr *ngFor="let item of products" class="shadow-md *:text-center hover:bg-blue-700 cursor-pointer">
-                  <td>
-                      {{item.id}}
-                  </td>
-                  <td >
-                      {{item.role}} 
-                  </td>
-                  <td>
-                      {{item.email}}
-                  </td>
-                  <td class="w-40">
-
-                      <button (click)="deleteUser(item.id)"
-                          class="text-blue-400 m-2 transition-all hover:brightness-110">
-                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="blue"
-                              stroke="blue" class="size-8">
-                              <path
-                                  d="M135.2 17.7C140.6 6.8 151.7 0 163.8 0L284.2 0c12.1 0 23.2 6.8 28.6 17.7L320 32l96 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 96C14.3 96 0 81.7 0 64S14.3 32 32 32l96 0 7.2-14.3zM32 128l384 0 0 320c0 35.3-28.7 64-64 64L96 512c-35.3 0-64-28.7-64-64l0-320zm96 64c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16z" />
-                          </svg> 
-                      </button>
-                  </td>
-              </tr>
-          </tbody>
-      </table>
-
-      <div class="col-span-full row-span-2" *ngIf="elements==0">
-          <div class="text-center text-6xl">OOPS!</div>
-          <div class="text-center text-3xl">No hay nada</div>
-      </div>
+    <div class="col-span-full row-span-2" *ngIf="!users">
+      <div class="text-center text-6xl">OOPS!</div>
+      <div class="text-center text-3xl">No hay nada</div>
+    </div>
   </div>
+</div>
 
+<div class="fixed top-0 left-0 w-full h-full flex justify-center items-center overflow-y-auto bg-gray-500/75 z-10"
+    *ngIf="selectedUser">
+    <div class="bg-white rounded-xl p-2 opacity-100">
+        <div class="text-center">Cambiar lineas de tickets accesibles</div>
+
+        <div class="*:p-2 flex flex-nowrap justify-center *:bg-blue-300 *:rounded-xl">
+            <div *ngFor="let item of lines" [class.brightness-75]="item.selected"
+            (click)="selectLine(item)">{{item.name}}</div>
+        </div>
+        <div class="flex justify-between *:p-2 *:rounded-xl *:hover:brightness-75 *:cursor-pointer">
+            <button class="bg-cyan-300" (click)="applylines()">Aplicar</button>
+            <button type="submit" class="bg-gray-300" (click)="selectedUser=undefined">Cancelar</button>
+        </div>
+    </div>
 </div>

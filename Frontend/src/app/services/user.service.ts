@@ -7,21 +7,18 @@ import { environment } from '../../environments/environment';
   providedIn: 'root'
 })
 export class UserService {
-  private baseUrl = environment.apiUrl+"/api/user";
+  private baseUrl = 'http://'+environment.apiUrl+"api/user";
 
   constructor(private http: HttpClient) {
   }
 
-  getAll(data:any):Observable<any>{
-    return this.http.get(this.baseUrl+"/list",{params:data});
+  getAll():Observable<any>{
+    return this.http.get(this.baseUrl+"/");
   }
   get(id:string):Observable<any>{
-    return this.http.get(this.baseUrl+"/"+id);
-  }
-  role(id:string,data:any):Observable<any>{
-    return this.http.put(this.baseUrl+"/role/"+id,data);
+    return this.http.get(this.baseUrl+"/"+id+"/");
   }
   delete(id:string):Observable<any>{
-    return this.http.delete(this.baseUrl+"/delete/"+id);
+    return this.http.delete(this.baseUrl+"/"+id+"/");
   }
 }

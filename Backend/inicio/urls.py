@@ -13,12 +13,18 @@ urlpatterns = [
 
     path("api/trigger/", views.trigger_mensaje),
 
+    path('api/user/', views.getUsers),
+    path('api/user/<int:id>/', views.user),
+
     path('api/signup/', views.api_signup),
     path('api/logout/', views.api_signout),
     path('api/signin/', views.api_signin),
-    path("api/lines/", views.getAll),
+
+    path("api/tickets/", views.getAll),
+    path("api/lines/", views.getLines),
     path("api/line/", views.addLine),
     path("api/line/<int:id>/", views.deleteLine),
+    
     path("api/ticket/", views.addTicket),
     path("api/ticket/list/", views.addTicketList),
     path("api/ticket/<int:id>/", views.deleteTicket),

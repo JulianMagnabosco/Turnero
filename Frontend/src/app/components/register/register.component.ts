@@ -3,12 +3,12 @@ import { Subscription } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
+import { NgIf, } from '@angular/common';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [ReactiveFormsModule, NgIf, NgSwitch,NgSwitchCase,NgSwitchDefault],
+  imports: [ReactiveFormsModule, NgIf],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
 })
@@ -17,17 +17,14 @@ export class RegisterComponent implements OnInit,OnDestroy{
 
   subs=new Subscription();
 
-  tips: { errors:string[]|null, passwordPoints:number}={ errors:null,passwordPoints:0 }
 
   constructor(private fb: FormBuilder, protected service: AuthService, private router: Router) {
     this.form = this.fb.group({
-      username: ["", [Validators.required, Validators.pattern("[a-zA-Z0-9_]*"),
-                  Validators.maxLength(20 )]],
-      email: ["", [Validators.required, Validators.email, Validators.maxLength(50 )]],
+      username: ["", [Validators.required, Validators.pattern("[a-zA-Z0-9]*"),
+                  Validators.maxLength(3 )]],
       password: ["", [Validators.required, Validators.pattern(/^[\S]*$/),
         Validators.maxLength(20), Validators.minLength(8)]],
-      password2: ["", [Validators.required, Validators.maxLength(20)]],
-      terms: [true, [Validators.requiredTrue]]
+      password2: ["", [Validators.required, Validators.maxLength(20)]]
     },{
       validators: [this.checkPasswords]
     });
@@ -35,13 +32,6 @@ export class RegisterComponent implements OnInit,OnDestroy{
   }
 
   ngOnInit(): void {
-    this.subs.add(
-      this.form.valueChanges.subscribe({
-        next: () =>  {
-          this.test();
-        }
-      })
-    )
   }
 
   ngOnDestroy(): void {
@@ -56,8 +46,8 @@ export class RegisterComponent implements OnInit,OnDestroy{
 
     let user = {
       "username": this.form.value['username'],
-      "password": this.form.value['password'],
-      "email": this.form.value['email'],
+      "password1": this.form.value['password'],
+      "password2": this.form.value['password2'],
     }
 
     this.subs.add(
@@ -65,28 +55,13 @@ export class RegisterComponent implements OnInit,OnDestroy{
         {
           next: value => {
             alert("La usuario fue registrado con éxito")
-            this.exit();
           },
           error: err => {
-            alert("Error inesperado en el servidor, revise su conexion a internet");
-          }
-        }
-      )
-    );
-  }
-  test(){
-    let user = {
-      "username": this.form.controls['username'].value,
-      "password": this.form.controls['password'].value,
-      "email": this.form.controls['email'].value
-    }
-    console.log(user)
-    this.subs.add(
-      this.service.testRegister(user).subscribe(
-        {
-          next: value => {
-            this.tips=value;
-            console.log(value)
+            if(err["code"]==400){
+              alert(err["error"]);
+            }else{
+              alert("Error inesperado en el servidor, revise su conexion a internet");
+            }
           }
         }
       )

@@ -6,7 +6,7 @@ export class TicketList {
   code=""
   name=""
 
-  hasSelections=false
+  selected=false
 
   constructor(tickets: Ticket[],code:string,name:string){
     this.tickets=tickets

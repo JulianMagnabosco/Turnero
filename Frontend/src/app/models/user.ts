@@ -1,6 +1,9 @@
+import { TicketList } from "./ticket-list";
+
 export class User {
   id=0;
   username="";
-  role="";
+  admin=false;
   email="";
+  lines:TicketList[]=[]
 }

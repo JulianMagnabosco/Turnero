@@ -62,10 +62,14 @@ class ChatConsumer(AsyncWebsocketConsumer):
     #     return JsonResponse({"login": False},status=401)
         username = self.scope["user"].username
         listRaw0 = Ticket.objects.select_related("user").select_related("line") 
-        listRaw = listRaw0.filter(line__users__username=username).all() 
+
+        if not self.scope["user"].is_superuser:
+            listRaw1 = listRaw0.filter(line__users__username=username).all() 
+        else:
+            listRaw1 = listRaw0.all() 
 
         listValues=list()
-        async for t in listRaw:
+        async for t in listRaw1:
             listValues.append(t.json())
 
         await self.channel_layer.group_send(
