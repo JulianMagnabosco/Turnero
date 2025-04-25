@@ -28,7 +28,7 @@
           <td>
             <span *ngFor="let line of item.lines">{{line.name}}-</span>
           </td>
-          <td class="flex items-center justify-center *:transition-all *:hover:brightness-75">
+          <td class="shrink flex items-center justify-center *:transition-all *:hover:brightness-75">
             <button (click)="deleteUser(item.id)"
               class="m-2 cursor-pointer" >
               <svg
@@ -42,8 +42,8 @@
                 />
               </svg>
             </button>
-            <button (click)="selectedUser=item" class="p-2 bg-gray-500">
-              Editar
+            <button (click)="selectUser(item)" class="p-2 text-white bg-blue-500 rounded-xl">
+              EDITAR
             </button>
           </td>
         </tr>
@@ -60,11 +60,16 @@
 <div class="fixed top-0 left-0 w-full h-full flex justify-center items-center overflow-y-auto bg-gray-500/75 z-10"
     *ngIf="selectedUser">
     <div class="bg-white rounded-xl p-2 opacity-100">
-        <div class="text-center">Cambiar lineas de tickets accesibles</div>
+        <div class="text-center m-2">Seleccione las lineas de tickets accesibles por este usuario ({{selectedUser.username}})</div>
 
-        <div class="*:p-2 flex flex-nowrap justify-center *:bg-blue-300 *:rounded-xl">
-            <div *ngFor="let item of lines" [class.brightness-75]="item.selected"
-            (click)="selectLine(item)">{{item.name}}</div>
+        <div class="*:p-2 *:me-1 flex flex-nowrap justify-center *:bg-blue-300 *:rounded-xl m-2">
+          <div *ngFor="let item of lines" 
+            [class.brightness-75]="item.selected"
+            [class.font-bold]="item.selected"
+            (click)="selectLine(item)">
+            <span [hidden]="!item.selected">✓</span>
+            {{item.name}}
+          </div>
         </div>
         <div class="flex justify-between *:p-2 *:rounded-xl *:hover:brightness-75 *:cursor-pointer">
             <button class="bg-cyan-300" (click)="applylines()">Aplicar</button>

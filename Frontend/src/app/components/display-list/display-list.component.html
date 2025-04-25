@@ -1,10 +1,14 @@
-<div class="p-4 grid overflow-hidden">
+<div class="p-4 grid grid-cols-2 overflow-hidden">
 
+    <div class="flex flex-col h-[calc(100svh-7rem)] bg-blue-100 border-2 border-black">
+        <div class="grow"></div>
+        <div class="bg-cyan-400 text-2xl p-2 text-center">{{datetime | date:"dd/MM/YYYY HH:mm"}}</div>
+    </div>
     <div>
-        <div [class.invisible]="!calledTicket" class="border-b-2 border-black bg-amber-300">
-            <div class="flex *:p-3 text-3xl font-bold relative">
-                <div class="w-1/2 text-end">{{calledTicket?.code+" - "+calledTicket?.number}}</div>
-                <div class="w-1/2 text-start bg-amber-400">{{calledTicket?.user||" ."}}</div>
+        <div class="border-b-2 border-black bg-amber-300">
+            <div class="flex *:p-3 text-3xl font-bold relative" *ngFor="let ticket of calledList">
+                <div class="w-1/2 text-end">{{ticket.code+" - "+ticket.number}}</div>
+                <div class="w-1/2 text-start bg-amber-400">{{ticket.user||" ."}}</div>
                 <div class="bg-amber-500 opacity-50 absolute top-0 start-0 w-full h-full animate-ping"></div>
             </div>
         </div>
@@ -14,8 +18,5 @@
                 <div class="text-start bg-gray-300">{{ticket.user||" ."}}</div>
             </div>
         </div>
-    </div>
-    <div>
-
     </div>
 </div>

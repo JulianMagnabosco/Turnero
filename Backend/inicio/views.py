@@ -94,6 +94,26 @@ def user(request,id):
     return JsonResponse(userJson)
 
 @csrf_exempt
+def userLines(request):
+    if not request.user.is_superuser:
+        return JsonResponse({"login": False},status=401)
+    
+    if request.method == "PUT":
+        body = json.loads(request.body)
+        user = User.objects.get(id=body["user"])
+        if not user:
+            return JsonResponse({"error":"No encontrado"},status=404)
+        userJson = {"id":user.id,"username":user.username,"admin":user.is_superuser}
+        for l in body["lines"]:
+            line = Line.objects.get(code=l["code"])
+            if l["selected"]:
+                line.users.add(user)
+            else:
+                line.users.remove(user)
+        return JsonResponse(userJson)
+
+
+@csrf_exempt
 def getUsers(request):
     if not request.user.is_superuser:
         return JsonResponse({"login": False},status=401)

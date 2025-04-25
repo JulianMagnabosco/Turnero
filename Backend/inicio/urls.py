@@ -15,6 +15,7 @@ urlpatterns = [
 
     path('api/user/', views.getUsers),
     path('api/user/<int:id>/', views.user),
+    path('api/userlines/', views.userLines),
 
     path('api/signup/', views.api_signup),
     path('api/logout/', views.api_signout),

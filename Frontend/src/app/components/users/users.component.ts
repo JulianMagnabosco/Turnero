@@ -34,6 +34,13 @@ export class UsersComponent implements OnInit,OnDestroy{
   ngOnDestroy(): void {
     this.subs.unsubscribe();
   }
+  selectUser(user:User){
+    this.selectedUser=user
+    this.lines.forEach((t)=>{
+      const lu = user.lines.find((lu)=>lu.code==t.code)
+      t.selected=!!lu
+    })
+  }
 
   selectLine(line:TicketList){
     line.selected=!line.selected
@@ -43,7 +50,9 @@ export class UsersComponent implements OnInit,OnDestroy{
   applylines(){
     if(!this.selectedUser) return
     const data={
-      lines: this.lines.filter((l)=>{return l.selected}),
+      lines: this.lines.map((l)=>{
+        return {selected:l.selected,code:l.code}
+      }),
       user: this.selectedUser?.id
     }
     this.subs.add(
@@ -51,6 +60,8 @@ export class UsersComponent implements OnInit,OnDestroy{
         {
           next: value => {
             alert("Exito")
+            this.selectedUser=undefined
+            this.charge()
           },
           error: err => {
             alert("Error inesperado en el servidor, revise su conexion a internet");

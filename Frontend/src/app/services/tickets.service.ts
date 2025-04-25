@@ -20,7 +20,7 @@ export class TicketsService {
     return this.http.get(this.baseUrl+"lines/");
   }
   setLines(data:any):Observable<any>{
-    return this.http.put(this.baseUrl+"lineusers/",data);
+    return this.http.put(this.baseUrl+"userlines/",data);
   }
   
   // get(id:string):Observable<any>{
