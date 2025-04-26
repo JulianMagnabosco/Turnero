@@ -1,0 +1,67 @@
+services:
+  db:
+    container_name: db
+    image: postgres
+    networks:
+      - app-network
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=turnerodb 
+      - POSTGRES_USER=turnerodb 
+      - POSTGRES_PASSWORD=mariel2456
+    restart: on-failure
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U turnerodb"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      
+  redis:
+    container_name: redis
+    image: redis:7
+    networks:
+      - app-network
+    ports:
+      - 6379:6379
+    restart: always
+
+
+  back:
+    container_name: back
+    image: julianm217/turnero-back
+    networks:
+      - app-network
+    build:
+      context: ./Back
+      dockerfile: Dockerfile
+    ports:
+      - 8081:8081
+    environment:
+      - DJANGO_DEBUG=True
+      - DJANGO_SECRET_KEY=django-insecure-69k-#kmlre&rb4uhf2*d5foi+1ee)wsck_%9z*--wbit3_dk9e
+      - DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: always
+           
+  front:
+    container_name: front
+    image: julianm217/turnero-front
+    networks:
+      - app-network
+    build:
+      context: ./Front
+      dockerfile: Dockerfile
+    ports:
+      - 4200:4200
+    depends_on:
+      - db
+      - back
+
+volumes:
+  db_data:
+
+networks:
+  app-network:
