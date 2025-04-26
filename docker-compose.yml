@@ -33,7 +33,7 @@ services:
     networks:
       - app-network
     build:
-      context: ./Back
+      context: ./Frontend
       dockerfile: Dockerfile
     ports:
       - 8081:8081
@@ -52,7 +52,7 @@ services:
     networks:
       - app-network
     build:
-      context: ./Front
+      context: ./Frontend
       dockerfile: Dockerfile
     ports:
       - 4200:4200
