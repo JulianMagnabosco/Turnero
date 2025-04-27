@@ -18,7 +18,9 @@ Turnero para una clinica
 
 ## Docker Redis Channel
 
-```docker run --rm -p 6379:6379 redis:7```
+```docker network create app-network```
+
+```docker run -d -p 6379:6379 --name redis --network app-network redis:7```
 
 ## Ejecutar
 
@@ -30,4 +32,4 @@ Turnero para una clinica
 
 ```docker build --no-cache -t julianm217/turnero-back .```
 
-```docker run --rm -p 3000:3000 --env-file .env julianm217/turnero-back:latest```
+```docker run --rm -p 3000:3000 --env-file .env --network app-network  --name back julianm217/turnero-back:latest```

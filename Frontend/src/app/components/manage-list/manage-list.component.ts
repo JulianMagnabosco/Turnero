@@ -6,6 +6,7 @@ import { Ticket } from '../../models/ticket';
 import { NgFor, NgIf } from '@angular/common';
 import { WebSocketService } from '../../services/web-socket.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-manage-list',
@@ -25,6 +26,11 @@ export class ManageListComponent implements OnInit, OnDestroy {
     // new TicketList([new Ticket(),new Ticket(),new Ticket()],"P","Pediatria"),
     // new TicketList([new Ticket(),new Ticket(),new Ticket()],"C","Clinica"),
   ];
+  lines: string[] = [
+    // new TicketList([new Ticket(),new Ticket(),new Ticket()],"CO","CO"),
+    // new TicketList([new Ticket(),new Ticket(),new Ticket()],"P","Pediatria"),
+    // new TicketList([new Ticket(),new Ticket(),new Ticket()],"C","Clinica"),
+  ];
   audio = new Audio('music.wav');
 
   timeout: any;
@@ -32,6 +38,7 @@ export class ManageListComponent implements OnInit, OnDestroy {
 
   constructor(
     private service: TicketsService,
+    private userService: UserService,
     private webSocket: WebSocketService
   ) {}
   ngOnInit(): void {
@@ -52,12 +59,31 @@ export class ManageListComponent implements OnInit, OnDestroy {
 
 
   charge() {
-    console.log(this.subs);
     this.loading = true;
+    this.subs.add(
+      this.service.getLines().subscribe({
+        next: (value) => {
+          this.lines=value["data"].map((l:TicketList)=>{return l.code})
+          console.log(value);
+        },
+        error: (err) => {
+          // alert(
+          //   'Error inesperado en el servidor, revise su conexion a internet'
+          // );
+          // this.charge()
+          // return
+        },
+        complete: ()=>{
+          this.loading=false
+        }
+      })
+    );
+    
     this.subs.add(
       this.service.getAll().subscribe({
         next: (value) => {
           this.saveData(value["data"])
+          console.log(value);
         },
         error: (err) => {
           // alert(
@@ -211,13 +237,17 @@ export class ManageListComponent implements OnInit, OnDestroy {
   }
 
   saveData(data: any) {
-    let newList: Ticket[] = data;
-    newList.forEach((ticket) => {
+    let giveList: Ticket[] = data;
+    let newList: Ticket[] = [];
+    giveList.forEach((ticket) => {
       let findTicket = this.list.find((e) => {
         return e.id == ticket.id;
       });
       if(findTicket){
         ticket.selected=findTicket.selected
+      }
+      if(this.lines.find((l)=> l==ticket.code )){
+        newList.push(ticket)
       }
     });
     this.list=newList;

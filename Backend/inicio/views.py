@@ -81,8 +81,6 @@ def room(request, room_name):
 #API
 @csrf_exempt
 def user(request,id):
-    if not request.user.is_superuser:
-        return JsonResponse({"login": False},status=401)
     
     user = User.objects.get(id=id)
     if not user:
@@ -173,7 +171,12 @@ def api_signup(request):
 
 @csrf_exempt
 def getLines(request):
-    listRaw = Line.objects.all() 
+    username = request.user.username
+    listRaw0 = Line.objects
+    if not request.user.is_superuser:
+        listRaw = listRaw0.filter(users__username=username).all() 
+    else:
+        listRaw = listRaw0.all() 
 
     listValues=list()
     for t in list(listRaw):
@@ -222,10 +225,11 @@ def addTicket(request):
     if request.method == "POST":
         body = json.loads(request.body)
         line = get_object_or_404(Line,code=body["code"])
-        newNumber = line.getTickets().last().number
-        Ticket.save(Ticket(number=newNumber+1,line=line))
+        last = line.getTickets().last()
+        lastNumber = last.number+1 if not last is None else 1
+        Ticket.save(Ticket(number=lastNumber,line=line))
         getAll(request)
-        return JsonResponse({"ticketNumber": newNumber+1})
+        return JsonResponse({"ticketNumber": lastNumber})
     return getAll(request)
 
 

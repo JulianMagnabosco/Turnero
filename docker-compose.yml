@@ -1,21 +1,23 @@
 services:
-  db:
-    container_name: db
-    image: postgres
-    networks:
-      - app-network
-    volumes:
-      - ./data:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_DB=turnerodb 
-      - POSTGRES_USER=turnerodb 
-      - POSTGRES_PASSWORD=mariel2456
-    restart: on-failure
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U turnerodb"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
+  # db:
+  #   container_name: db
+  #   image: postgres
+  #   networks:
+  #     - app-network
+  #   volumes:
+  #     - ./data:/var/lib/postgresql/data
+  #   environment:
+  #     - POSTGRES_DB=turnerodb 
+  #     - POSTGRES_USER=turnerodb 
+  #     - POSTGRES_PASSWORD=mariel2456
+  #   restart: on-failure
+  #   healthcheck:
+  #     test: ["CMD-SHELL", "pg_isready -U turnerodb"]
+  #     interval: 5s
+  #     timeout: 5s
+  #     retries: 5
+  #   ports:
+  #     - 5432:5432
       
   redis:
     container_name: redis
@@ -33,17 +35,22 @@ services:
     networks:
       - app-network
     build:
-      context: ./Frontend
+      context: ./Backend
       dockerfile: Dockerfile
     ports:
-      - 8081:8081
+      - 3000:3000
     environment:
       - DJANGO_DEBUG=True
       - DJANGO_SECRET_KEY=django-insecure-69k-#kmlre&rb4uhf2*d5foi+1ee)wsck_%9z*--wbit3_dk9e
       - DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1
+      - FRONT_PORTS=4200|4000
+      - REDIS_TEST=True
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
     depends_on:
-      db:
-        condition: service_healthy
+      # db:
+      #   condition: service_healthy
+      - redis
     restart: always
            
   front:
@@ -57,7 +64,7 @@ services:
     ports:
       - 4200:4200
     depends_on:
-      - db
+      - redis
       - back
 
 volumes:

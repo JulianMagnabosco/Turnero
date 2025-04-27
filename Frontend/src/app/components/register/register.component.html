@@ -7,7 +7,7 @@
             <div class="m-4">
                 <label class="block" for="username">Nombre</label>
                 <input class="p-2 w-full text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-400 focus:border-blue-500"
-                 type="text" id="username" formControlName="username" 
+                 type="text" id="username" formControlName="username" autocomplete="username"
                  [class.border-red-500]="(form.controls['username'].touched || form.controls['username'].dirty) && form.controls['username'].invalid">
                  <div class="text-red-500 text-sm" *ngIf="(form.controls['username'].touched || form.controls['username'].dirty)">
            <!--        <div class="invalid-feedback" *ngIf="form.controls['name'].hasError('required')">-->
@@ -17,7 +17,7 @@
                      El nombre no puede superar los 20 caracteres.
                    </div>
                    <div *ngIf="form.controls['username'].hasError('pattern')">
-                     No puede incluir caracteres especiales (excepto por _).
+                     No puede incluir caracteres especiales.
                    </div>
                 </div>
             
@@ -25,7 +25,7 @@
             <div class="m-4">
                 <label class="block" for="password">Contraseña</label>
                 <input class="p-2 w-full text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-400 focus:border-blue-500"
-                type="password" id="password" formControlName="password"
+                type="password" id="password" formControlName="password" autocomplete="new-password"
                 [class.border-red-500]="(form.controls['password'].touched || form.controls['password'].dirty) && form.controls['password'].invalid">
                 <div class="text-red-500 text-sm" *ngIf="(form.controls['password'].touched || form.controls['password'].dirty)">
                   <div *ngIf="form.controls['password'].hasError('maxlength')">
@@ -43,7 +43,7 @@
             <div class="m-4">
                 <label class="block" for="password2">Confirmar contraseña</label>
                 <input class="p-2 w-full text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-400 focus:border-blue-500"
-                type="password" id="password2" formControlName="password2"
+                type="password" id="password2" formControlName="password2" autocomplete="new-password"
                 [class.border-red-500]="(form.controls['password2'].touched || form.controls['password2'].dirty) && form.controls['password2'].invalid">
                 <div class="text-red-500 text-sm" *ngIf="(form.controls['password2'].touched || form.controls['password2'].dirty)">
                   <div *ngIf="form.hasError('notSame')">

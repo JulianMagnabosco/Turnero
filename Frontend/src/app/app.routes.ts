@@ -14,11 +14,11 @@ export const routes: Routes = [
     {path:"login",component:LoginComponent, title:"Iniciar Secion"},
     // {path:"password",component:PasswordComponent, title:"Cambiar Contraseña"},
     {path:"display",component:DisplayListComponent, title:"Mostrar"},
+    {path:"manage",component:ManageListComponent, title:"Gestion listas", canActivate:[authGuard]},
 
     {path:"showuser",component:ShowUserComponent, title:"Usuario", canActivate:[authGuard]},
     {path:"register",component:RegisterComponent, title:"Registo", canActivate:[authGuardAdmin]},
     {path:"users",component:UsersComponent, title:"Usuarios", canActivate:[authGuardAdmin]},
 
-    {path:"manage",component:ManageListComponent, title:"Gestion listas", canActivate:[authGuardAdmin]},
     {path:"**", redirectTo:""},
 ];

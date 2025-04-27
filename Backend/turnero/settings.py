@@ -43,14 +43,21 @@ INSTALLED_APPS = [
     'inicio'
 ]
 ASGI_APPLICATION = "turnero.asgi.application"
-CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
-        "CONFIG": {
-            "hosts": [("127.0.0.1", 6379)],
+if bool(os.environ.get("REDIS_TEST",default=False)):
+    CHANNEL_LAYERS = {
+        "default": {
+            "BACKEND": "channels_redis.core.RedisChannelLayer",
+            "CONFIG": {
+                "hosts": [(os.environ.get("REDIS_HOST","127.0.0.1"), int(os.environ.get("REDIS_PORT","6379")))],
+            },
         },
-    },
-}
+    }
+else:
+    CHANNEL_LAYERS = {
+        "default": {
+            "BACKEND": "channels.layers.InMemoryChannelLayer"
+        }
+    }
 
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
@@ -62,9 +69,9 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
 CORS_ALLOWED_ORIGIN_REGEXES  = [
-    r"^http.+\:4200.*$",
-    r"^http.+\:4000.*$"
+    fr"^http.+\:({os.environ.get("FRONT_PORTS","4200|4000")}).*$"
 ]
 CORS_ALLOW_CREDENTIALS=True
 # CORS_URLS_REGEX = r"^((?!addTurn).)*$"

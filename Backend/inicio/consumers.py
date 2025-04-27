@@ -61,12 +61,13 @@ class ChatConsumer(AsyncWebsocketConsumer):
     # if not request.user.is_authenticated:
     #     return JsonResponse({"login": False},status=401)
         username = self.scope["user"].username
+        print(self.scope["user"].is_superuser)
         listRaw0 = Ticket.objects.select_related("user").select_related("line") 
 
-        if not self.scope["user"].is_superuser:
-            listRaw1 = listRaw0.filter(line__users__username=username).all() 
-        else:
-            listRaw1 = listRaw0.all() 
+        # if not self.scope["user"].is_superuser:
+        #     listRaw1 = listRaw0.filter(line__users__username=username).all() 
+        # else:
+        listRaw1 = listRaw0.all() 
 
         listValues=list()
         async for t in listRaw1:
