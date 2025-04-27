@@ -26,4 +26,4 @@ jobs:
       
     - name: Build the Docker image BACK
       # if: steps.changed-back-files.outputs.any_changed == 'true'
-      run: docker build ./Frontend  --file Backend/Dockerfile --tag back:$(date +%s)
+      run: docker build ./Backend  --file Backend/Dockerfile --tag back:$(date +%s)
