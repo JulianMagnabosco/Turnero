@@ -11,22 +11,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - name: Get all changed FRONT
-      id: changed-front-files
-      uses: tj-actions/changed-files@ed68ef82c095e0d48ec87eccea555d944a631a4c # v46
-      with:
-        files: Frontend/**
+    # - name: Get all changed FRONT
+    #   id: changed-front-files
+    #   uses: tj-actions/changed-files@ed68ef82c095e0d48ec87eccea555d944a631a4c # v46
+    #   with:
+    #     files: Frontend/**
 
     - name: Build the Docker image FRONT
-      if: steps.changed-front-files.outputs.any_changed == 'true'
+      # if: steps.changed-front-files.outputs.any_changed == 'true'
       run: docker build . --file Frontend/Dockerfile --tag front:$(date +%s)
 
-    - name: Get all changed BACK
-      id: changed-back-files
-      uses: tj-actions/changed-files@ed68ef82c095e0d48ec87eccea555d944a631a4c # v46
-      with:
-        files: Backend/**
+    # - name: Get all changed BACK
+    #   id: changed-back-files
+    #   uses: tj-actions/changed-files@ed68ef82c095e0d48ec87eccea555d944a631a4c # v46
+    #   with:
+    #     files: Backend/**
       
     - name: Build the Docker image BACK
-      if: steps.changed-back-files.outputs.any_changed == 'true'
+      # if: steps.changed-back-files.outputs.any_changed == 'true'
       run: docker build . --file Backend/Dockerfile --tag back:$(date +%s)
