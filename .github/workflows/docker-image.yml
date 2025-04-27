@@ -3,9 +3,6 @@ name: Docker Image CI
 on:
   push:
     branches: [ "main" ]
-    paths:
-      - 'Frontend/**'
-      - 'Backend/**'
 jobs:
   build:
     runs-on: ubuntu-latest
