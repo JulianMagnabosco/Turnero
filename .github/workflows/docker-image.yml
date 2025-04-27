@@ -16,7 +16,7 @@ jobs:
 
     - name: Build the Docker image FRONT
       # if: steps.changed-front-files.outputs.any_changed == 'true'
-      run: docker build . --file Frontend/Dockerfile --tag front:$(date +%s)
+      run: docker build ./Frontend --file Frontend/Dockerfile --tag front:$(date +%s)
 
     # - name: Get all changed BACK
     #   id: changed-back-files
@@ -26,4 +26,4 @@ jobs:
       
     - name: Build the Docker image BACK
       # if: steps.changed-back-files.outputs.any_changed == 'true'
-      run: docker build . --file Backend/Dockerfile --tag back:$(date +%s)
+      run: docker build ./Frontend  --file Backend/Dockerfile --tag back:$(date +%s)
