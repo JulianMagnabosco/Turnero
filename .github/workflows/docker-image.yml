@@ -1,0 +1,31 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'Frontend/**'
+      - 'Backend/**'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Get all changed FRONT
+      id: changed-front-files
+      uses: tj-actions/changed-files@ed68ef82c095e0d48ec87eccea555d944a631a4c # v46
+      with:
+        files: Frontend/**
+
+    - name: Build the Docker image FRONT
+      if: steps.changed-front-files.outputs.any_changed == 'true'
+      run: docker build . --file Frontend/Dockerfile --tag front:$(date +%s)
+
+    - name: Get all changed BACK
+      id: changed-back-files
+      uses: tj-actions/changed-files@ed68ef82c095e0d48ec87eccea555d944a631a4c # v46
+      with:
+        files: Backend/**
+      
+    - name: Build the Docker image BACK
+      if: steps.changed-back-files.outputs.any_changed == 'true'
+      run: docker build . --file Backend/Dockerfile --tag back:$(date +%s)
