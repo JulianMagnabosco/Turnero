@@ -25,7 +25,7 @@ jobs:
 
       - name: Build and push Docker image FRONT
         id: push
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v6.16.0
         with:
           context: ./Frontend
           file: ./Frontend/Dockerfile
@@ -35,13 +35,13 @@ jobs:
           
       - name: Extract metadata (tags, labels) for Docker BACK
         id: metaback
-        uses: docker/metadata-action@5.7.0
+        uses: docker/metadata-action@v5.7.0
         with:
           images: julianm217/turnero-back
 
       - name: Build and push Docker image BACK
         id: pushback
-        uses: docker/build-push-action@6
+        uses: docker/build-push-action@v6.16.0
         with:
           context: ./Backend
           file: ./Backend/Dockerfile
