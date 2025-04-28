@@ -29,4 +29,5 @@ COPY . /app/
 EXPOSE 3000
  
 # Run Django’s development server
+RUN ["python", "manage.py", "migrate"]
 CMD ["python", "manage.py", "runserver", "0.0.0.0:3000"]

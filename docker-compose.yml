@@ -19,8 +19,8 @@ services:
   #   ports:
   #     - 5432:5432
       
-  redis:
-    container_name: redis
+  redis_db:
+    container_name: redis_db
     image: redis:7
     networks:
       - app-network
@@ -45,12 +45,12 @@ services:
       - DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1
       - FRONT_PORTS=4200|4000
       - REDIS_TEST=True
-      - REDIS_HOST=redis
+      - REDIS_HOST=redis_db
       - REDIS_PORT=6379
     depends_on:
       # db:
       #   condition: service_healthy
-      - redis
+      - redis_db
     restart: always
            
   front:
@@ -64,7 +64,7 @@ services:
     ports:
       - 4200:4200
     depends_on:
-      - redis
+      - redis_db
       - back
 
 volumes:
