@@ -35,7 +35,7 @@ jobs:
           
       - name: Extract metadata (tags, labels) for Docker BACK
         id: metaback
-        uses: docker/metadata-action@5
+        uses: docker/metadata-action@5.7.0
         with:
           images: julianm217/turnero-back
 
