@@ -30,8 +30,7 @@ jobs:
           context: ./Frontend
           file: ./Frontend/Dockerfile
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: julianm217/turnero-front:latest
           
       - name: Extract metadata (tags, labels) for Docker BACK
         id: metaback
@@ -46,5 +45,4 @@ jobs:
           context: ./Backend
           file: ./Backend/Dockerfile
           push: true
-          tags: ${{ steps.metaback.outputs.tags }}
-          labels: ${{ steps.metaback.outputs.labels }}
+          tags: julianm217/turnero-back:latest
