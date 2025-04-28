@@ -1,3 +1,3 @@
 export const environment = {
-  apiUrl: window.location.origin+':3000/',
+  apiUrl: window.location.hostname+':3000/',
 };

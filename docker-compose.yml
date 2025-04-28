@@ -52,6 +52,8 @@ services:
       #   condition: service_healthy
       - redis_db
     restart: always
+    volumes:
+      - app_data:/app
            
   front:
     container_name: front
@@ -68,7 +70,7 @@ services:
       - back
 
 volumes:
-  db_data:
+  app_data:
 
 networks:
   app-network:
