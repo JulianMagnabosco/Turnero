@@ -28,6 +28,9 @@ DEBUG = bool(os.environ.get("DEBUG", default=1))
  
 ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS","localhost,127.0.0.1").split(",")
 
+DJANGO_SUPERUSER_USERNAME = os.environ.get("DJANGO_SUPERUSER_USERNAME","admin")
+DJANGO_SUPERUSER_PASSWORD = os.environ.get("DJANGO_SUPERUSER_PASSWORD","123")
+
 
 # Application definition
 
