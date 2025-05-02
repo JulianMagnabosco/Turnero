@@ -24,8 +24,8 @@ RUN pip install --no-cache-dir -r requirements.txt
  
 # Copy the Django project to the container
 # COPY . /app/
-COPY turnero/ /app/
-COPY inicio/ /app/
+COPY ./turnero /app/turnero
+COPY ./inicio /app/inicio
 COPY manage.py /app/
  
 # Expose the Django port
