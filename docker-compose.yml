@@ -65,6 +65,7 @@ services:
       dockerfile: Dockerfile
     ports:
       - 4200:4200
+    restart: always
 
 volumes:
   app_data:
