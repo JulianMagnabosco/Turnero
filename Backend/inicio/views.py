@@ -188,10 +188,7 @@ def getLines(request):
 def getAll(request):
     username = request.user.username
     listRaw0 = Ticket.objects.select_related("user").select_related("line")
-    if not request.user.is_superuser:
-        listRaw1 = listRaw0.filter(line__users__username=username).all() 
-    else:
-        listRaw1 = listRaw0.all() 
+    listRaw1 = listRaw0.all() 
 
     listValues=list()
     for t in list(listRaw1):

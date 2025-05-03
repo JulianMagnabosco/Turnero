@@ -45,7 +45,7 @@ export class RegisterComponent implements OnInit,OnDestroy{
     }
 
     let user = {
-      "username": this.form.value['username'],
+      "username": this.form.value['username'].toLowerCase(),
       "password1": this.form.value['password'],
       "password2": this.form.value['password2'],
     }

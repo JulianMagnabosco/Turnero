@@ -23,6 +23,7 @@ export class DisplayListComponent implements OnInit, OnDestroy {
     // new TicketList([new Ticket(),new Ticket(),new Ticket()],"C","Clinica"),
   ];
   audio = new Audio('music.wav');
+  audioPaused=true
 
   timeout: any;
   soundTimer = 4;
@@ -93,11 +94,6 @@ export class DisplayListComponent implements OnInit, OnDestroy {
       ticketid=this.calledList.push(new Ticket(data['code'],data['number'],data['user']))-1
     }
     this.playSound();
-
-    setTimeout(() => {
-      console.log(ticketid)
-      this.calledList.splice(ticketid)
-    }, this.removalTimer * 1000);
     
     clearTimeout(this.timeout);
     this.timeout = setTimeout(() => {
@@ -108,6 +104,7 @@ export class DisplayListComponent implements OnInit, OnDestroy {
   playSound(){
     try{
       this.audio.play();
+      this.audioPaused=false
     }catch{
       console.error("Error de audio")
     }
@@ -115,6 +112,7 @@ export class DisplayListComponent implements OnInit, OnDestroy {
   stopSound(){
     try{
       this.audio.pause();
+      this.audioPaused=true
     }catch{
       console.error("Error de audio")
     }

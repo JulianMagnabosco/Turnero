@@ -39,8 +39,12 @@ export class LoginComponent implements OnInit,OnDestroy{
       return;
     }
     this.loading=true
+    let user = {
+      "username": this.form.value['username'].toLowerCase(),
+      "password": this.form.value['password'],
+    }
     this.subs.add(
-      this.service.login(this.form.value).subscribe(
+      this.service.login(user).subscribe(
         {
           next: value => {
             this.service.setData(value["user"])

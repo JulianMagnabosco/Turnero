@@ -2,8 +2,18 @@
 <div class="px-4 sm:px-8">
     <div class="mb-2 bg-gray-200 flex items-center
          divide-black divide-x-2 rounded-xl text-2xl overflow-hidden">
-        <button class=" bg-amber-300 p-4 px-4 enabled:hover:brightness-75" *ngIf="list[0]"
-        (click)="callticket()">Siguiente turno→ <span class="font-bold">{{list[0].code+"-"+list[0].number}}</span></button>
+         <button class=" bg-amber-300 p-4 px-4 enabled:hover:brightness-75" *ngIf="list[0]"
+         (click)="callTicket()">
+             Llamar turno→ <span class="font-bold">{{list[0].code+"-"+list[0].number}}</span>
+         </button>
+         <button class=" bg-green-300 p-4 px-4 enabled:hover:brightness-75" *ngIf="list[0] && list[1] && calledTicket"
+         (click)="callNext()">
+             Siguiente turno→ <span class="font-bold">{{list[1].code+"-"+list[1].number}}</span>
+         </button>
+         <button class=" bg-green-300 p-4 px-4 enabled:hover:brightness-75" *ngIf="list[0] && !list[1] && calledTicket"
+         (click)="callNext()">
+             Terminar
+         </button>
         <span class="grow text-center">Turnos pendientes: <span class="font-bold">{{list.length}}</span></span>
     </div>
     <div [class.invisible]="!calledTicket" class="flex justify-center mb-2">
@@ -14,13 +24,19 @@
             </span>
         </span>
     </div>
+    <div [class.invisible]="!hasSelections" class="flex justify-center mb-2">
+        <span class="relative text-4xl p-2 rounded-xl bg-red-500 text-center cursor-pointer" (click)="deleteSelected()">
+            Eliminar seleccionados
+        </span>
+    </div>
     <div class="divide-black divide-y-2 bg-gray-200">
         <div class="text-2xl hover:bg-gray-400 relative hover:*:last:inline select-bone"
-        [class]="{'bg-gray-300':ticket.selected}" *ngFor="let ticket of list" >
+        [class]="{'bg-gray-300':ticket.selected}" *ngFor="let ticket of list; index as i" >
             <div class="p-2 " (click)="selectTicket($event,ticket)"
             [class]="{'font-bold':ticket.selected}">
                 <span [hidden]="!ticket.selected">✓</span>
                 {{ticket.code+" - "+ticket.number}}
+                <span [hidden]="i!=0">→Siguiente→</span>
             </div>
             <button class="absolute top-0 end-0 p-2 bg-red-500 hidden hover:brightness-75" 
             (click)="deleteTicket(ticket.id)" >X</button>

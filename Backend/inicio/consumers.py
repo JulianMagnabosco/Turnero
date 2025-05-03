@@ -34,7 +34,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
             lastNumber = last.number+1 if not last is None else 1
             await Ticket.asave(Ticket(number=lastNumber,line=line))
             
-        elif message["type"]=="call" or message["type"]=="del":
+        elif message["type"]=="next" or message["type"]=="del":
             ticket = await aget_object_or_404(Ticket,pk=message["id"])
             await Ticket.adelete(ticket)
 

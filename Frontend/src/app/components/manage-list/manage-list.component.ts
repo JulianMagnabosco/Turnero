@@ -7,6 +7,7 @@ import { NgFor, NgIf } from '@angular/common';
 import { WebSocketService } from '../../services/web-socket.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-manage-list',
@@ -38,7 +39,7 @@ export class ManageListComponent implements OnInit, OnDestroy {
 
   constructor(
     private service: TicketsService,
-    private userService: UserService,
+    private authService: AuthService,
     private webSocket: WebSocketService
   ) {}
   ngOnInit(): void {
@@ -164,33 +165,46 @@ export class ManageListComponent implements OnInit, OnDestroy {
 
     this.webSocket.sendMessage({ message: message });
   }
-
-  callticket() {
+  callTicket() {
     let message = {
       type: 'call',
       id: this.list[0].id,
       number: this.list[0].number,
       code: this.list[0].code,
-      user: this.list[0].user
+      user: this.authService.user?.username
     };
 
     this.calledTicket = new Ticket(this.list[0].code,this.list[0].number,this.list[0].user);
-    clearTimeout(this.timeout);
-    this.timeout = setTimeout(() => {
-      this.unsetSelected();
-    }, this.timer * 1000);
+    this.calledTicket.id=this.list[0].id
+
+    this.webSocket.sendMessage({ message: message });
+  }
+
+  callNext() {
+    let message = {
+      type: 'next',
+      id: this.list[0].id,
+      number: this.list[0].number,
+      code: this.list[0].code,
+      user: this.authService.user?.username
+    };
+
+    console.log(this.authService.user?.username)
+
+    this.calledTicket = undefined
 
     this.webSocket.sendMessage({ message: message });
   }
 
   _callticket(data: any) {
+    if(data['user']!=this.authService.user?.username){
+      return
+    }
     this.calledTicket = new Ticket(data['code'],data['number'],data['user']);
+    this.calledTicket.id=data['id']
     this.playSound();
 
     clearTimeout(this.timeout);
-    setTimeout(() => {
-      this.calledTicket = undefined;
-    }, this.timer * 1000);
     
     this.timeout = setTimeout(() => {
       this.stopSound();
