@@ -32,6 +32,13 @@ export class LinesComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.subs.unsubscribe();
   }
+
+  get codes(){
+    return this.list.map((line)=>{
+      return line.code
+    })
+  }
+
   charge() {
     this.loading = true;
     this.subs.add(

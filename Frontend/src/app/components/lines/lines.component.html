@@ -1,10 +1,4 @@
 <div class="p-5">
-  <form class="p-2 shadow-xl mb-3 *:p-2 *:rounded-xl flex justify-center gap-1" (ngSubmit)="addLine()">
-    <span>Cargar Nueva Linea: </span>
-    <input class="border-black border-2" placeholder="Codigo" name="code" id="code" [(ngModel)]="newCode" required minlength="2" maxlength="3">
-    <input class="border-black border-2" placeholder="Nombre" name="name" id="name" [(ngModel)]="newName" required minlength="2">
-    <button class="bg-blue-300 disabled:brightness-75" type="submit" [disabled]="newName=='' || newCode==''">Cargar</button>
-  </form>
 
   <div class="text-2xl">Lista de lineas de tickets</div>
   <table class="w-full shadow-2xl">
@@ -52,4 +46,13 @@
       </tr>
     </tbody>
   </table>
+
+  
+  <form class="p-2 shadow-xl mt-3 *:p-2 *:rounded-xl flex justify-center gap-1" (ngSubmit)="addLine()">
+    <span>Cargar Nueva Linea: </span>
+    <input class="border-black border-2" placeholder="Codigo" name="code" id="code" [(ngModel)]="newCode" required minlength="2" maxlength="3">
+    <input class="border-black border-2" placeholder="Nombre" name="name" id="name" [(ngModel)]="newName" required minlength="2">
+    <button class="bg-blue-300 disabled:brightness-75" type="submit" 
+    [disabled]="newName=='' || newCode=='' || codes.includes(newCode)">Cargar</button>
+  </form>
 </div>

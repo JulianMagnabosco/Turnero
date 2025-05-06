@@ -5,7 +5,11 @@
         <div class="bg-cyan-400 text-2xl p-2 text-center">{{datetime | date:"dd/MM/YYYY HH:mm"}}</div>
     </div>
     <div>
-        <div class="border-b-2 border-black bg-amber-300">
+        <div class="flex *:w-1/2 *:p-3 text-2xl">
+            <div class="text-end bg-blue-300 uppercase">TURNO</div>
+            <div class="text-start bg-blue-400 uppercase">PUESTO</div>
+        </div>
+        <div class="bg-amber-300">
             <div class="flex *:p-3 text-3xl font-bold relative" *ngFor="let ticket of calledList">
                 <div class="w-1/2 text-end">{{ticket.code+" - "+ticket.number}}</div>
                 <div class="w-1/2 text-start bg-amber-400 uppercase">{{ticket.user||" ."}}</div>
@@ -13,9 +17,9 @@
                     [hidden]="audioPaused"></div>
             </div>
         </div>
-        <div class="divide-black divide-y-2 bg-gray-200">
-            <div class="flex *:w-1/2 *:p-3 text-2xl" *ngFor="let ticket of list">
-                <div class="text-end">{{ticket.code+" - "+ticket.number}}</div>
+        <div class="bg-gray-200">
+            <div class="flex *:w-1/2 *:p-3 text-2xl border-t-2 border-black" *ngFor="let ticket of list">
+                <div class="text-end uppercase">{{ticket.code+" - "+ticket.number}}</div>
                 <div class="text-start bg-gray-300 uppercase">{{ticket.user||" ."}}</div>
             </div>
         </div>
