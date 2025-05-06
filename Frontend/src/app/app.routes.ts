@@ -8,6 +8,7 @@ import { UsersComponent } from './components/users/users.component';
 import { ShowUserComponent } from './components/show-user/show-user.component';
 import { DisplayListComponent } from './components/display-list/display-list.component';
 import { ManageListComponent } from './components/manage-list/manage-list.component';
+import { LinesComponent } from './components/lines/lines.component';
 
 export const routes: Routes = [
     {path:"",component:HomeComponent},
@@ -17,6 +18,7 @@ export const routes: Routes = [
     {path:"manage",component:ManageListComponent, title:"Gestion listas", canActivate:[authGuard]},
 
     {path:"showuser",component:ShowUserComponent, title:"Usuario", canActivate:[authGuard]},
+    {path:"lines",component:LinesComponent, title:"Lineas de Ticket", canActivate:[authGuardAdmin]},
     {path:"register",component:RegisterComponent, title:"Registo", canActivate:[authGuardAdmin]},
     {path:"users",component:UsersComponent, title:"Usuarios", canActivate:[authGuardAdmin]},
 

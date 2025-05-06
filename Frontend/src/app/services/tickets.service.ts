@@ -22,6 +22,15 @@ export class TicketsService {
   setLines(data:any):Observable<any>{
     return this.http.put(this.baseUrl+"userlines/",data);
   }
+
+  
+  dellLines(id:number):Observable<any>{
+    return this.http.delete(this.baseUrl+"line/"+id+"/");
+  }
+  
+  addLines(data:any):Observable<any>{
+    return this.http.post(this.baseUrl+"line/",data);
+  }
   
   // get(id:string):Observable<any>{
   //   return this.http.get(this.baseUrl+"product/"+id);
