@@ -25,8 +25,12 @@ export class AuthService {
   setData(user:User){
     localStorage.setItem("app.user",JSON.stringify(user));
   }
-  logout(){
+
+  deleteData(){
     localStorage.setItem("app.user","");
+  }
+  logout():Observable<any>{
+    return this.client.post(this.baseUrl +"logout/", {}, {withCredentials: true});
   }
   login(data: any):Observable<any>{
     return this.client.post(this.baseUrl +"signin/", data, {withCredentials: true});

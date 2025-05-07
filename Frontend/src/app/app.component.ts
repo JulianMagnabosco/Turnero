@@ -44,7 +44,19 @@ export class AppComponent implements OnInit, OnDestroy{
 
   logout() {
     this.dialogOpen=false
-    this.service.logout()
-    this.router.navigate(["/home"])
+    this.subs.add(
+      this.service.logout().subscribe({
+        next: ()=> {
+          alert("Sesion cerrada")
+          this.service.deleteData()
+          this.router.navigate(["/home"])
+        },
+        error: ()=>{
+          alert("Sesion cerrada")
+          this.service.deleteData()
+          this.router.navigate(["/home"])
+        }
+      })
+    )
   }
 }
