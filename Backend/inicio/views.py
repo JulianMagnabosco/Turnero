@@ -190,6 +190,8 @@ def getAll(request):
     listRaw0 = Ticket.objects.select_related("user").select_related("line")
     listRaw1 = listRaw0.all() 
 
+    print(Ticket.objects.count())
+
     listValues=list()
     for t in list(listRaw1):
         listValues.append(t.json())

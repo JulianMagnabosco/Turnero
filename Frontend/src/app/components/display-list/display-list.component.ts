@@ -60,10 +60,15 @@ export class DisplayListComponent implements OnInit, OnDestroy {
         },
         complete: () => {
           this.loading = false;
+          this.startWS()
         },
       })
     );
 
+  }
+
+  startWS(){
+    
     this.subs.add(
       this.webSocket.getMessages().subscribe({
         next: (value) => {
