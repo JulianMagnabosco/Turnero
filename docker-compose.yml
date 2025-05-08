@@ -53,7 +53,7 @@ services:
       - redis_db
     restart: always
     volumes:
-      - app_data:/app
+      - app_data:/app/db_data
            
   front:
     container_name: front

@@ -60,10 +60,10 @@ export class DisplayListComponent implements OnInit, OnDestroy {
         },
         complete: () => {
           this.loading = false;
-          this.startWS()
         },
       })
     );
+    this.startWS()
 
   }
 
