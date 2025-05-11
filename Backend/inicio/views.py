@@ -173,7 +173,7 @@ def api_signup(request):
 def getLines(request):
     username = request.user.username
     listRaw0 = Line.objects
-    if not request.user.is_superuser:
+    if request.user.is_authenticated and not request.user.is_superuser:
         listRaw = listRaw0.filter(users__username=username).all() 
     else:
         listRaw = listRaw0.all() 

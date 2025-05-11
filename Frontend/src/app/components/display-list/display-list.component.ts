@@ -5,6 +5,7 @@ import { TicketsService } from '../../services/tickets.service';
 import { DatePipe, NgClass, NgFor, NgIf } from '@angular/common';
 import { Ticket } from '../../models/ticket';
 import { WebSocketService } from '../../services/web-socket.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-display-list',
@@ -22,6 +23,7 @@ export class DisplayListComponent implements OnInit, OnDestroy {
     // new TicketList([new Ticket(),new Ticket(),new Ticket()],"P","Pediatria"),
     // new TicketList([new Ticket(),new Ticket(),new Ticket()],"C","Clinica"),
   ];
+  lines: string[]=[]
   audio = new Audio('music.wav');
   audioPaused=true
 
@@ -32,7 +34,8 @@ export class DisplayListComponent implements OnInit, OnDestroy {
   datetime=new Date();
   constructor(
     private service: TicketsService,
-    private webSocket: WebSocketService
+    private webSocket: WebSocketService,
+    private route: ActivatedRoute
   ) {}
   ngOnInit(): void {
     this.audio.loop=true
@@ -50,10 +53,24 @@ export class DisplayListComponent implements OnInit, OnDestroy {
       }
     }))
     this.loading = true;
+    this.subs.add(this.route.queryParams.subscribe({
+      next:(value)=> {
+        if(value["data"]){
+          this.lines= value["data"].split(",");
+        }
+        this.startHTTP()
+      },
+    }))
+    this.startWS()
+
+  }
+
+  startHTTP(){
+    
     this.subs.add(
       this.service.getAll().subscribe({
         next: (value) => {
-          this.list = value['data'];
+          this.saveData(value['data']);
         },
         error: (err) => {
           console.error("Reintentando")
@@ -63,8 +80,6 @@ export class DisplayListComponent implements OnInit, OnDestroy {
         },
       })
     );
-    this.startWS()
-
   }
 
   startWS(){
@@ -88,6 +103,9 @@ export class DisplayListComponent implements OnInit, OnDestroy {
   }
 
   _callticket(data: any) {
+    if(this.lines.length ==0 || this.lines.find((l)=> l!=data['code'] )){
+      return
+    }
     let ticket=this.calledList.find((t)=>{return t.user==data['user']})
     let ticketid=0
     if(ticket){
@@ -124,13 +142,17 @@ export class DisplayListComponent implements OnInit, OnDestroy {
   }
 
   saveData(data: any) {
-    let newList: Ticket[] = data;
-    newList.forEach((ticket) => {
+    let giveList: Ticket[] = data;
+    let newList: Ticket[] = [];
+    giveList.forEach((ticket) => {
       let findTicket = this.list.find((e) => {
         return e.id == ticket.id;
       });
       if(findTicket){
         ticket.selected=findTicket.selected
+      }
+      if(this.lines.length ==0 || this.lines.find((l)=> l==ticket.code )){
+        newList.push(ticket)
       }
     });
     this.list=newList;
