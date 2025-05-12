@@ -26,6 +26,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 # COPY . /app/
 COPY ./turnero /app/turnero
 COPY ./inicio /app/inicio
+RUN mkdir -p ./db_data
 COPY ./db_data /app/db_data
 COPY manage.py /app/
  
