@@ -56,7 +56,7 @@ export class DisplayListComponent implements OnInit, OnDestroy {
     this.subs.add(this.route.queryParams.subscribe({
       next:(value)=> {
         if(value["data"]){
-          this.lines= value["data"].split(",");
+          this.lines= value["data"].toUpperCase().split(",");
         }
         this.startHTTP()
       },
