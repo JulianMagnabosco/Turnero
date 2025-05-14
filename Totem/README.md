@@ -30,6 +30,11 @@
 
 ```
 
+# Linux
+```
+sudo chmod -R 777 /dev/bus/usb
+```
+
 ## Run
 
 `npm install`
