@@ -7,17 +7,17 @@
   "LINES": [
     {
       "name": "Guardia Central",
-      "code": "GC",
+      "code": "CGU",
       "lastNumber": 1
     },
     {
       "name": "Family Autorizaciones",
-      "code": "FA",
+      "code": "FAM",
       "lastNumber": 1
     },
     {
       "name": "Mesa de Entrada",
-      "code": "ME",
+      "code": "MES",
       "lastNumber": 1
     },
     {
@@ -27,12 +27,12 @@
     },
     {
       "name": "Guardia Adulto",
-      "code": "GA",
+      "code": "AGU",
       "lastNumber": 1
     },
     {
       "name": "Guardia Pediatrica",
-      "code": "GP",
+      "code": "PGU",
       "lastNumber": 1
     }
   ]
