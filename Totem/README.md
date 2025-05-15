@@ -3,15 +3,41 @@
 ## Config.json
 ```
 {
-    "API_URL":"http://localhost:8000/api/addturn/",
-    "LINES":[
-        { "code": "CO", "name": "CO", "color": "rgb(179 0 0)" },
-        { "code": "P", "name": "Pediatria", "color": "rgb(0 179 0)" },
-        { "code": "CO", "name": "CO", "color": "rgb(179 0 0)" },
-        { "code": "P", "name": "Pediatria", "color": "rgb(0 179 0)" },
-        { "code": "C", "name": "coso", "color": "rgb(179 0 179)" }
-    ]
+  "API_URL": "http://localhost:3000/api/ticket/",
+  "LINES": [
+    {
+      "name": "Guardia Central",
+      "code": "GC",
+      "lastNumber": 1
+    },
+    {
+      "name": "Family Autorizaciones",
+      "code": "FA",
+      "lastNumber": 1
+    },
+    {
+      "name": "Mesa de Entrada",
+      "code": "ME",
+      "lastNumber": 1
+    },
+    {
+      "name": "Imagenes",
+      "code": "IMG",
+      "lastNumber": 1
+    },
+    {
+      "name": "Guardia Adulto",
+      "code": "GA",
+      "lastNumber": 1
+    },
+    {
+      "name": "Guardia Pediatrica",
+      "code": "GP",
+      "lastNumber": 1
+    }
+  ]
 }
+
 ```
 
 ## Dependencias

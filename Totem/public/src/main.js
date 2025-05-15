@@ -13,6 +13,7 @@ $(document).ready(function () {
   let nameSelected = "";
   let lastNumber = 0;
 
+  const ajaxTimeout = 5000;
   let active = false;
   let timerPopups = 2000;
 
@@ -77,6 +78,7 @@ $(document).ready(function () {
       dataType: "json",
       contentType: "application/json",
       // async: false,
+      timeout:ajaxTimeout,
       data: '{"code": "' + codeSelected + '"}',
     })
       .done(function (data, status) {
@@ -125,6 +127,7 @@ $(document).ready(function () {
       dataType: "json",
       contentType: "application/json",
       // async: false,
+      timeout:ajaxTimeout,
       data:
         '{"code": "' +
         codeSelected +
@@ -173,8 +176,9 @@ $(document).ready(function () {
       url: apiUrl+"list/",
       dataType: "json",
       contentType: "application/json",
+      timeout:ajaxTimeout,
       // async: false,
-    data: JSON.stringify({"list":tryAgainList}),
+      data: JSON.stringify({"list":tryAgainList}),
     })
       .done(function (data, status) {
         // delete tryAgainList[index]
