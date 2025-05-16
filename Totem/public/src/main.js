@@ -7,15 +7,20 @@ $(document).ready(function () {
   let options = [
     { code: "CO", name: "CO",lastNumber:1 },
   ];
-  let colors = ["rgb(92 0 179)", "rgb(0 128 179)", "rgb(128 179 0)","rgb(189 106 65)", "rgb(2 179 0)", "rgb(100 128 179)"];
+  let groups = [
+    { name: "Guardia", lines : [""] },
+  ];
+  
+  let colors = ["rgb(92 0 179)", "rgb(0 128 179)", "rgb(128 179 0)","rgb(189 106 65)", "rgb(232 89 79)", "rgb(100 128 179)"];
 
   let codeSelected = "";
   let nameSelected = "";
+  let groupSelected = "";
   let lastNumber = 0;
 
   const ajaxTimeout = 5000;
   let active = false;
-  let timerPopups = 2000;
+  let timerPopups = 5000;
 
   let tryAgainList = []
   tryAgainList=JSON.parse(localStorage.getItem("data"))
@@ -33,12 +38,13 @@ $(document).ready(function () {
   })
 
   let e = $(".button-turn").clone(true, true);
-  $(".button-turn").hide();
+  $(".button-turn").removeClass("button-turn").hide();
 
   $.get(totemUrl, function (data) {
     console.log(totemUrl);
     apiUrl = data["apiUrl"];
     options = data["lines"];
+    groups = data["groups"];
     options.forEach(function (option, index) {
       e.children().children()[1].innerText = option.code;
       e.children().children()[0].innerText = option.name;
@@ -48,6 +54,30 @@ $(document).ready(function () {
 
       e.clone().appendTo("#button-list");
     })
+
+    e.removeClass("button-turn");
+    e.addClass("button-group");
+    
+    groups.forEach(function (group, index) {
+      e.children().children()[1].innerText = "Seleccionar";
+      e.children().children()[0].innerText = group.name;
+      e.children().css("backgroundColor", colors[index % colors.length]);
+      e.children().attr("data-b-group", group.name);
+      group.lines.forEach((line )=> {
+        $("[data-code='"+line+"']").parent().attr("data-group", group.name);
+      })
+      $("[data-group='"+group.name+"']").hide()
+
+      e.clone().appendTo("#button-list");
+    })
+      e.children().children()[1].innerText = "Volver Atras";
+      e.children().children()[0].innerText = "←←←";
+      e.children().css("font-style", "italic")
+      e.addClass("w-75 ps-5")
+      e.children().css("backgroundColor", "rgb(100 100 100)");
+      e.children().attr("data-b-group", "Back");
+
+      e.clone().hide().appendTo("#button-list");
 
     $(".button-turn")
       .children()
@@ -60,6 +90,25 @@ $(document).ready(function () {
         
         getTicket();
       });
+      
+    $(".button-group")
+      .children()
+      .click(function (e) {
+        groupSelected= $(this).data("b-group")
+        if(groupSelected=="Back"){
+          $("[data-b-group]").parent().show()
+          $(".button-turn").show()
+          $("[data-group]").hide()
+        }else{
+          $("[data-b-group='Back']").parent().show()
+          $(".button-turn").hide()
+          $("[data-group='"+groupSelected+"']").show()
+        }
+        $(this).parent().hide()
+
+      });
+
+
   }).fail(function (){
     alert("Servidor desconectado")
   });;
@@ -139,10 +188,10 @@ $(document).ready(function () {
     })
       .done(function (data, status) {
         console.log("Exito")
-        // $("#state-type").text(`Exito`);
-        // $("#liveToast").addClass(`bg-success`);
-        // $("#liveToast").removeClass(`bg-danger`);
-        // $("#state-title").text(`Ticket impreso`);
+        $("#state-type").text(`Exito`);
+        $("#liveToast").addClass(`bg-success`);
+        $("#liveToast").removeClass(`bg-danger`);
+        $("#state-title").text(`Ticket impreso`);
       })
       .fail(function () {
         $("#printer-state-type").text(`Error`);
@@ -163,7 +212,7 @@ $(document).ready(function () {
 
   setTimeout(()=>{tryAgain()},2000)
   function tryAgain(){
-    console.log("JSON: "+localStorage.getItem("data"))
+    // console.log("JSON: "+localStorage.getItem("data"))
     if(!tryAgainList){
       tryAgainList=[]
     }

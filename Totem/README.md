@@ -4,6 +4,12 @@
 ```
 {
   "API_URL": "http://localhost:3000/api/ticket/",
+  "GROUPS":[
+    {
+      "name":"Guardia",
+      "lines":["CGU","PGU","AGU"]
+    }
+  ],
   "LINES": [
     {
       "name": "Guardia Central",

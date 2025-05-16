@@ -20,6 +20,12 @@ try{
 const fs = require('fs');
 let config = {
     "API_URL":"http://localhost:8000/api/ticket/",
+    "GROUPS":[
+        {
+          "name":"Guardia",
+          "lines":["CGU","PGU","AGU"]
+        }
+    ],
     "LINES":[
         { "code": "CO", "name": "CO", "lastNumber": 1 },
         { "code": "P", "name": "Pediatria", "lastNumber": 5 },
@@ -53,6 +59,7 @@ app.get('/', (req, res) =>
 app.get('/totem/', (req, res) =>
     res.send({
         apiUrl: config.API_URL,
+        groups: config.GROUPS,
         lines: config.LINES,
     })
 );
