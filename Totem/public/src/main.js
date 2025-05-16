@@ -7,7 +7,7 @@ $(document).ready(function () {
   let options = [
     { code: "CO", name: "CO",lastNumber:1 },
   ];
-  let colors = ["rgb(92 0 179)", "rgb(0 128 179)", "rgb(128 179 0)"];
+  let colors = ["rgb(92 0 179)", "rgb(0 128 179)", "rgb(128 179 0)","rgb(189 106 65)", "rgb(2 179 0)", "rgb(100 128 179)"];
 
   let codeSelected = "";
   let nameSelected = "";
