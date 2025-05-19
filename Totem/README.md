@@ -62,8 +62,12 @@
 
 ```
 
-# Linux
-```
+## Abrir puertos USB 
+
+Crear un /etc/rc.local o /usr/local/sbin/FILE.sh, con un service startup
+
+```bash
+#!/bin/bash
 sudo chmod -R 777 /dev/bus/usb
 ```
 
