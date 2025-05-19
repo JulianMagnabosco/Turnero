@@ -73,7 +73,8 @@ $(document).ready(function () {
       e.children().children()[1].innerText = "Volver Atras";
       e.children().children()[0].innerText = "←←←";
       e.children().css("font-style", "italic")
-      e.addClass("w-75 ps-5")
+      e.addClass("px-5")
+      e.children().addClass("rounded-pill")
       e.children().css("backgroundColor", "rgb(100 100 100)");
       e.children().attr("data-b-group", "Back");
 
