@@ -87,11 +87,11 @@ export class DisplayListComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.webSocket.getMessages().subscribe({
         next: (value) => {
-          console.log(value)
           if (value['message']['type'] == 'update') {
             this.saveData(value['message']['data']);
           } else if (value['message']['type'] == 'call') {
             this._callticket(value['message']);
+            console.log("call")
           }
         },
         error: (err) => {
@@ -103,9 +103,10 @@ export class DisplayListComponent implements OnInit, OnDestroy {
   }
 
   _callticket(data: any) {
-    if(this.lines.length ==0 || this.lines.find((l)=> l!=data['code'] )){
+    if(this.lines.length !=0 && this.lines.find((l)=> l!=data['code'] )){
       return
     }
+    console.log("Correcto")
     let ticket=this.calledList.find((t)=>{return t.user==data['user']})
     let ticketid=0
     if(ticket){
