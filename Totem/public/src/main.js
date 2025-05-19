@@ -189,10 +189,10 @@ $(document).ready(function () {
     })
       .done(function (data, status) {
         console.log("Exito")
-        $("#state-type").text(`Exito`);
-        $("#liveToast").addClass(`bg-success`);
-        $("#liveToast").removeClass(`bg-danger`);
-        $("#state-title").text(`Ticket impreso`);
+        $("#printer-state-type").text(`Exito`);
+        $("#printer-popup").addClass(`bg-success`);
+        $("#printer-popup").removeClass(`bg-danger`);
+        $("#printer-state-title").text(`Ticket impreso`);
       })
       .fail(function () {
         $("#printer-state-type").text(`Error`);
