@@ -1,5 +1,5 @@
 $(document).ready(function () {
-  console.log(window.location);
+  
   let apiUrl = "http://localhost:8000/api/ticket/";
   const totemUrl = window.location.origin + "/totem/";
   const printerUrl = totemUrl + "ticket/";
@@ -23,7 +23,7 @@ $(document).ready(function () {
   let timerPopups = 5000;
 
   let tryAgainList = []
-  tryAgainList=JSON.parse(localStorage.getItem("data"))
+  tryAgainList=JSON.parse(localStorage.getItem("faileds"))
 
   $("#scroll-up").click(function (){
     scroll=0
@@ -41,9 +41,23 @@ $(document).ready(function () {
   $(".button-turn").removeClass("button-turn").hide();
 
   $.get(totemUrl, function (data) {
-    console.log(totemUrl);
+    
     apiUrl = data["apiUrl"];
-    options = data["lines"];
+    let oldOptions = JSON.parse(localStorage.getItem("options"))
+    console.log("Parsed: ")
+    console.log(oldOptions)
+    options = data["lines"].map((l)=>{
+      let oldO=undefined;
+      if(oldOptions){
+         oldO=oldOptions.find((ol)=>{return l.code==ol.code})
+      }
+      if(oldO){
+        l.lastNumber=oldO.lastNumber
+      }
+      return l
+    });
+    console.log("Fetched: ")
+    console.log(options)
     groups = data["groups"];
     options.forEach(function (option, index) {
       e.children().children()[1].innerText = option.code;
@@ -83,7 +97,7 @@ $(document).ready(function () {
     $(".button-turn")
       .children()
       .click(function (e) {
-        console.log($(this).data("code"));
+        
         if (active) return;
         active = true;
         codeSelected = $(this).data("code");
@@ -132,10 +146,12 @@ $(document).ready(function () {
       data: '{"code": "' + codeSelected + '"}',
     })
       .done(function (data, status) {
-        console.log(data);
+        
         lastNumber = data["ticketNumber"];
         const op = options.find((e)=>e.code==codeSelected)
         op.lastNumber = lastNumber
+        localStorage.setItem("options",JSON.stringify(options))
+
         $("#state-type").text(`Exito`);
         $("#state-popup").addClass(`bg-success`);
         $("#state-popup").removeClass(`bg-danger`);
@@ -147,7 +163,7 @@ $(document).ready(function () {
         const op = options.find((e)=>e.code==codeSelected)
         lastNumber = (op.lastNumber)? op.lastNumber+1: 1;
         op.lastNumber = lastNumber
-        console.log(op.lastNumber);
+        localStorage.setItem("options",JSON.stringify(options))
 
         tryAgainList.push({code:codeSelected,lastNumber:lastNumber})
 
@@ -169,7 +185,7 @@ $(document).ready(function () {
   }
 
   function callPrinter() {
-    // console.log(printerUrl(codeSelected, nameSelected, lastNumber));
+    // 
 
     $.ajax({
       type: "POST",
@@ -188,7 +204,7 @@ $(document).ready(function () {
         "}",
     })
       .done(function (data, status) {
-        console.log("Exito")
+        
         $("#printer-state-type").text(`Exito`);
         $("#printer-popup").addClass(`bg-success`);
         $("#printer-popup").removeClass(`bg-danger`);
@@ -213,7 +229,7 @@ $(document).ready(function () {
 
   setTimeout(()=>{tryAgain()},2000)
   function tryAgain(){
-    // console.log("JSON: "+localStorage.getItem("data"))
+    // 
     if(!tryAgainList){
       tryAgainList=[]
     }
@@ -238,10 +254,10 @@ $(document).ready(function () {
         })
       })
       .fail(function (data, status) {
-        console.log("Reintento fallido: "+tryAgainList.length);
+        
       })
       .always(function (){
-        localStorage.setItem("data",JSON.stringify(tryAgainList))
+        localStorage.setItem("faileds",JSON.stringify(tryAgainList))
         setTimeout(()=>{tryAgain()},2000)
       })
   }

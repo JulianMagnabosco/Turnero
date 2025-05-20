@@ -158,4 +158,8 @@ export class DisplayListComponent implements OnInit, OnDestroy {
     });
     this.list=newList;
   }
+
+  fullscreen(){
+    document.documentElement.requestFullscreen();
+  }
 }
