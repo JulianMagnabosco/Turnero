@@ -66,6 +66,8 @@ export class ManageListComponent implements OnInit, OnDestroy {
         next: (value) => {
           this.lines=value["data"].map((l:TicketList)=>{return l.code})
           console.log(value);
+          this.getData()
+          this.startWS()
         },
         error: (err) => {
           // alert(
@@ -73,12 +75,17 @@ export class ManageListComponent implements OnInit, OnDestroy {
           // );
           // this.charge()
           // return
+          this.getData()
+          this.startWS()
         },
         complete: ()=>{
           this.loading=false
         }
       })
     );
+  }
+
+  getData(){
     
     this.subs.add(
       this.service.getAll().subscribe({
@@ -98,7 +105,9 @@ export class ManageListComponent implements OnInit, OnDestroy {
         }
       })
     );
+  }
 
+  startWS(){
     this.subs.add(
       this.webSocket.getMessages().subscribe({
         next: (value) => {

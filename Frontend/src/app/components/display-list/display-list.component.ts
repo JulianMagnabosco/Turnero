@@ -17,6 +17,8 @@ export class DisplayListComponent implements OnInit, OnDestroy {
   subs: Subscription = new Subscription();
   loading = false;
 
+  fullscreen=false
+
   calledList:Ticket[]=[];
   list: Ticket[] = [
     // new TicketList([new Ticket(),new Ticket(),new Ticket()],"CO","CO"),
@@ -159,7 +161,10 @@ export class DisplayListComponent implements OnInit, OnDestroy {
     this.list=newList;
   }
 
-  fullscreen(){
+  doFullscreen(){
     document.documentElement.requestFullscreen();
+    document.documentElement.onfullscreenchange=(e)=>{
+      this.fullscreen=!this.fullscreen
+    }
   }
 }
