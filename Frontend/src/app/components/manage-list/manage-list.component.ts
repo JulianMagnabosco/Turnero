@@ -32,7 +32,7 @@ export class ManageListComponent implements OnInit, OnDestroy {
     // new TicketList([new Ticket(),new Ticket(),new Ticket()],"P","Pediatria"),
     // new TicketList([new Ticket(),new Ticket(),new Ticket()],"C","Clinica"),
   ];
-  audio = new Audio('music.wav');
+  audio = new Audio('music.mp3');
 
   timeout: any;
   timer = 5;
@@ -142,7 +142,7 @@ export class ManageListComponent implements OnInit, OnDestroy {
         const secondIndex = this.list.indexOf(ticket);
         const startIndex = Math.min(firstIndex, secondIndex);
         const endIndex = Math.max(firstIndex, secondIndex);
-        this.list.slice(startIndex, endIndex).forEach((v) => {
+        this.list.slice(startIndex, endIndex+1).forEach((v) => {
           v.selected = true;
         });
       } else {

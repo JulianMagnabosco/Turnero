@@ -26,7 +26,7 @@ export class DisplayListComponent implements OnInit, OnDestroy {
     // new TicketList([new Ticket(),new Ticket(),new Ticket()],"C","Clinica"),
   ];
   lines: string[]=[]
-  audio = new Audio('music.wav');
+  audio = new Audio('music.mp3');
   audioPaused=true
 
   timeout: any;
