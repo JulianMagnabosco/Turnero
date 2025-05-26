@@ -9,12 +9,14 @@ import { ShowUserComponent } from './components/show-user/show-user.component';
 import { DisplayListComponent } from './components/display-list/display-list.component';
 import { ManageListComponent } from './components/manage-list/manage-list.component';
 import { LinesComponent } from './components/lines/lines.component';
+import { AboutComponent } from './components/about/about.component';
 
 export const routes: Routes = [
     {path:"",component:HomeComponent},
     {path:"login",component:LoginComponent, title:"Iniciar Secion"},
     // {path:"password",component:PasswordComponent, title:"Cambiar Contraseña"},
     {path:"display",component:DisplayListComponent, title:"Mostrar"},
+    {path:"about",component:AboutComponent, title:"Acerca De"},
     {path:"manage",component:ManageListComponent, title:"Gestion listas", canActivate:[authGuard]},
 
     {path:"showuser",component:ShowUserComponent, title:"Usuario", canActivate:[authGuard]},

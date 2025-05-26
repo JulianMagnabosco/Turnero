@@ -14,13 +14,13 @@ class Line(models.Model):
         return {"id":self.pk,"name":self.name,"code":self.code,"tickets":list(self.getTickets().values())}
     
     async def ajson(self):
-        tks = Ticket.objects.filter(line=self)
+        tks = Ticket.objects.filter(line=self).filter(called=False).order_by("number")
         listA = await sync_to_async(tks.values)()
         newList = await sync_to_async(list)(listA)
         return {"id":self.pk,"name":self.name,"code":self.code,"tickets":newList}
 
     def getTickets(self):
-        return Ticket.objects.filter(line=self).order_by("number")
+        return Ticket.objects.filter(line=self).filter(called=False).order_by("number")
 
     def __str__(self):
         return self.name+"("+self.code+")"
@@ -28,22 +28,28 @@ class Line(models.Model):
 class Ticket(models.Model):
     number=models.IntegerField()
     line=models.ForeignKey(Line,on_delete=models.CASCADE,related_name="tickets")
+    totem=models.CharField(max_length=100,default="")
+    called=models.BooleanField(default=False)
 
     user=models.ForeignKey(User,blank=True,null=True,on_delete=models.SET_NULL,related_name="tickets")
     
     def json(self):
-        if self.user:
-            return {"id":self.pk,"code":self.line.code,"number":self.number,"user":self.user.username}
-        else:
-            return {"id":self.pk,"code":self.line.code,"number":self.number,"user":None}
+        return {"id":self.pk,
+                "code":self.line.code,
+                "number":self.number,
+                "totem":self.totem,
+                "called":self.called,
+                "user":self.user.username if self.user else None}
         
     async def ajson(self):
-        newline = await sync_to_async(self.line)()
-        userline = await sync_to_async(self.user)()
-        if self.user:
-            return {"id":self.pk,"code":newline.code,"number":self.number,"user":userline.username}
-        else:
-            return {"id":self.pk,"code":newline.code,"number":self.number,"user":None}
+        ticketLine = await sync_to_async(self.line)()
+        ticketUser = await sync_to_async(self.user)()
+        return {"id":self.pk,
+                "code":ticketLine.code,
+                "number":self.number,
+                "totem":self.totem,
+                "called":self.called,
+                "user":ticketUser.username if self.user else None}
 
     def __str__(self):
         return str(self.number)+"("+self.line.code+")"

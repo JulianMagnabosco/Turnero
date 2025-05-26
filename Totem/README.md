@@ -3,6 +3,7 @@
 ## Config.json
 ```
 {
+  "TOTEM":"totem1",
   "API_URL": "http://localhost:3000/api/ticket/",
   "GROUPS":[
     {

@@ -4,6 +4,7 @@ export class Ticket {
   number=1;
   code="";
   user="";
+  called="";
   selected=false;
 
   constructor(code:string,number:number,user:string=""){

@@ -269,7 +269,7 @@ export class ManageListComponent implements OnInit, OnDestroy {
       if(findTicket){
         ticket.selected=findTicket.selected
       }
-      if(this.lines.find((l)=> l==ticket.code )){
+      if(this.lines.find((l)=> l==ticket.code ) && (!ticket.user||ticket.user==this.authService.user?.username)){
         newList.push(ticket)
       }
     });

@@ -141,7 +141,7 @@ def getLines(request):
 @csrf_exempt
 def getAll(request):
     username = request.user.username
-    listRaw0 = Ticket.objects.select_related("user").select_related("line")
+    listRaw0 = Ticket.objects.select_related("user").select_related("line").filter(called=False).order_by("number")
     listRaw1 = listRaw0.all() 
 
     listValues=list()
@@ -176,9 +176,10 @@ def addTicket(request):
     if request.method == "POST":
         body = json.loads(request.body)
         line = get_object_or_404(Line,code=body["code"])
+        totem = body["totem"]
         last = line.getTickets().last()
         lastNumber = last.number+1 if not last is None else 1
-        Ticket.save(Ticket(number=lastNumber,line=line))
+        Ticket.save(Ticket(number=lastNumber,line=line,totem=totem))
         getAll(request)
         return JsonResponse({"ticketNumber": lastNumber})
     return getAll(request)
@@ -188,9 +189,11 @@ def addTicket(request):
 def addTicketList(request):
     if request.method == "POST":
         body = json.loads(request.body)
+        totem = body["totem"]
         for item in body["list"]:
             line = get_object_or_404(Line,code=item["code"])
-            Ticket.save(Ticket(number=int(item["lastNumber"]),line=line))
+            lastNumber = int(item["lastNumber"])
+            Ticket.save(Ticket(number=lastNumber,line=line,totem=totem))
     getAll(request)
     return JsonResponse({"list":body["list"]})
 

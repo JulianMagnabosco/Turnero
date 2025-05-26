@@ -1,6 +1,7 @@
 $(document).ready(function () {
   
   let apiUrl = "http://localhost:8000/api/ticket/";
+  let totemName = "totemName";
   const totemUrl = window.location.origin + "/totem/";
   const printerUrl = totemUrl + "ticket/";
 
@@ -43,6 +44,7 @@ $(document).ready(function () {
   $.get(totemUrl, function (data) {
     
     apiUrl = data["apiUrl"];
+    totemName = data["totem"];
     let oldOptions = JSON.parse(localStorage.getItem("options"))
     console.log("Parsed: ")
     console.log(oldOptions)
@@ -143,7 +145,7 @@ $(document).ready(function () {
       contentType: "application/json",
       // async: false,
       timeout:ajaxTimeout,
-      data: '{"code": "' + codeSelected + '"}',
+      data: '{"code": "' + codeSelected +'", "totem": "' + totemName + '"}',
     })
       .done(function (data, status) {
         
@@ -244,7 +246,7 @@ $(document).ready(function () {
       contentType: "application/json",
       timeout:ajaxTimeout,
       // async: false,
-      data: JSON.stringify({"list":tryAgainList}),
+      data: JSON.stringify({"list":tryAgainList,"totem":totemName}),
     })
       .done(function (data, status) {
         // delete tryAgainList[index]

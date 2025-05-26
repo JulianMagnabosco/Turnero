@@ -20,7 +20,8 @@
         <div class="bg-gray-200">
             <div class="flex *:w-1/2 *:p-3 text-2xl border-t-2 border-black" *ngFor="let ticket of list">
                 <div class="text-end uppercase">{{ticket.code+" - "+ticket.number}}</div>
-                <div class="text-start bg-gray-300 uppercase">{{ticket.user||" ."}}</div>
+                <!-- <div class="text-start bg-gray-300 uppercase">{{ticket.user||" ."}}</div> -->
+                <div class="text-start bg-gray-300 uppercase"> .</div>
             </div>
         </div>
     </div>
