@@ -16,52 +16,6 @@ from .models import Line,Ticket
 import json
 
 
-# TODO:eliminar todo haasta websocket
-def base(request):
-    return redirect('signin')
-
-@login_required
-def signout(request):
-    logout(request)
-    return redirect('home')
-
-
-def signin(request):
-    if request.method == 'GET':
-        return render(request, 'signin.html', {"form": AuthenticationForm})
-    else:
-        user = authenticate(
-            request, username=request.POST['username'], password=request.POST['password'])
-        if user is None:
-            return render(request, 'signin.html', {"form": AuthenticationForm, "error": "Username or password is incorrect."})
-
-        login(request, user)
-        return redirect('lines_show')
-    
-def signup(request):
-    if request.method == 'GET':
-        return render(request, 'signup.html', {"form": UserCreationForm})
-    else:
-
-        if request.POST["password1"] == request.POST["password2"]:
-            try:
-                user = User.objects.create_user(
-                    request.POST["username"], password=request.POST["password1"])
-                user.save()
-                login(request, user)
-                return redirect('lines_show')
-            except IntegrityError:
-                return render(request, 'signup.html', {"form": UserCreationForm, "error": "Username already exists."})
-
-        return render(request, 'signup.html', {"form": UserCreationForm, "error": "Passwords did not match."})
-
-
-@login_required
-def lines_show(request):
-    lines_show = Line.objects.all()
-    return render(request, 'lines_show.html', {"lines_show": lines_show})
-
-
 #WebSocket
 def trigger_mensaje(request):
     channel_layer = get_channel_layer()
@@ -189,8 +143,6 @@ def getAll(request):
     username = request.user.username
     listRaw0 = Ticket.objects.select_related("user").select_related("line")
     listRaw1 = listRaw0.all() 
-
-    print(Ticket.objects.count())
 
     listValues=list()
     for t in list(listRaw1):
