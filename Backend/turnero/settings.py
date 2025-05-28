@@ -99,6 +99,8 @@ WSGI_APPLICATION = 'turnero.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+if not os.path.exists(BASE_DIR / 'db_data'):
+    os.makedirs(BASE_DIR / 'db_data')
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
