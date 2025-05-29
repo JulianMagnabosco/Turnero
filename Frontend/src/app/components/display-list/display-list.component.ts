@@ -109,16 +109,8 @@ export class DisplayListComponent implements OnInit, OnDestroy {
       return
     }
     console.log("Correcto")
-    let ticket=this.calledList.find((t)=>{return t.user==data['user']})
-    let ticketid=0
-    if(ticket){
-      ticket.number=data['number']
-      ticket.code=data['code']
-      ticketid=this.calledList.indexOf(ticket)
-    }
-    else{
-      ticketid=this.calledList.push(new Ticket(data['code'],data['number'],data['user']))-1
-    }
+    this.calledList=this.calledList.filter((t)=>{return t.user!=data['user']})
+    this.calledList.push(new Ticket(data['code'],data['number'],data['user']))
     this.playSound();
     
     clearTimeout(this.timeout);
