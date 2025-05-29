@@ -4,15 +4,15 @@
         <div class="grow p-5">
             <img class="w-full " src="logo.png" alt="">
         </div>
-        <div class="bg-cyan-700 text-2xl p-2 text-white text-center">{{datetime | date:"dd/MM/YYYY HH:mm"}}</div>
+        <div class="bg-cyan-700 text-4xl p-2 text-white text-center">{{datetime | date:"dd/MM/YYYY HH:mm"}}</div>
     </div>
     <div class="h-[calc(100svh-10rem)] overflow-hidden text-white font-bold">
-        <div class="flex *:w-1/2 *:p-3 text-3xl">
+        <div class="flex *:w-1/2 *:p-3 text-6xl">
             <div class="text-end bg-gray-500 uppercase">TURNO</div>
             <div class="text-start bg-gray-400 uppercase">PUESTO</div>
         </div>
         <div class="bg-red-500 font-extrabold ">
-            <div class="flex *:p-3 text-4xl relative border-t-2 border-black" *ngFor="let ticket of calledList">
+            <div class="flex *:p-3 text-6xl relative border-t-2 border-black" *ngFor="let ticket of calledList">
                 <div class="w-1/2 text-end">{{ticket.code+" - "+ticket.number}}</div>
                 <div class="w-1/2 text-start bg-red-400 uppercase">{{ticket.user||" ."}}</div>
 
@@ -21,7 +21,7 @@
             </div>
         </div>
         <div class="bg-blue-400">
-            <div class="flex *:w-1/2 *:p-3 text-2xl border-t-2 border-black" *ngFor="let ticket of list">
+            <div class="flex *:w-1/2 *:p-3 text-6xl border-t-2 border-black" *ngFor="let ticket of list">
                 <div class="text-end uppercase">{{ticket.code+" - "+ticket.number}}</div>
                 <!-- <div class="text-start bg-gray-300 uppercase">{{ticket.user||" ."}}</div> -->
                 <div class="text-start bg-blue-300 uppercase"> .</div>
@@ -29,5 +29,3 @@
         </div>
     </div>
 </div>
-
-<!-- <button class="p-3 bg-blue-300 text-black absolute bottom-0 left-0 size-16 rounded-full font-bold text-2xl" (click)="doFullscreen()" [hidden]="fullscreen">[ ]</button> -->
