@@ -7,16 +7,16 @@
       <div class="flex md:gap-x-8 gap-x-4 place-items-center *:text-center
       *:text-sm *:font-semibold *:leading-6 *:text-white *:hover:underline *:decoration-4 *:underline-offset-4">
 
-        <a [routerLink]="['/display']">Mostrar</a>
+        <a [routerLink]="['/display']">Pantalla</a>
 
 
         <ng-container *ngIf="this.service.user">
-          <a [routerLink]="['/manage']">Gestionar</a>
+          <a [routerLink]="['/manage']">Tickets</a>
 
           <ng-container *ngIf="this.service.user.admin">
-            <a [routerLink]="['/register']">Registrar usuario</a>
+            <!-- <a [routerLink]="['/register']">Registrar usuario</a> -->
 
-            <a [routerLink]="['/users']">Gestionar usuarios</a>
+            <a [routerLink]="['/users']">Usuarios</a>
 
             <a [routerLink]="['/lines']">Linas de Ticket</a>
   

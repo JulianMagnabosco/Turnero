@@ -19,9 +19,9 @@ export const routes: Routes = [
     {path:"about",component:AboutComponent, title:"Acerca De"},
     {path:"manage",component:ManageListComponent, title:"Gestion listas", canActivate:[authGuard]},
 
-    {path:"showuser",component:ShowUserComponent, title:"Usuario", canActivate:[authGuard]},
+    {path:"showuser",component:ShowUserComponent, title:"Mi usuario", canActivate:[authGuard]},
     {path:"lines",component:LinesComponent, title:"Lineas de Ticket", canActivate:[authGuardAdmin]},
-    {path:"register",component:RegisterComponent, title:"Registo", canActivate:[authGuardAdmin]},
+    // {path:"register",component:RegisterComponent, title:"Registo", canActivate:[authGuardAdmin]},
     {path:"users",component:UsersComponent, title:"Usuarios", canActivate:[authGuardAdmin]},
 
     {path:"**", redirectTo:""},

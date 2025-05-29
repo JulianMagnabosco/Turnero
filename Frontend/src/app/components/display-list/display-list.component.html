@@ -1,27 +1,30 @@
 <div class="p-4 grid grid-cols-2 overflow-hidden">
 
     <div class="flex flex-col h-[calc(100svh-8rem)] bg-blue-100 border-2 border-black">
-        <div class="grow"></div>
-        <div class="bg-cyan-400 text-2xl p-2 text-center">{{datetime | date:"dd/MM/YYYY HH:mm"}}</div>
-    </div>
-    <div class="h-[calc(100svh-10rem)] overflow-hidden">
-        <div class="flex *:w-1/2 *:p-3 text-2xl">
-            <div class="text-end bg-blue-300 uppercase">TURNO</div>
-            <div class="text-start bg-blue-400 uppercase">PUESTO</div>
+        <div class="grow p-5">
+            <img class="w-full " src="logo.png" alt="">
         </div>
-        <div class="bg-amber-300">
-            <div class="flex *:p-3 text-3xl font-bold relative" *ngFor="let ticket of calledList">
+        <div class="bg-cyan-700 text-2xl p-2 text-white text-center">{{datetime | date:"dd/MM/YYYY HH:mm"}}</div>
+    </div>
+    <div class="h-[calc(100svh-10rem)] overflow-hidden text-white font-bold">
+        <div class="flex *:w-1/2 *:p-3 text-3xl">
+            <div class="text-end bg-gray-500 uppercase">TURNO</div>
+            <div class="text-start bg-gray-400 uppercase">PUESTO</div>
+        </div>
+        <div class="bg-red-500 font-extrabold ">
+            <div class="flex *:p-3 text-4xl relative border-t-2 border-black" *ngFor="let ticket of calledList">
                 <div class="w-1/2 text-end">{{ticket.code+" - "+ticket.number}}</div>
-                <div class="w-1/2 text-start bg-amber-400 uppercase">{{ticket.user||" ."}}</div>
-                <div class="bg-amber-500 opacity-50 absolute top-0 start-0 w-full h-full animate-ping"
+                <div class="w-1/2 text-start bg-red-400 uppercase">{{ticket.user||" ."}}</div>
+
+                <div class="bg-red-500 opacity-50 absolute top-0 start-0 w-full h-full animate-ping"
                     [hidden]="audioPaused"></div>
             </div>
         </div>
-        <div class="bg-gray-200">
+        <div class="bg-blue-400">
             <div class="flex *:w-1/2 *:p-3 text-2xl border-t-2 border-black" *ngFor="let ticket of list">
                 <div class="text-end uppercase">{{ticket.code+" - "+ticket.number}}</div>
                 <!-- <div class="text-start bg-gray-300 uppercase">{{ticket.user||" ."}}</div> -->
-                <div class="text-start bg-gray-300 uppercase"> .</div>
+                <div class="text-start bg-blue-300 uppercase"> .</div>
             </div>
         </div>
     </div>

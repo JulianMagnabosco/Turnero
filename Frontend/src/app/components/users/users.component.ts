@@ -7,12 +7,13 @@ import { UserService } from '../../services/user.service';
 import { User } from '../../models/user';
 import { TicketList } from '../../models/ticket-list';
 import { TicketsService } from '../../services/tickets.service';
+import { RegisterComponent } from "../register/register.component";
 
 
 @Component({
   selector: 'app-users',
   standalone: true,
-  imports: [NgIf,NgFor,FormsModule],
+  imports: [NgIf, NgFor, FormsModule, RegisterComponent],
   templateUrl: './users.component.html',
   styleUrl: './users.component.css'
 })

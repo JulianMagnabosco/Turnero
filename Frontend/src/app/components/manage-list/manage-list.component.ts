@@ -157,6 +157,13 @@ export class ManageListComponent implements OnInit, OnDestroy {
       return t.selected;
     });
   }
+  cancelSelected(){
+    this.list.forEach((v) => {
+      v.selected = false;
+    });
+    this.lastSelectedTicket=this.list[0]
+    this.hasSelections=false;
+  }
 
   deleteSelected() {
     let message = {
