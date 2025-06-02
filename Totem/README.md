@@ -1,6 +1,32 @@
 # Totem
 
-## Config.json
+## Dependencias a instalar
+
+- Git
+- Node.js
+- Libudev
+
+
+### Node.js
+```
+sudo apt upgrade
+sudo apt install nodejs
+sudo apt install npm
+```
+
+### Libudev
+```
+sudo apt-get update
+```
+- Linux, you'll need libudev to build libusb.
+- Ubuntu/Debian: `sudo apt-get install build-essential libudev-dev`.
+- Windows, Use Zadig to install the WinUSB driver for your USB device.
+
+## Impresora
+
+## Configuracion del programa
+Crear archivo config.json.:
+
 ```
 {
   "TOTEM":"totem1",
@@ -47,32 +73,29 @@
 
 ```
 
-## Dependencias
-- Linux, you'll need libudev to build libusb.
-- Ubuntu/Debian: `sudo apt-get install build-essential libudev-dev`.
-- Windows, Use Zadig to install the WinUSB driver for your USB device.
-
-```
-{
-  "dependencies": {
-    "escpos": "^3.0.0-alpha.6",
-    "escpos-usb": "^3.0.0-alpha.4",
-    "usb": "^1.9.2"
-  }
-}
-
-```
-
 ## Abrir puertos USB 
 
-Crear un /etc/rc.local o /usr/local/sbin/FILE.sh, con un service startup
+Crear un archivo startup.sh /etc/ o /usr/local/sbin/, y hacer `chmod 0700 /usr/local/sbin`, para liberar el usb.
 
 ```bash
 #!/bin/bash
 sudo chmod -R 777 /dev/bus/usb
 ```
 
-## Run
+Crear un archivo startup.service en /etc/systemd/system/, luego hacer `systemctl start startup.service` y `systemctl enable startup.service`
+
+```
+[Unit]
+Description="startup usb"
+[Service]
+ExecStart=/usr/local/sbin/startup.sh
+[Install]
+WantedBy=multi-user.target
+```
+
+## Ejecutar
 
 `npm install`
 `npm run dev`
+
+o ejecutar `chmod 0700 SETUP` y abrir SETUP como linea de comandos.

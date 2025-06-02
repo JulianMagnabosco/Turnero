@@ -8,8 +8,8 @@ Turnero para una clinica
 
 ## Requisitos Totem
 
--Git
--Node.s
+- Git
+- Node.s
 
 ## Docker Compose
 
