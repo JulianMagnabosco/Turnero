@@ -1,5 +1,9 @@
 # Totem
 
+## Sistema operativo
+
+Preferiblemente linux (probado en lubuntu), con el apagado o suspencion por tiempo desactivada.
+
 ## Dependencias a instalar
 
 - Git
@@ -15,14 +19,10 @@ sudo apt install npm
 ```
 
 ### Libudev
-```
-sudo apt-get update
-```
-- Linux, you'll need libudev to build libusb.
-- Ubuntu/Debian: `sudo apt-get install build-essential libudev-dev`.
-- Windows, Use Zadig to install the WinUSB driver for your USB device.
 
-## Impresora
+- Linux, necesita libudev para armar libusb.
+- Ubuntu/Debian: `sudo apt-get update` y luego `sudo apt-get install build-essential libudev-dev`.
+- Windows, Use Zadig para instalar el driver WinUSB para la impresora.
 
 ## Configuracion del programa
 Crear archivo config.json.:
@@ -75,14 +75,14 @@ Crear archivo config.json.:
 
 ## Abrir puertos USB 
 
-Crear un archivo startup.sh /etc/ o /usr/local/sbin/, y hacer `chmod 0700 /usr/local/sbin`, para liberar el usb.
+Crear un archivo startup.sh /etc/ o /usr/local/sbin/ (`sudo nano /usr/local/sbin/startup.sh`), y hacer `sudo chmod 0700 /usr/local/sbin/startup.sh`, para liberar el usb.
 
 ```bash
 #!/bin/bash
 sudo chmod -R 777 /dev/bus/usb
 ```
 
-Crear un archivo startup.service en /etc/systemd/system/, luego hacer `systemctl start startup.service` y `systemctl enable startup.service`
+Crear un archivo startup.service en /etc/systemd/system/ (`sudo nano /etc/systemd/system/startup.sh`), luego hacer `sudo systemctl start startup.service` y `sudo systemctl enable startup.service`
 
 ```
 [Unit]
@@ -98,4 +98,4 @@ WantedBy=multi-user.target
 `npm install`
 `npm run dev`
 
-o ejecutar `chmod 0700 SETUP` y abrir SETUP como linea de comandos.
+o ejecutar `chmod 0700 SETUP` o Propiedades>'Hacer ejecutable' y abrir SETUP como linea de comandos.
