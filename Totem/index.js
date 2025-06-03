@@ -1,4 +1,5 @@
 const express = require('express')
+const date = require('date-and-time')
 const app = express()
 const port = 4000
 
@@ -68,10 +69,12 @@ app.get('/totem/', (req, res) =>
 
 
 app.post('/totem/ticket', (req, res) => {
-    console.log(req.body)
     const nameSelected = req.body["name"]
     const codeSelected = req.body["code"]
     const lastNumber = req.body["lastNumber"]
+    const dateNow = new Date();
+    const dateString = date.format(dateNow,'DD/MM/YYYY HH:mm:ss');
+    console.log(dateString)
 
     if (!nameSelected || !codeSelected || !lastNumber){
         res.status(400).send({
@@ -94,6 +97,8 @@ app.post('/totem/ticket', (req, res) => {
         return
     }
 
+
+
     device.open(function(error){
         printer
         .font('a')
@@ -102,6 +107,7 @@ app.post('/totem/ticket', (req, res) => {
         .text(`${codeSelected} ${lastNumber}\n`) // default encoding set is GB18030
         .size(1, 1)
         .text(`${nameSelected}\n`)
+        .text(`${dateString}\n`)
     	.cut()
     	.close();
       });
