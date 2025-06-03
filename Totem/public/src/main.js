@@ -41,6 +41,8 @@ $(document).ready(function () {
   let e = $(".button-turn").clone(true, true);
   $(".button-turn").removeClass("button-turn").hide();
 
+  $("#loadingbar").hide()
+
   $.get(totemUrl, function (data) {
     
     apiUrl = data["apiUrl"];
@@ -104,6 +106,8 @@ $(document).ready(function () {
         active = true;
         codeSelected = $(this).data("code");
         nameSelected = $(this).data("name");
+
+        $("#loadingbar").show()
         
         getTicket();
       });
@@ -221,6 +225,7 @@ $(document).ready(function () {
       .always(function () {
         codeSelected = "";
         active = false;
+        $("#loadingbar").hide()
 
         $("#printer-popup").show();
         setTimeout(function () {
