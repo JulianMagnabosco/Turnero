@@ -124,6 +124,27 @@ def api_signup(request):
         return JsonResponse({"register": False, "error": "Passwords did not match."},status=400)
 
 @csrf_exempt
+def api_resetpass(request):
+    if not request.user.is_superuser:
+        return JsonResponse({"login": False},status=401)
+    else:
+        body = json.loads(request.body)
+        if body["password1"] == body["password2"]:
+            return JsonResponse({"resetpassword": False, "error": "Passwords match."},status=400)
+        
+        user = authenticate(
+            request, username=body['username'], password=body['password1'])
+        if user is None:
+            return JsonResponse({"resetpassword": False, "error": "Bad Credentials"},status=401)
+        
+        
+        user.set_password(body['password2'])
+        user.save()
+        return JsonResponse({"resetpassword": True})
+
+
+
+@csrf_exempt
 def getLines(request):
     username = request.user.username
     listRaw0 = Line.objects

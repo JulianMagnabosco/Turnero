@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -99,6 +100,14 @@ WSGI_APPLICATION = 'turnero.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': dj_database_url.config(
+#         default='postgres://postgres:admin@localhost:5432/postgres',
+#         conn_max_age=600,
+#         conn_health_checks=True,
+#     ),
+# }
+
 if not os.path.exists(BASE_DIR / 'db_data'):
     os.makedirs(BASE_DIR / 'db_data')
 DATABASES = {
@@ -107,6 +116,8 @@ DATABASES = {
         'NAME': BASE_DIR / 'db_data/db.sqlite3',
     }
 }
+
+
 
 
 # Password validation

@@ -16,11 +16,19 @@ Turnero para una clinica
 
 ```python manage.py migrate```
 
+```python manage.py loaddata```
+
+## Usuarios
+
+```python manage.py createsuperuser```
+
 ## Docker Redis Channel
 
 ```docker network create app-network```
 
 ```docker run -d -p 6379:6379 --name redis --network app-network redis:7```
+
+```docker run -d -p 5432:5432 --name postgres --network app-network postgres```
 
 ## Ejecutar
 

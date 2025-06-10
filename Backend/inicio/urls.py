@@ -12,6 +12,7 @@ urlpatterns = [
     path('api/signup/', views.api_signup),
     path('api/logout/', views.api_signout),
     path('api/signin/', views.api_signin),
+    path('api/resetpass/', views.api_resetpass),
 
     path("api/tickets/", views.getAll),
     path("api/lines/", views.getLines),

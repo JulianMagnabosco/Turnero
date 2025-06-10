@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, output } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
@@ -14,6 +14,8 @@ import { NgIf, } from '@angular/common';
 })
 export class RegisterComponent implements OnInit,OnDestroy{
   form:FormGroup;
+  
+  successEvent = output<void>();
 
   subs=new Subscription();
 
@@ -55,6 +57,7 @@ export class RegisterComponent implements OnInit,OnDestroy{
         {
           next: value => {
             alert("La usuario fue registrado con éxito")
+            this.successEvent.emit()
           },
           error: err => {
             if(err["code"]==400){
