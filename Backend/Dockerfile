@@ -12,6 +12,9 @@ WORKDIR /app
 ENV PYTHONDONTWRITEBYTECODE=1
 #Prevents Python from buffering stdout and stderr
 ENV PYTHONUNBUFFERED=1 
+
+RUN apk update && \
+    apk add musl-dev libpq-dev gcc
  
 # Upgrade pip
 RUN pip install --upgrade pip 
@@ -28,10 +31,10 @@ COPY ./turnero /app/turnero
 COPY ./inicio /app/inicio
 
 COPY manage.py /app/
+COPY initdata.json /app/
  
 # Expose the Django port
 EXPOSE 3000
 
 # Run Django’s development server
-RUN ["python", "manage.py", "migrate"]
 CMD ["python", "manage.py", "runserver", "0.0.0.0:3000"]

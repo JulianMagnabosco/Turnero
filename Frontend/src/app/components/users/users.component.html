@@ -65,13 +65,15 @@
   *ngIf="selectedUser">
   <div class="bg-white rounded-xl p-2 opacity-100">
     <div class="text-center text-3xl font-bold m-2">Editar ({{selectedUser.username}})</div>
+
     <div class="text-center text-2xl m-2">Cambiar contraseña</div>
-    <div class="text-center m-2 *:border-2 *:border-black max-w-xl rounded-xl  *:p-2 *:rounded-xl">
-      <input type="password" [(ngModel)]="password" placeholder="Contraseña antigua">
-      <input type="password" [(ngModel)]="newPassword" placeholder="Nueva Contraseña">
+    <div class="text-center m-2 *:block *:w-full *:border-2 *:border-black max-w-xl rounded-xl  *:p-2 *:rounded-xl">
+      <input type="password" [(ngModel)]="password" placeholder="Contraseña del Administrador">
+      <input type="password" [(ngModel)]="newPassword" placeholder="Nueva Contraseña para el Usuario">
       <button class="bg-cyan-300 hover:brightness-75 disabled:opacity-50" 
       (click)="savePassword()"  [disabled]="!password || !newPassword">Cambiar</button>
     </div>
+    
     <div class="text-center text-2xl m-2">Cambiar Lineas Accesibles</div>
     <div class="text-center m-2">Seleccione las lineas de tickets accesibles por este usuario
       ({{selectedUser.username}})</div>

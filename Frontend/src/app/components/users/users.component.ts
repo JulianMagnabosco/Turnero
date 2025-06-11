@@ -65,7 +65,7 @@ export class UsersComponent implements OnInit,OnDestroy{
         this.newPassword=""
       },
       error: err => {
-        if(err.status == 400){
+        if(err.status == 404 || err.status == 401){
           alert("Error credenciales incorrectas");
           return
         }

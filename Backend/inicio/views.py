@@ -129,13 +129,11 @@ def api_resetpass(request):
         return JsonResponse({"login": False},status=401)
     else:
         body = json.loads(request.body)
-        if body["password1"] == body["password2"]:
-            return JsonResponse({"resetpassword": False, "error": "Passwords match."},status=400)
-        
-        user = authenticate(
-            request, username=body['username'], password=body['password1'])
-        if user is None:
-            return JsonResponse({"resetpassword": False, "error": "Bad Credentials"},status=401)
+        admin = authenticate(
+            request, username=request.user.username, password=body['password1'])
+        user = User.objects.get(username=body['username'])
+        if user is None or admin is None:
+            return JsonResponse({"resetpassword": False, "error": "Not found or bad credentials"},status=404)
         
         
         user.set_password(body['password2'])

@@ -22,9 +22,9 @@
   
           </ng-container>
 
-          <a [routerLink]="['/showuser']">{{"@"+service.user.username}}</a>
+          <a [routerLink]="['/showuser']" class="bg-blue-400 rounded-2xl px-2">{{"@"+service.user.username}}</a>
           
-        <a [routerLink]="['/about']">Acerca De</a>
+          <a [routerLink]="['/about']">Acerca De</a>
 
           <button class="cursor-pointer" (click)="logout()">Salir </button>
 
@@ -32,7 +32,7 @@
 
         <ng-container *ngIf="!this.service.user">
           
-        <a [routerLink]="['/about']">Acerca De</a>
+          <a [routerLink]="['/about']">Acerca De</a>
 
           <a [routerLink]="['/login']">Iniciar Sesión </a>
 

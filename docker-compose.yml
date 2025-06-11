@@ -1,23 +1,23 @@
 services:
-  # db:
-  #   container_name: db
-  #   image: postgres
-  #   networks:
-  #     - app-network
-  #   volumes:
-  #     - ./data:/var/lib/postgresql/data
-  #   environment:
-  #     - POSTGRES_DB=turnerodb 
-  #     - POSTGRES_USER=turnerodb 
-  #     - POSTGRES_PASSWORD=mariel2456
-  #   restart: on-failure
-  #   healthcheck:
-  #     test: ["CMD-SHELL", "pg_isready -U turnerodb"]
-  #     interval: 5s
-  #     timeout: 5s
-  #     retries: 5
-  #   ports:
-  #     - 5432:5432
+  db:
+    container_name: db
+    image: postgres
+    networks:
+      - app-network
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=turnerodb 
+      - POSTGRES_USER=turnerodb 
+      - POSTGRES_PASSWORD=turnerodb1234
+    restart: on-failure
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U turnerodb"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    ports:
+      - 5432
       
   redis_db:
     container_name: redis_db
@@ -25,7 +25,7 @@ services:
     networks:
       - app-network
     ports:
-      - 6379:6379
+      - 6379
     restart: always
 
 
@@ -44,6 +44,7 @@ services:
       - DJANGO_SECRET_KEY=django-insecure-69k-#kmlre&rb4uhf2*d5foi+1ee)wsck_%9z*--wbit3_dk9e
       - DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1,192.168.2.114
       - FRONT_PORTS=4200|4000
+      - DATABASE_URL=postgres://turnerodb:turnerodb1234@db:5432/turnerodb
       - REDIS_TEST=True
       - REDIS_HOST=redis_db
       - REDIS_PORT=6379
@@ -69,6 +70,7 @@ services:
 
 volumes:
   app_data:
+  db_data:
 
 networks:
   app-network:
