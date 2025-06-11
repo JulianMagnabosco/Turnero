@@ -100,22 +100,22 @@ WSGI_APPLICATION = 'turnero.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-# DATABASES = {
-#     'default': dj_database_url.config(
-#         default='postgres://postgres:admin@localhost:5432/postgres',
-#         conn_max_age=600,
-#         conn_health_checks=True,
-#     ),
-# }
-
-if not os.path.exists(BASE_DIR / 'db_data'):
-    os.makedirs(BASE_DIR / 'db_data')
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db_data/db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        default='postgres://postgres:admin@localhost:5432/postgres',
+        conn_max_age=600,
+        conn_health_checks=True,
+    ),
 }
+
+# if not os.path.exists(BASE_DIR / 'db_data'):
+#     os.makedirs(BASE_DIR / 'db_data')
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db_data/db.sqlite3',
+#     }
+# }
 
 
 

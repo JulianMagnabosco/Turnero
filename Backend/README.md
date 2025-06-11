@@ -16,7 +16,7 @@ Turnero para una clinica
 
 ```python manage.py migrate```
 
-```python manage.py loaddata```
+```python manage.py loaddata initdata.json```
 
 ## Usuarios
 
@@ -28,7 +28,7 @@ Turnero para una clinica
 
 ```docker run -d -p 6379:6379 --name redis --network app-network redis:7```
 
-```docker run -d -p 5432:5432 --name postgres --network app-network postgres```
+```docker run -d -p 5432:5432 --name postgres -e POSTGRES_PASSWORD=admin postgres```
 
 ## Ejecutar
 

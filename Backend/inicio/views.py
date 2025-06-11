@@ -70,7 +70,7 @@ def getUsers(request):
     if not request.user.is_superuser:
         return JsonResponse({"login": False},status=401)
     
-    users = User.objects.select_related("lines").values()
+    users = User.objects.select_related("lines").order_by("id").values()
     userList = list()
     for u in list(users):
         listRaw = Line.objects.filter(users__username=u["username"]).all() 

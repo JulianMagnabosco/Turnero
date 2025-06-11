@@ -1,3 +1,4 @@
+import { AuthService } from './../../services/auth.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
@@ -25,7 +26,10 @@ export class UsersComponent implements OnInit,OnDestroy{
   subs:Subscription=new Subscription;
   selectedUser:User|undefined;
 
-  constructor(private service:UserService ,private ticketService:TicketsService ){
+  password=""
+  newPassword=""
+
+  constructor(private service:UserService, private authService:AuthService ,private ticketService:TicketsService ){
   }
   
   ngOnInit(): void {
@@ -46,6 +50,28 @@ export class UsersComponent implements OnInit,OnDestroy{
   selectLine(line:TicketList){
     line.selected=!line.selected
     console.log("ad")
+  }
+
+  savePassword(){
+    const data = {
+      "username":this.selectedUser?.username,
+      "password1":this.password,
+      "password2":this.newPassword,
+    }
+    this.subs.add(this.authService.changePassword(data).subscribe({
+      next: value => {
+        alert("Exito")
+        this.password=""
+        this.newPassword=""
+      },
+      error: err => {
+        if(err.status == 400){
+          alert("Error credenciales incorrectas");
+          return
+        }
+        alert("Error inesperado en el servidor, revise su conexion a internet");
+      },
+    }))
   }
 
   applylines(){

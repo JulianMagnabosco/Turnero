@@ -48,6 +48,6 @@ export class AuthService {
     return this.client.post(this.baseUrl + "reset/req?email="+ email, null);
   }
   changePassword(data: any):Observable<any>{
-    return this.client.post(this.baseUrl + "reset/", data);
+    return this.client.post(this.baseUrl + "resetpass/", data);
   }
 }
