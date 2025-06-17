@@ -30,46 +30,60 @@ Crear archivo config.json.:
 ```
 {
   "TOTEM":"totem1",
-  "API_URL": "http://localhost:3000/api/ticket/",
+  "API_URL": "http://192.168.2.114:3000/api/ticket/",
   "GROUPS":[
     {
-      "name":"Guardia",
-      "lines":["CGU","PGU","AGU"]
+      "name":"Mesa de Entrada",
+      "lines":["U","N"]
+    },
+    {
+      "name":"Imagenes",
+      "lines":["C","S"]
+    },
+    {
+      "name":"Guardia Central",
+      "lines":["G","A"]
     }
   ],
   "LINES": [
     {
-      "name": "Guardia Central",
-      "code": "CGU",
-      "lastNumber": 1
-    },
-    {
       "name": "Family Autorizaciones",
-      "code": "FAM",
+      "code": "F",
       "lastNumber": 1
     },
     {
-      "name": "Mesa de Entrada",
-      "code": "MES",
+      "name": "Mesa de Entrada con turno",
+      "code": "U",
       "lastNumber": 1
     },
     {
-      "name": "Imagenes",
-      "code": "IMG",
+      "name": "Mesa de Entrada sin turno",
+      "code": "N",
       "lastNumber": 1
     },
     {
-      "name": "Guardia Adulto",
-      "code": "AGU",
+      "name": "Imagenes con turno",
+      "code": "C",
+      "lastNumber": 1
+    },
+    {
+      "name": "Imagenes sin turno",
+      "code": "S",
       "lastNumber": 1
     },
     {
       "name": "Guardia Pediatrica",
-      "code": "PGU",
+      "code": "G",
+      "lastNumber": 1
+    },
+    {
+      "name": "Guardia Adulto",
+      "code": "A",
       "lastNumber": 1
     }
   ]
 }
+
 
 ```
 

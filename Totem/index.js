@@ -108,6 +108,7 @@ app.post('/totem/ticket', (req, res) => {
         .size(1, 1)
         .text(`${nameSelected}\n`)
         .text(`${dateString}\n`)
+        .text(`www.cpvs.com.ar - Telefono 0810-122-9898\n`)
     	.cut()
     	.close();
       });

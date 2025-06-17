@@ -383,86 +383,97 @@
   },
   {
     "model": "inicio.line",
+    "pk": 1,
+    "fields": { "name": "Mesa de Entrada con turno", "code": "U", "users": [3] }
+  },
+  {
+    "model": "inicio.line",
+    "pk": 2,
+    "fields": { "name": "Mesa de Entrada sin turno", "code": "N", "users": [3] }
+  },
+  {
+    "model": "inicio.line",
+    "pk": 3,
+    "fields": { "name": "Imagenes con turno", "code": "C", "users": [3] }
+  },
+  {
+    "model": "inicio.line",
+    "pk": 4,
+    "fields": { "name": "Imagenes sin turno", "code": "S", "users": [2] }
+  },
+  {
+    "model": "inicio.line",
     "pk": 5,
-    "fields": { "name": "Mesa de Entrada", "code": "MES", "users": [3] }
+    "fields": { "name": "Family Autorizaciones", "code": "F", "users": [2] }
   },
   {
     "model": "inicio.line",
     "pk": 6,
-    "fields": { "name": "Guardia Central", "code": "CGU", "users": [3] }
+    "fields": { "name": "Guardia Pediatrica", "code": "G", "users": [2, 3] }
   },
   {
     "model": "inicio.line",
     "pk": 7,
-    "fields": { "name": "Imagenes", "code": "IMG", "users": [2] }
-  },
-  {
-    "model": "inicio.line",
-    "pk": 8,
-    "fields": { "name": "Family Autorizaciones", "code": "FAM", "users": [2] }
-  },
-  {
-    "model": "inicio.line",
-    "pk": 9,
-    "fields": { "name": "Guardia Pediatrica", "code": "PGU", "users": [2, 3] }
-  },
-  {
-    "model": "inicio.line",
-    "pk": 10,
-    "fields": { "name": "Guardia Adulto", "code": "AGU", "users": [3] }
+    "fields": { "name": "Guardia Adulto", "code": "A", "users": [3] }
   },
   {
     "model": "inicio.ticket",
-    "pk": 28,
-    "fields": { "number": 1, "line": 8, "totem": "", "called": true, "user": 2 }
+    "pk": 1,
+    "fields": { 
+      "number": 1, 
+      "line": 8, 
+      "totem": "1", 
+      "called": true, 
+      "user": null 
+    }
   },
   {
     "model": "inicio.ticket",
-    "pk": 29,
+    "pk": 2,
     "fields": {
       "number": 2,
       "line": 7,
-      "totem": "",
+      "totem": "1",
       "called": false,
       "user": null
     }
   },
   {
     "model": "inicio.ticket",
-    "pk": 30,
+    "pk": 3,
     "fields": {
       "number": 3,
       "line": 6,
-      "totem": "",
+      "totem": "1",
       "called": false,
       "user": null
     }
   },
   {
     "model": "inicio.ticket",
-    "pk": 31,
+    "pk": 4,
     "fields": {
       "number": 4,
       "line": 6,
-      "totem": "",
+      "totem": "1",
       "called": false,
       "user": null
     }
   },
   {
     "model": "inicio.ticket",
-    "pk": 32,
+    "pk": 5,
     "fields": {
       "number": 1,
       "line": 8,
       "totem": "1",
       "called": true,
-      "user": 2
+      "user": null
     }
   },
   {
     "model": "inicio.ticket",
-    "pk": 33,
+    "pk": 6,
     "fields": {
       "number": 1,
       "line": 7,
@@ -473,7 +484,7 @@
   },
   {
     "model": "inicio.ticket",
-    "pk": 34,
+    "pk": 7,
     "fields": {
       "number": 4,
       "line": 6,
@@ -484,7 +495,7 @@
   },
   {
     "model": "inicio.ticket",
-    "pk": 35,
+    "pk": 8,
     "fields": {
       "number": 3,
       "line": 6,
