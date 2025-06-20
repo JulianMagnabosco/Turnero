@@ -421,7 +421,7 @@
     "pk": 1,
     "fields": { 
       "number": 1, 
-      "line": 8, 
+      "line": 4, 
       "totem": "1", 
       "called": true, 
       "user": null 
@@ -465,7 +465,7 @@
     "pk": 5,
     "fields": {
       "number": 1,
-      "line": 8,
+      "line": 4,
       "totem": "1",
       "called": true,
       "user": null
