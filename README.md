@@ -19,6 +19,10 @@ Turnero para una clinica
 
 ``` docker compose up -d --no-build ```
 
-## Super usuario (admin)
+## migracion DB
 
-``` docker exec -it container_id python manage.py createsuperuser ```
+```docker exec -it back python manage.py makemigrations``` o ```docker exec -it back python manage.py makemigrations --update```
+
+```docker exec -it back python manage.py migrate```
+
+```docker exec -it back python manage.py loaddata initdata.json```
