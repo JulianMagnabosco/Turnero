@@ -40,12 +40,12 @@ services:
     ports:
       - 3000:3000
     environment:
-      - DJANGO_DEBUG=True
+      - DJANGO_DEBUG=False
       - DJANGO_SECRET_KEY=django-insecure-69k-#kmlre&rb4uhf2*d5foi+1ee)wsck_%9z*--wbit3_dk9e
-      - DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1,192.168.2.114
+      - DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1,192.168.2.112
       - FRONT_PORTS=4200|4000
       - DATABASE_URL=postgres://turnerodb:turnerodb1234@db:5432/turnerodb
-      - REDIS_TEST=True
+      - REDIS_TEST=False
       - REDIS_HOST=redis_db
       - REDIS_PORT=6379
     depends_on:
