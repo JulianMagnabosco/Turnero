@@ -49,9 +49,10 @@ services:
       - REDIS_HOST=redis_db
       - REDIS_PORT=6379
     depends_on:
-      # db:
-      #   condition: service_healthy
-      - redis_db
+      db:
+        condition: service_healthy
+      redis_db:
+        condition: service_started
     restart: always
     volumes:
       - app_data:/app/db_data
