@@ -12,7 +12,7 @@
             <div class="text-start bg-gray-400 uppercase">PUESTO</div>
         </div>
         <div class="bg-red-500 font-extrabold ">
-            <div class="flex *:p-3 text-6xl relative border-t-2 border-black" *ngFor="let ticket of calledList.reverse()">
+            <div class="flex *:p-3 text-6xl relative border-t-2 border-black" *ngFor="let ticket of calledList.slice().reverse()">
                 <div class="w-1/2 text-end">{{ticket.code+" - "+ticket.number}}</div>
                 <div class="w-1/2 text-start bg-red-400 uppercase">{{ticket.user||" ."}}</div>
 
