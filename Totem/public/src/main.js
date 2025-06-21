@@ -120,6 +120,10 @@ $(document).ready(function () {
         if(groupSelected=="Back"){
           goBack()
         }else{
+          // $("#button-list").fadeOut(10)
+          // $("#button-list").fadeIn(1000)
+          $("#loadingbar").show()
+          $("#loadingbar").hide(1000)
           $(".button-turn").hide()
           $(".button-group").hide()
           $("[data-b-group='Back']").parent().show()
