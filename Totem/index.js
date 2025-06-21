@@ -105,10 +105,12 @@ app.post('/totem/ticket', (req, res) => {
         .align('ct')
         .size(2, 2)
         .text(`${codeSelected}-${lastNumber}\n`) // default encoding set is GB18030
+        .font('b')
         .size(1, 1)
         .text(`${nameSelected}\n`)
         .text(`${dateString}\n`)
-        .text(`www.cpvs.com.ar - Telefono 0810-122-9898\n`)
+        .text(`www.cpvs.com.ar\n`)
+        .text(`Tel 0810-122-9898\n`)
     	.cut()
     	.close();
       });
