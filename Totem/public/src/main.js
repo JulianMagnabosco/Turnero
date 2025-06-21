@@ -75,11 +75,12 @@ $(document).ready(function () {
 
     e.removeClass("button-turn");
     e.addClass("button-group");
+    e.children().attr("data-code", "");
     
     groups.forEach(function (group, index) {
       e.children().children()[1].innerText = "Seleccionar";
       e.children().children()[0].innerText = group.name;
-      e.children().css("backgroundColor", colors[index % colors.length]);
+      e.children().css("backgroundColor", colors[index+1 % colors.length]);
       e.children().attr("data-b-group", group.name);
       group.lines.forEach((line )=> {
         $("[data-code='"+line+"']").parent().attr("data-group", group.name);
@@ -117,15 +118,14 @@ $(document).ready(function () {
       .click(function (e) {
         groupSelected= $(this).data("b-group")
         if(groupSelected=="Back"){
-          $("[data-b-group]").parent().show()
-          $(".button-turn").show()
-          $("[data-group]").hide()
+          goBack()
         }else{
-          $("[data-b-group='Back']").parent().show()
           $(".button-turn").hide()
-          $("[data-group='"+groupSelected+"']").show()
+          $(".button-group").hide()
+          $("[data-b-group='Back']").parent().show()
+          $(".button-turn[data-group='"+groupSelected+"']").show()
+          $(this).parent().hide()
         }
-        $(this).parent().hide()
 
       });
 
@@ -140,6 +140,13 @@ $(document).ready(function () {
   $("#printer-popup").click(function () {
     $("#printer-popup").hide();
   });
+
+  function goBack(){
+    $(".button-group").show();
+    $(".button-turn").show();
+    $(".button-turn[data-group]").hide();
+    $("[data-b-group='Back']").parent().hide()
+  }
 
   function getTicket(){
     $.ajax({
@@ -225,7 +232,8 @@ $(document).ready(function () {
       .always(function () {
         codeSelected = "";
         active = false;
-        $("#loadingbar").hide()
+        $("#loadingbar").hide();
+        goBack();
 
         $("#printer-popup").show();
         setTimeout(function () {

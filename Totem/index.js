@@ -104,7 +104,7 @@ app.post('/totem/ticket', (req, res) => {
         .font('a')
         .align('ct')
         .size(2, 2)
-        .text(`${codeSelected} ${lastNumber}\n`) // default encoding set is GB18030
+        .text(`${codeSelected}-${lastNumber}\n`) // default encoding set is GB18030
         .size(1, 1)
         .text(`${nameSelected}\n`)
         .text(`${dateString}\n`)
