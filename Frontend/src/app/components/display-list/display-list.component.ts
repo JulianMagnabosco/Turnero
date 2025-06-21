@@ -110,7 +110,7 @@ export class DisplayListComponent implements OnInit, OnDestroy {
     }
     console.log("Correcto")
     this.calledList=this.calledList.filter((t)=>{return t.user!=data['user']})
-    this.calledList.push(new Ticket(data['code'],data['number'],data['user']))
+    this.calledList.unshift(new Ticket(data['code'],data['number'],data['user']))
     this.playSound();
     
     clearTimeout(this.timeout);
@@ -137,9 +137,9 @@ export class DisplayListComponent implements OnInit, OnDestroy {
   }
 
   saveData(data: any) {
-    let giveList: Ticket[] = data;
+    let givenList: Ticket[] = data;
     let newList: Ticket[] = [];
-    giveList.forEach((ticket) => {
+    givenList.forEach((ticket) => {
       let findTicket = this.list.find((e) => {
         return e.id == ticket.id;
       });
