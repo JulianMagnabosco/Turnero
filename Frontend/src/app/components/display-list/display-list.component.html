@@ -1,12 +1,12 @@
-<div class="p-4 grid grid-cols-2 overflow-hidden">
+<div class="p-4 grid grid-cols-5 overflow-hidden">
 
-    <div class="flex flex-col h-[calc(100svh-8rem)] bg-blue-100 border-2 border-black">
+    <div class="col-span-2 flex flex-col h-[calc(100svh-8rem)] bg-blue-100 border-2 border-black">
         <div class="grow p-5">
             <img class="w-full " src="logo.png" alt="">
         </div>
-        <div class="bg-cyan-700 text-4xl p-2 text-white text-center">{{datetime | date:"dd/MM/YYYY HH:mm"}}</div>
+        <div class="bg-cyan-700 text-6xl p-2 text-white text-center">{{datetime | date:"dd/MM/YYYY HH:mm"}}</div>
     </div>
-    <div class="h-[calc(100svh-10rem)] overflow-hidden text-white font-bold">
+    <div class="col-span-3 h-[calc(100svh-10rem)] overflow-hidden text-white font-bold">
         <div class="flex *:w-1/2 *:p-3 text-6xl">
             <div class="text-end bg-gray-500 uppercase">TURNO</div>
             <div class="text-start bg-gray-400 uppercase">PUESTO</div>
