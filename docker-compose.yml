@@ -10,7 +10,7 @@ services:
       - POSTGRES_DB=turnerodb 
       - POSTGRES_USER=turnerodb 
       - POSTGRES_PASSWORD=turnerodb1234
-    restart: on-failure
+    restart: always
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U turnerodb"]
       interval: 5s
