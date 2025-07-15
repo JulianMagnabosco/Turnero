@@ -6,7 +6,7 @@ Turnero para una clinica
 
 ```py -m venv .venv\```
 
-```source .venv/Scripts/activate``` o ```.venv/Scripts/activate```
+```source .venv/Scripts/activate``` o ```.venv\Scripts\activate```
 
 ```pip install -r requirements.txt ```
 

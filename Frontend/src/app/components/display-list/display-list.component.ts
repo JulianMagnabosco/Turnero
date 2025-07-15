@@ -26,6 +26,7 @@ export class DisplayListComponent implements OnInit, OnDestroy {
     // new TicketList([new Ticket(),new Ticket(),new Ticket()],"C","Clinica"),
   ];
   lines: string[]=[]
+  notShowlines: string[]=[]
   audio = new Audio('music.mp3');
   audioPaused=true
 
@@ -57,8 +58,11 @@ export class DisplayListComponent implements OnInit, OnDestroy {
     this.loading = true;
     this.subs.add(this.route.queryParams.subscribe({
       next:(value)=> {
-        if(value["data"]){
-          this.lines= value["data"].toUpperCase().split(",");
+        if(value["lines"]){
+          this.lines= value["lines"].toUpperCase().split(",");
+        }
+        if(value["notlines"]){
+          this.notShowlines= value["notlines"].toUpperCase().split(",");
         }
         this.startHTTP()
       },
@@ -105,7 +109,8 @@ export class DisplayListComponent implements OnInit, OnDestroy {
   }
 
   _callticket(data: any) {
-    if(this.lines.length !=0 && this.lines.find((l)=> l!=data['code'] )){
+    if((this.lines.length !=0 && this.lines.find((l)=> l!=data['code'] )) ||
+       (this.notShowlines.length !=0 && this.notShowlines.find((l)=> l==data['code'] ))){
       return
     }
     console.log("Correcto")
@@ -146,7 +151,10 @@ export class DisplayListComponent implements OnInit, OnDestroy {
       if(findTicket){
         ticket.selected=findTicket.selected
       }
-      if(this.lines.length ==0 || this.lines.find((l)=> l==ticket.code )){
+      const inlist =    (this.lines.length ==0        || this.lines.find((l)=> l==ticket.code ));
+      const innotlist = (this.notShowlines.length ==0 || !this.notShowlines.find((l)=> l==ticket.code ));
+      
+      if(inlist && innotlist){
         newList.push(ticket)
       }
     });

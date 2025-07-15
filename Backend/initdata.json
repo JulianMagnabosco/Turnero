@@ -342,6 +342,114 @@
     }
   },
   {
+    "model": "auth.user",
+    "pk": 4,
+    "fields": {
+      "password": "pbkdf2_sha256$870000$edyXe42X0TrKeGs17RHxgx$hlmBX/FIUTxn+IjPAIDNhf0RPodA7eVUmQkpF0VD2aM=",
+      "last_login": "2025-05-26T20:54:23.156Z",
+      "is_superuser": false,
+      "username": "puesto4",
+      "first_name": "",
+      "last_name": "",
+      "email": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2025-04-24T21:05:35Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 5,
+    "fields": {
+      "password": "pbkdf2_sha256$870000$edyXe42X0TrKeGs17RHxgx$hlmBX/FIUTxn+IjPAIDNhf0RPodA7eVUmQkpF0VD2aM=",
+      "last_login": "2025-05-26T20:54:23.156Z",
+      "is_superuser": false,
+      "username": "puesto5",
+      "first_name": "",
+      "last_name": "",
+      "email": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2025-04-24T21:05:35Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 6,
+    "fields": {
+      "password": "pbkdf2_sha256$870000$edyXe42X0TrKeGs17RHxgx$hlmBX/FIUTxn+IjPAIDNhf0RPodA7eVUmQkpF0VD2aM=",
+      "last_login": "2025-05-26T20:54:23.156Z",
+      "is_superuser": false,
+      "username": "puesto6",
+      "first_name": "",
+      "last_name": "",
+      "email": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2025-04-24T21:05:35Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 7,
+    "fields": {
+      "password": "pbkdf2_sha256$870000$edyXe42X0TrKeGs17RHxgx$hlmBX/FIUTxn+IjPAIDNhf0RPodA7eVUmQkpF0VD2aM=",
+      "last_login": "2025-05-26T20:54:23.156Z",
+      "is_superuser": false,
+      "username": "puesto7",
+      "first_name": "",
+      "last_name": "",
+      "email": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2025-04-24T21:05:35Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 8,
+    "fields": {
+      "password": "pbkdf2_sha256$870000$edyXe42X0TrKeGs17RHxgx$hlmBX/FIUTxn+IjPAIDNhf0RPodA7eVUmQkpF0VD2aM=",
+      "last_login": "2025-05-26T20:54:23.156Z",
+      "is_superuser": false,
+      "username": "puesto8",
+      "first_name": "",
+      "last_name": "",
+      "email": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2025-04-24T21:05:35Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 9,
+    "fields": {
+      "password": "pbkdf2_sha256$870000$edyXe42X0TrKeGs17RHxgx$hlmBX/FIUTxn+IjPAIDNhf0RPodA7eVUmQkpF0VD2aM=",
+      "last_login": "2025-05-26T20:54:23.156Z",
+      "is_superuser": false,
+      "username": "puesto9",
+      "first_name": "",
+      "last_name": "",
+      "email": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2025-04-24T21:05:35Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
     "model": "contenttypes.contenttype",
     "pk": 1,
     "fields": { "app_label": "admin", "model": "logentry" }
@@ -384,37 +492,37 @@
   {
     "model": "inicio.line",
     "pk": 1,
-    "fields": { "name": "Mesa de Entrada con turno", "code": "U", "users": [3] }
+    "fields": { "name": "Mesa de Entrada con turno", "code": "U", "users": [4,5,6] }
   },
   {
     "model": "inicio.line",
     "pk": 2,
-    "fields": { "name": "Mesa de Entrada sin turno", "code": "N", "users": [3] }
+    "fields": { "name": "Mesa de Entrada sin turno", "code": "N", "users": [4,5,6] }
   },
   {
     "model": "inicio.line",
     "pk": 3,
-    "fields": { "name": "Imagenes con turno", "code": "C", "users": [3] }
+    "fields": { "name": "Imagenes con turno", "code": "C", "users": [2,3] }
   },
   {
     "model": "inicio.line",
     "pk": 4,
-    "fields": { "name": "Imagenes sin turno", "code": "S", "users": [2] }
+    "fields": { "name": "Imagenes sin turno", "code": "S", "users": [2,3] }
   },
   {
     "model": "inicio.line",
     "pk": 5,
-    "fields": { "name": "Family Autorizaciones", "code": "F", "users": [2] }
+    "fields": { "name": "Family Autorizaciones", "code": "F", "users": [9] }
   },
   {
     "model": "inicio.line",
     "pk": 6,
-    "fields": { "name": "Guardia Pediatrica", "code": "G", "users": [2, 3] }
+    "fields": { "name": "Guardia Pediatrica", "code": "G", "users": [7, 8] }
   },
   {
     "model": "inicio.line",
     "pk": 7,
-    "fields": { "name": "Guardia Adulto", "code": "A", "users": [3] }
+    "fields": { "name": "Guardia Adulto", "code": "A", "users": [7, 8] }
   },
   {
     "model": "inicio.ticket",

@@ -15,7 +15,7 @@ Turnero para una clinica
 
 ``` docker images -a | grep "julianm217/turnero" | awk '{print $1":"$2}' | xargs docker rmi ```
 
-``` docker compose pull ```
+``` docker compose build ```
 
 ``` docker compose up -d --no-build ```
 
@@ -26,3 +26,9 @@ Turnero para una clinica
 ```docker exec -it back python manage.py migrate```
 
 ```docker exec -it back python manage.py loaddata initdata.json```
+
+## Entrar
+- Normal: http://direccion:4200/
+- Display: http://direccion:4200/display
+  - Limitar a lineas: http://direccion:4200/display?lines=C,S
+  - Excluir lineas: http://direccion:4200/display?notlines=C,S
