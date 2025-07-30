@@ -76,7 +76,7 @@ export class DisplayListComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.service.getAll().subscribe({
         next: (value) => {
-          this.saveData(value['data']);
+          // this.saveData(value['data']);
         },
         error: (err) => {
           console.error("Reintentando")
@@ -94,7 +94,7 @@ export class DisplayListComponent implements OnInit, OnDestroy {
       this.webSocket.getMessages().subscribe({
         next: (value) => {
           if (value['message']['type'] == 'update') {
-            this.saveData(value['message']['data']);
+            // this.saveData(value['message']['data']);
           } else if (value['message']['type'] == 'call') {
             this._callticket(value['message']);
             console.log("call")
