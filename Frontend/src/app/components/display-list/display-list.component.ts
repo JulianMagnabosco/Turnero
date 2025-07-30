@@ -109,8 +109,14 @@ export class DisplayListComponent implements OnInit, OnDestroy {
   }
 
   _callticket(data: any) {
-    if((this.lines.length !=0 && this.lines.find((l)=> l!=data['code'] )) ||
-       (this.notShowlines.length !=0 && this.notShowlines.find((l)=> l==data['code'] ))){
+    console.log("ticket", this.lines.includes(data['code']))
+    const inlist = (this.lines.length !=0 && !this.lines.includes(data['code']));
+    const notinlist = (this.notShowlines.length !=0 && this.notShowlines.find((l)=> l==data['code'] ));
+      console.log("Inlist",inlist)
+      console.log("Notinlist",notinlist)
+
+    if(inlist || notinlist){
+      console.log("No se muestra la linea")
       return
     }
     console.log("Correcto")
