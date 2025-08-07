@@ -53,3 +53,23 @@ class Ticket(models.Model):
 
     def __str__(self):
         return str(self.number)+"("+self.line.code+")"
+        
+class Consult(models.Model):
+    patient=models.CharField(max_length=200,default="")
+    room=models.CharField(max_length=100,default="")
+    date = models.DateTimeField(auto_now_add=True)
+    
+    def json(self):
+        return {"id":self.pk,
+                "patient":self.patient,
+                "room":self.room,
+                "date":self.date.isoformat(),}
+        
+    async def ajson(self):
+        return {"id":self.pk,
+                "patient":self.patient,
+                "room":self.room,
+                "date":self.date.isoformat(),}
+
+    def __str__(self):
+        return str(self.patient)+"(room_"+self.room+") "+self.date.isoformat()

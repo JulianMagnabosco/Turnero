@@ -22,4 +22,7 @@ urlpatterns = [
     path("api/ticket/", views.addTicket),
     path("api/ticket/list/", views.addTicketList),
     path("api/ticket/<int:id>/", views.deleteTicket),
+    
+    path("api/consult/", views.addConsult),
+    path("api/consults/", views.getConsults),
 ]

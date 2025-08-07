@@ -5,7 +5,7 @@ from django.shortcuts import aget_object_or_404
 from asgiref.sync import sync_to_async
 from django.contrib.auth.models import User
 
-from .models import Line,Ticket
+from .models import Consult, Line,Ticket
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
@@ -71,15 +71,61 @@ class ChatConsumer(AsyncWebsocketConsumer):
         await self.send(text_data=json.dumps({"message": message}))
         
     async def getAll(self):
-    # if not request.user.is_authenticated:
-    #     return JsonResponse({"login": False},status=401)
-        username = self.scope["user"].username
-        # print(self.scope["user"].is_superuser)
         listRaw0 = Ticket.objects.select_related("user").select_related("line").filter(called=False).order_by("number")
 
-        # if not self.scope["user"].is_superuser:
-        #     listRaw1 = listRaw0.filter(line__users__username=username).all() 
-        # else:
+        listRaw1 = listRaw0.all() 
+
+        listValues=list()
+        async for t in listRaw1:
+            listValues.append(t.json())
+
+        await self.channel_layer.group_send(
+            self.room_group_name, {"type": "chat.message", 
+            "message": {
+                "data": listValues,
+                "type": "update"
+            }
+        })
+
+class ConsultChatConsumer(AsyncWebsocketConsumer):
+    async def connect(self):
+        self.room_name = self.scope["url_route"]["kwargs"]["room_name"]
+        self.room_group_name = f"chat_{self.room_name}"
+
+        # Join room group
+        await self.channel_layer.group_add(self.room_group_name, self.channel_name)
+        # print(self.scope)
+        await self.accept()
+
+    async def disconnect(self, close_code):
+        # Leave room group
+        await self.channel_layer.group_discard(self.room_group_name, self.channel_name)
+
+    # Receive message from WebSocket
+    async def receive(self, text_data):
+        text_data_json = json.loads(text_data)
+        message = text_data_json["message"]
+        
+        if message["type"]=="add" :
+            await Consult.asave(Consult(patient=message["patient"],room=message["room"]))
+
+        await self.getAll()
+
+        # Send message to room group
+        await self.channel_layer.group_send(
+            self.room_group_name, {"type": "chat.message", "message": message}
+        )
+
+    # Receive message from room group
+    async def chat_message(self, event):
+        message = event["message"]
+
+        # Send message to WebSocket
+        await self.send(text_data=json.dumps({"message": message}))
+        
+    async def getAll(self):
+        listRaw0 = Consult.objects
+
         listRaw1 = listRaw0.all() 
 
         listValues=list()

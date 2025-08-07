@@ -6,10 +6,11 @@ import { DatePipe, NgClass, NgFor, NgIf } from '@angular/common';
 import { Ticket } from '../../models/ticket';
 import { WebSocketService } from '../../services/web-socket.service';
 import { ActivatedRoute } from '@angular/router';
+import { ConsultListComponent } from "../consult-list/consult-list.component";
 
 @Component({
   selector: 'app-display-list',
-  imports: [NgFor,DatePipe],
+  imports: [NgFor, ConsultListComponent],
   templateUrl: './display-list.component.html',
   styleUrl: './display-list.component.css',
 })
@@ -50,11 +51,7 @@ export class DisplayListComponent implements OnInit, OnDestroy {
     this.subs.unsubscribe();
   }
   charge() {
-    this.subs.add(timer(0,1000).subscribe({
-      next: (value)=>{
-        this.datetime=new Date()
-      }
-    }))
+    
     this.loading = true;
     this.subs.add(this.route.queryParams.subscribe({
       next:(value)=> {

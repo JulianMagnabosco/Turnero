@@ -12,7 +12,7 @@ from django.http import JsonResponse
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 
-from .models import Line,Ticket
+from .models import Consult, Line,Ticket
 import json
 
 
@@ -215,6 +215,27 @@ def addTicketList(request):
             Ticket.save(Ticket(number=lastNumber,line=line,totem=totem))
     getAll(request)
     return JsonResponse({"list":body["list"]})
+
+
+@csrf_exempt
+def addConsult(request):
+    if request.method == "POST":
+        body = json.loads(request.body)
+        consult = Consult(client=body["client"],room=body["room"])
+        Consult.save(consult)
+        return JsonResponse({"consult": consult.json()})
+    
+
+
+@csrf_exempt
+def getConsults(request):
+    if request.method == "GET":
+        consults = Consult.objects.all()
+        clist = list()
+        for c in consults:
+            clist.append(c.json())
+        return JsonResponse({"consults": clist})
+    
 
 @csrf_exempt
 def deleteLine(request,id):

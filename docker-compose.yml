@@ -69,9 +69,22 @@ services:
       - 4200:4200
     restart: always
 
+  tts:
+    container_name: tts
+    image: rhasspy/wyoming-piper
+    ports:
+      - 5000:5000
+      - 10200:10200
+    volumes:
+      - tts_data:/data  # Cambia ./data por el path real si querés
+    # command: --voice es_AR-daniela-high
+    # command: --voice es_MX-claude-high
+    command: --voice es_ES-davefx-medium
+
 volumes:
   app_data:
   db_data:
+  tts_data:
 
 networks:
   app-network:
