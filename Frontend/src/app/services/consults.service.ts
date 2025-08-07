@@ -2,16 +2,19 @@ import { Injectable } from '@angular/core';
 import { WebSocketSubject, webSocket } from 'rxjs/webSocket';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ConsultsService {
-  private baseUrl = 'ws://'+environment.apiUrl+"ws/chat/lobby/";
+  private baseWsUrl = 'ws://'+environment.apiUrl+"ws/consults/lobby/";
   private socket$: WebSocketSubject<any>;
 
- constructor() {
-    this.socket$ = webSocket(this.baseUrl);
+  private baseUrl = 'http://'+environment.apiUrl+"api/";
+
+  constructor(private http: HttpClient) {
+    this.socket$ = webSocket(this.baseWsUrl);
   }
 
   // Send a message to the server
@@ -27,5 +30,13 @@ export class ConsultsService {
   // Close the WebSocket connection
   closeConnection() {
     this.socket$.complete();
+  }
+
+  getConsults(): Observable<any> {
+    return this.http.get<any>(this.baseUrl + 'consults/');
+  }
+
+  addConsult(data: any): Observable<any> {
+    return this.http.post<any>(this.baseUrl + 'consult/', data);
   }
 }

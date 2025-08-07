@@ -72,6 +72,8 @@ services:
   tts:
     container_name: tts
     image: rhasspy/wyoming-piper
+    networks:
+      - app-network
     ports:
       - 5000:5000
       - 10200:10200

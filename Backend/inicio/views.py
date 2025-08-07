@@ -25,12 +25,6 @@ def trigger_mensaje(request):
     )
     return JsonResponse({"status": "mensaje enviado por WebSocket"})
 
-def chat(request):
-    return render(request, "chat.html")
-
-def room(request, room_name):
-    return render(request, "room.html", {"room_name": room_name})
-
 
 #API
 @csrf_exempt
