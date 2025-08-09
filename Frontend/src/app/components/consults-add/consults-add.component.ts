@@ -14,10 +14,11 @@ export class ConsultsAddComponent {
 
   constructor(private service: ConsultsService) {}
 
-  add(){
+  addConsult(){
     this.service.addConsult(this.consult).subscribe({
       next:(value)=>{
         this.consult = new Consult("", this.consult.room, (new Date()).toISOString());
+        alert("Consulta agregada correctamente");
       },
       error:(err)=>{
         alert("Error al agregar la consulta");

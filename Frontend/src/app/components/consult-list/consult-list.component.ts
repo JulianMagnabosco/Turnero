@@ -14,6 +14,7 @@ import { WebSocketService } from '../../services/web-socket.service';
 })
 export class ConsultListComponent implements OnInit,OnDestroy {
   list: Consult[] = [];
+  calledList: Consult[] = [];
 
   subs = new Subscription();
 
@@ -31,7 +32,6 @@ export class ConsultListComponent implements OnInit,OnDestroy {
     private service: ConsultsService
   ) {}
   ngOnInit(): void {
-    this.audio.loop = true;
     this.charge();
     this.subs.add(
       timer(0, 1000).subscribe({
@@ -40,6 +40,8 @@ export class ConsultListComponent implements OnInit,OnDestroy {
         },
       })
     );
+
+    this.startProcessing()
   }
 
   ngOnDestroy(): void {
@@ -48,6 +50,7 @@ export class ConsultListComponent implements OnInit,OnDestroy {
   }
   charge() {
     this.loading = true;
+    // this.startHTTP();
     this.startWS();
   }
 
@@ -56,6 +59,7 @@ export class ConsultListComponent implements OnInit,OnDestroy {
       this.service.getConsults().subscribe({
         next: (value) => {
           // this.saveData(value['data']);
+          console.log(value);
         },
         error: (err) => {
           console.error('Reintentando');
@@ -75,7 +79,6 @@ export class ConsultListComponent implements OnInit,OnDestroy {
             // this.saveData(value['message']['data']);
           } else if (value['message']['type'] == 'call') {
             this.list.push(value['message']);
-            console.log('call');
           }
         },
         error: (err) => {
@@ -90,6 +93,7 @@ export class ConsultListComponent implements OnInit,OnDestroy {
     while (true) {
       if (!this.processing && this.list.length > 0) {
         this.consult = this.list.shift()!;
+        this.calledList.push(this.consult);
         this.processing = true;
         await this.downloadAndPlayAudio(this.consult);
         this.processing = false;

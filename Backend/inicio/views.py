@@ -18,9 +18,12 @@ import json
 
 #WebSocket
 def trigger_mensaje(request):
+    chat = "chat_lobby"
+    if request.GET.get("consult"):
+        chat = "consult_lobby"
     channel_layer = get_channel_layer()
     async_to_sync(channel_layer.group_send)(
-        "chat_lobby",
+        chat,
         {"type": "chat.message", "message": {"data":"hola","type":"doupdate"}}
     )
     return JsonResponse({"status": "mensaje enviado por WebSocket"})
@@ -213,22 +216,45 @@ def addTicketList(request):
 
 @csrf_exempt
 def addConsult(request):
-    if request.method == "POST":
-        body = json.loads(request.body)
-        consult = Consult(client=body["client"],room=body["room"])
-        Consult.save(consult)
-        return JsonResponse({"consult": consult.json()})
+    body = json.loads(request.body)
+    consult = Consult(patient=body["patient"],room=body["room"])
+    Consult.save(consult)
+    chat = "consult_lobby"
+    channel_layer = get_channel_layer()
+    async_to_sync(channel_layer.group_send)(
+    chat,
+        {
+        "type": "chat.message", 
+            "message": {
+                "data": consult.json(),
+                "type": "call"
+            }
+        }
+    )
+    return JsonResponse({"consult": consult.json()})
     
 
 
 @csrf_exempt
 def getConsults(request):
-    if request.method == "GET":
-        consults = Consult.objects.all()
-        clist = list()
-        for c in consults:
-            clist.append(c.json())
-        return JsonResponse({"consults": clist})
+    consults = Consult.objects.all()
+    clist = list()
+    for c in consults:
+        clist.append(c.json())
+        
+    chat = "consult_lobby"
+    channel_layer = get_channel_layer()
+    async_to_sync(channel_layer.group_send)(
+    chat,
+        {
+        "type": "chat.message", 
+            "message": {
+                "data": clist,
+                "type": "update"
+            }
+        }
+    )
+    return JsonResponse({"consults": clist})
     
 
 @csrf_exempt

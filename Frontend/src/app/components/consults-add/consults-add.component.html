@@ -1,4 +1,4 @@
-<form class="flex flex-col gap-4 p-4 mx-auto max-w-md">
+<form class="flex flex-col gap-4 p-4 mx-auto max-w-md" (ngSubmit)="addConsult()">
   <label for="patient">Nombre del Paciente</label>
   <input type="text" [(ngModel)]="consult.patient" name="patient" placeholder="Paciente" class="p-2 border border-gray-300 rounded">
   <label for="patient">Consultorio</label>
