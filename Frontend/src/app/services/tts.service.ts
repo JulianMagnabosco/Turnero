@@ -7,13 +7,13 @@ import { HttpClient } from '@angular/common/http';
 })
 export class TtsService {
 
-  private baseUrl = 'http://'+environment.ttsUrl+"api/";
+  private baseUrl = 'http://'+environment.apiUrl+"api/";
 
   constructor(private http: HttpClient) {
   }
 
   getTextToSpeech(text: string) {
-    const url = `${this.baseUrl}text-to-speech?text=${encodeURIComponent(text)}`;
+    const url = `${this.baseUrl}tts?text=${encodeURIComponent(text)}`;
     return this.http.get(url, { responseType: 'blob'});
   }
 }

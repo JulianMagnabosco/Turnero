@@ -4,7 +4,7 @@
         <div class="w-2/5 text-start bg-gray-400 uppercase">CONS.</div>
     </div>
     <div class="bg-red-500 font-extrabold flex flex-col-reverse">
-        <div class="flex *:p-3 text-4xl relative border-t-2 border-black capitalize" *ngFor="let ticket of calledList">
+        <div class="flex *:p-3 text-4xl relative border-t-2 border-black capitalize" *ngFor="let ticket of calledList" (click)="downloadAndPlayAudio(ticket)">
             <div class="w-3/5 text-end">{{ticket.patient}}</div>
             <div class="w-2/5 text-start bg-red-400 uppercase">{{ticket.room||" ."}}</div>
 

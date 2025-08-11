@@ -2,6 +2,8 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
+  
+    path("api/tts/", views.tts),
 
     path("api/trigger/", views.trigger_mensaje),
 
