@@ -19,13 +19,18 @@ Turnero para una clinica
 
 ``` docker compose up -d --no-build ```
 
-## migracion DB
+## Migracion DB
 
 ```docker exec -it back python manage.py makemigrations``` o ```docker exec -it back python manage.py makemigrations --update```
 
 ```docker exec -it back python manage.py migrate```
 
 ```docker exec -it back python manage.py loaddata initdata.json```
+
+## TTS
+```
+docker run -d -it -p 5000:5000 -p 10200:10200 --name tts -v tts_data:/data rhasspy/wyoming-piper --voice es_ES-davefx-medium
+```
 
 ## Entrar
 - Normal: http://direccion:4200/

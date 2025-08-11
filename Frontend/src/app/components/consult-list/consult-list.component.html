@@ -1,16 +1,14 @@
-<div class="flex flex-col h-[calc(100svh-8rem)] bg-blue-100 border-2 border-black">
+<div class="flex flex-col h-[calc(100svh-8rem)] bg-blue-100 border-2 border-black overflow-hidden relative">
     <div class="flex *:p-3 text-6xl *:text-white">
         <div class="w-3/5 text-end bg-gray-500 uppercase">PACIENTE</div>
         <div class="w-2/5 text-start bg-gray-400 uppercase">CONS.</div>
     </div>
-    <div class="bg-red-500 font-extrabold ">
-        <div class="flex *:p-3 text-6xl relative border-t-2 border-black" *ngFor="let ticket of calledList">
-            <div class="w-2/5 text-end">{{ticket.patient}}</div>
-            <div class="w-3/5 text-start bg-red-400 uppercase">{{ticket.room||" ."}}</div>
+    <div class="bg-red-500 font-extrabold flex flex-col-reverse">
+        <div class="flex *:p-3 text-4xl relative border-t-2 border-black capitalize" *ngFor="let ticket of calledList">
+            <div class="w-3/5 text-end">{{ticket.patient}}</div>
+            <div class="w-2/5 text-start bg-red-400 uppercase">{{ticket.room||" ."}}</div>
 
-            <div class="bg-red-500 opacity-50 absolute top-0 start-0 w-full h-full animate-ping">
-            </div>
         </div>
     </div>
-    <div class="mb-0 mt-auto bg-cyan-700 text-6xl p-2 text-white text-center">{{datetime | date:"dd/MM/YYYY HH:mm"}}</div>
+    <div class="absolute bottom-0 start-0 w-full bg-cyan-700 text-6xl p-2 text-white text-center">{{datetime | date:"dd/MM/YYYY HH:mm"}}</div>
 </div>

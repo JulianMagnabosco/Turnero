@@ -15,6 +15,8 @@ export class ConsultsAddComponent {
   constructor(private service: ConsultsService) {}
 
   addConsult(){
+    this.consult.patient = this.consult.patient.trim().toLowerCase();
+    this.consult.room = this.consult.room.trim().toLowerCase();
     this.service.addConsult(this.consult).subscribe({
       next:(value)=>{
         this.consult = new Consult("", this.consult.room, (new Date()).toISOString());

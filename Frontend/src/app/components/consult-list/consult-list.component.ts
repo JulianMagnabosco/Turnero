@@ -5,6 +5,7 @@ import { Consult } from '../../models/consult';
 import { environment } from '../../../environments/environment';
 import { ConsultsService } from '../../services/consults.service';
 import { WebSocketService } from '../../services/web-socket.service';
+import { TtsService } from '../../services/tts.service';
 
 @Component({
   selector: 'app-consult-list',
@@ -12,7 +13,7 @@ import { WebSocketService } from '../../services/web-socket.service';
   templateUrl: './consult-list.component.html',
   styleUrl: './consult-list.component.css',
 })
-export class ConsultListComponent implements OnInit,OnDestroy {
+export class ConsultListComponent implements OnInit, OnDestroy {
   list: Consult[] = [];
   calledList: Consult[] = [];
 
@@ -22,14 +23,15 @@ export class ConsultListComponent implements OnInit,OnDestroy {
 
   audio = new Audio();
   processing = false;
-  consult?:Consult
+  consult?: Consult;
 
   timeout: any;
 
   datetime = new Date();
 
   constructor(
-    private service: ConsultsService
+    private service: ConsultsService,
+    private ttsService: TtsService
   ) {}
   ngOnInit(): void {
     this.charge();
@@ -41,24 +43,42 @@ export class ConsultListComponent implements OnInit,OnDestroy {
       })
     );
 
-    this.startProcessing()
+    this.startProcessing();
+
+    // this.ttsService.getTextToSpeech('texto').subscribe({
+    //   next: (blob) => {
+    //     const audioUrl = URL.createObjectURL(blob);
+    //     const audio = new Audio(audioUrl);
+    //     audio.onended = () => {
+    //       URL.revokeObjectURL(audioUrl); // liberar memoria
+    //       console.log('Audio reproducido correctamente');
+    //     };
+    //     audio.onerror = () => {
+    //       console.error('Error al reproducir audio');
+    //     };
+    //     audio.play();
+    //   },
+    //   error: (err) => {
+    //     console.error('Error al descargar audio:', err);
+    //   },
+    // });
+  }
+  charge() {
+    this.loading = true;
+    this.startHTTP();
+    this.startWS();
   }
 
   ngOnDestroy(): void {
     this.subs.unsubscribe();
     clearInterval(this.timeout);
   }
-  charge() {
-    this.loading = true;
-    // this.startHTTP();
-    this.startWS();
-  }
 
   startHTTP() {
     this.subs.add(
       this.service.getConsults().subscribe({
         next: (value) => {
-          // this.saveData(value['data']);
+          this.calledList = value['consults'];
           console.log(value);
         },
         error: (err) => {
@@ -78,8 +98,9 @@ export class ConsultListComponent implements OnInit,OnDestroy {
           if (value['message']['type'] == 'update') {
             // this.saveData(value['message']['data']);
           } else if (value['message']['type'] == 'call') {
-            this.list.push(value['message']);
+            this.list.push(value['message']['data']);
           }
+          console.log(value);
         },
         error: (err) => {
           console.error('Reintentando');
@@ -103,29 +124,31 @@ export class ConsultListComponent implements OnInit,OnDestroy {
   }
 
   async downloadAndPlayAudio(data: Consult): Promise<void> {
-    try {
-      // Suponé que tu backend devuelve un archivo de audio para un texto:
-      const text = `Llamando a ${data.patient} al consultorio ${data.room}`;
-      const audioUrl = `${environment.ttsUrl}/api/text-to-speech?text=${encodeURIComponent(text)}`;
-
-      return new Promise<void>((resolve, reject) => {
-        const audio = new Audio(audioUrl);
-        audio.onended = () => {
-          console.log('Finalizó:', text);
+    const text = `Llamando a ${data.patient} al consultorio ${data.room}`;
+    return new Promise<void>((resolve) => {
+      this.ttsService.getTextToSpeech(text).subscribe({
+        next: (blob) => {
+          const audioUrl = URL.createObjectURL(blob);
+          const audio = new Audio(audioUrl);
+          audio.onended = () => {
+            URL.revokeObjectURL(audioUrl); // liberar memoria
+            resolve();
+          };
+          audio.onerror = () => {
+            console.error('Error al reproducir audio');
+            resolve();
+          };
+          audio.play();
+        },
+        error: (err) => {
+          console.error('Error al descargar audio:', err);
           resolve();
-        };
-        audio.onerror = (e) => {
-          console.error('Error al reproducir:', e);
-          resolve(); // igual continuamos con el siguiente
-        };
-        audio.play();
+        },
       });
-    } catch (e) {
-      console.error('Error al descargar o reproducir:', e);
-    }
+    });
   }
 
   delay(ms: number): Promise<void> {
-    return new Promise(resolve => setTimeout(resolve, ms));
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 }

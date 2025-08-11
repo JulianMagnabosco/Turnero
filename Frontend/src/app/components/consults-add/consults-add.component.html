@@ -1,7 +1,9 @@
 <form class="flex flex-col gap-4 p-4 mx-auto max-w-md" (ngSubmit)="addConsult()">
   <label for="patient">Nombre del Paciente</label>
-  <input type="text" [(ngModel)]="consult.patient" name="patient" placeholder="Paciente" class="p-2 border border-gray-300 rounded">
+  <input type="text" [(ngModel)]="consult.patient" name="patient" placeholder="Paciente" class="p-2 border border-gray-300 rounded"
+    required minlength="3"  #patient="ngModel">
   <label for="patient">Consultorio</label>
-  <input type="text" [(ngModel)]="consult.room" name="room" placeholder="Consultorio/oficina" class="p-2 border border-gray-300 rounded">
-  <button class="bg-cyan-500 hover:brightness-75 rounded-2xl p-2" type="submit">Agregar</button>
+  <input type="text" [(ngModel)]="consult.room" name="room" placeholder="Consultorio/oficina" class="p-2 border border-gray-300 rounded"
+    required minlength="1"  #room="ngModel">
+  <button class="bg-cyan-500 enabled:hover:brightness-75 rounded-2xl p-2 disabled:opacity-50" type="submit" [disabled]="room.invalid  || patient.invalid">Agregar</button>
 </form>
