@@ -64,29 +64,29 @@ export class DisplayListComponent implements OnInit, OnDestroy {
         if(value["notlines"]){
           this.notShowlines= value["notlines"].toUpperCase().split(",");
         }
-        this.startHTTP()
+        // this.startHTTP()
       },
     }))
     this.startWS()
 
   }
 
-  startHTTP(){
+  // startHTTP(){
     
-    this.subs.add(
-      this.service.getAll().subscribe({
-        next: (value) => {
-          // this.saveData(value['data']);
-        },
-        error: (err) => {
-          console.error("Reintentando")
-        },
-        complete: () => {
-          this.loading = false;
-        },
-      })
-    );
-  }
+  //   this.subs.add(
+  //     this.service.getAll().subscribe({
+  //       next: (value) => {
+  //         // this.saveData(value['data']);
+  //       },
+  //       error: (err) => {
+  //         console.error("Reintentando")
+  //       },
+  //       complete: () => {
+  //         this.loading = false;
+  //       },
+  //     })
+  //   );
+  // }
 
   startWS(){
     
@@ -109,17 +109,15 @@ export class DisplayListComponent implements OnInit, OnDestroy {
   }
 
   _callticket(data: any) {
-    console.log("ticket", this.lines.includes(data['code']))
     const inlist = (this.lines.length !=0 && !this.lines.includes(data['code']));
+
     const notinlist = (this.notShowlines.length !=0 && this.notShowlines.find((l)=> l==data['code'] ));
-      console.log("Inlist",inlist)
-      console.log("Notinlist",notinlist)
 
     if(inlist || notinlist){
       console.log("No se muestra la linea")
       return
     }
-    console.log("Correcto")
+    
     this.calledList=this.calledList.filter((t)=>{return t.user!=data['user']})
     this.calledList.unshift(new Ticket(data['code'],data['number'],data['user']))
     this.playSound();
@@ -147,30 +145,23 @@ export class DisplayListComponent implements OnInit, OnDestroy {
     }
   }
 
-  saveData(data: any) {
-    let givenList: Ticket[] = data;
-    let newList: Ticket[] = [];
-    givenList.forEach((ticket) => {
-      let findTicket = this.list.find((e) => {
-        return e.id == ticket.id;
-      });
-      if(findTicket){
-        ticket.selected=findTicket.selected
-      }
-      const inlist =    (this.lines.length ==0        || this.lines.find((l)=> l==ticket.code ));
-      const innotlist = (this.notShowlines.length ==0 || !this.notShowlines.find((l)=> l==ticket.code ));
+  // saveData(data: any) {
+  //   let givenList: Ticket[] = data;
+  //   let newList: Ticket[] = [];
+  //   givenList.forEach((ticket) => {
+  //     let findTicket = this.list.find((e) => {
+  //       return e.id == ticket.id;
+  //     });
+  //     if(findTicket){
+  //       ticket.selected=findTicket.selected
+  //     }
+  //     const inlist =    (this.lines.length ==0        || this.lines.find((l)=> l==ticket.code ));
+  //     const innotlist = (this.notShowlines.length ==0 || !this.notShowlines.find((l)=> l==ticket.code ));
       
-      if(inlist && innotlist){
-        newList.push(ticket)
-      }
-    });
-    this.list=newList;
-  }
-
-  doFullscreen(){
-    document.documentElement.requestFullscreen();
-    document.documentElement.onfullscreenchange=(e)=>{
-      this.fullscreen=!this.fullscreen
-    }
-  }
+  //     if(inlist && innotlist){
+  //       newList.push(ticket)
+  //     }
+  //   });
+  //   this.list=newList;
+  // }
 }

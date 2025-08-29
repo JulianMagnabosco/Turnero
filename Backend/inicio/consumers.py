@@ -28,7 +28,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         
         if message["type"]=="add" :
             line = await aget_object_or_404(Line,code=message["code"])
-            list = Ticket.objects.filter(line=line).filter(called=False).order_by("number")
+            list = Line.getTickets()
             totem = message["totem"]
 
             last = await sync_to_async(list.last)()
@@ -40,11 +40,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
             user = await aget_object_or_404(User,username=username)
             ticket = await aget_object_or_404(Ticket,pk=message["id"])
             ticket.user = user
-            await Ticket.asave(ticket)
-
-        elif message["type"]=="next":
-            ticket = await aget_object_or_404(Ticket,pk=message["id"])
-            ticket.called = True
             await Ticket.asave(ticket)
 
         elif message["type"]=="del":
@@ -75,7 +70,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
     #     return JsonResponse({"login": False},status=401)
         username = self.scope["user"].username
         # print(self.scope["user"].is_superuser)
-        listRaw0 = Ticket.objects.select_related("user").select_related("line").filter(called=False).order_by("number")
+        listRaw0 = Ticket.objects.select_related("user").select_related("line").filter(user=None).order_by("date")
 
         # if not self.scope["user"].is_superuser:
         #     listRaw1 = listRaw0.filter(line__users__username=username).all() 

@@ -14,13 +14,13 @@ class Line(models.Model):
         return {"id":self.pk,"name":self.name,"code":self.code,"tickets":list(self.getTickets().values())}
     
     async def ajson(self):
-        tks = Ticket.objects.filter(line=self).filter(called=False).order_by("number")
+        tks = self.getTickets()
         listA = await sync_to_async(tks.values)()
         newList = await sync_to_async(list)(listA)
         return {"id":self.pk,"name":self.name,"code":self.code,"tickets":newList}
 
     def getTickets(self):
-        return Ticket.objects.filter(line=self).filter(called=False).order_by("number")
+        return Ticket.objects.filter(line=self).filter(user=None).order_by("date")
 
     def __str__(self):
         return self.name+"("+self.code+")"
@@ -29,17 +29,18 @@ class Ticket(models.Model):
     number=models.IntegerField()
     line=models.ForeignKey(Line,on_delete=models.CASCADE,related_name="tickets")
     totem=models.CharField(max_length=100,default="")
-    called=models.BooleanField(default=False)
 
     user=models.ForeignKey(User,blank=True,null=True,on_delete=models.SET_NULL,related_name="tickets")
+    
+    date = models.DateTimeField(auto_now_add=True)
     
     def json(self):
         return {"id":self.pk,
                 "code":self.line.code,
                 "number":self.number,
                 "totem":self.totem,
-                "called":self.called,
-                "user":self.user.username if self.user else None}
+                "user":self.user.username if self.user else None,
+                "date":self.date.isoformat()}
         
     async def ajson(self):
         ticketLine = await sync_to_async(self.line)()
@@ -48,8 +49,8 @@ class Ticket(models.Model):
                 "code":ticketLine.code,
                 "number":self.number,
                 "totem":self.totem,
-                "called":self.called,
-                "user":ticketUser.username if self.user else None}
+                "user":ticketUser.username if self.user else None,
+                "date":self.date.isoformat()}
 
     def __str__(self):
-        return str(self.number)+"("+self.line.code+")"
+        return self.line.code+"-"+str(self.number)+" "+self.date.strftime("%Y-%m-%d %H:%M:%S:%f")

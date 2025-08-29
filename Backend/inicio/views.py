@@ -159,8 +159,7 @@ def getLines(request):
 
 @csrf_exempt
 def getAll(request):
-    username = request.user.username
-    listRaw0 = Ticket.objects.select_related("user").select_related("line").filter(called=False).order_by("number")
+    listRaw0 = Ticket.objects.select_related("user").select_related("line").filter(user=None).order_by("date")
     listRaw1 = listRaw0.all() 
 
     listValues=list()

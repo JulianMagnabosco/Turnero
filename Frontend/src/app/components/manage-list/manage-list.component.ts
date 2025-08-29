@@ -65,7 +65,6 @@ export class ManageListComponent implements OnInit, OnDestroy {
       this.service.getLines().subscribe({
         next: (value) => {
           this.lines=value["data"].map((l:TicketList)=>{return l.code})
-          console.log(value);
           this.getData()
           this.startWS()
         },
@@ -91,7 +90,6 @@ export class ManageListComponent implements OnInit, OnDestroy {
       this.service.getAll().subscribe({
         next: (value) => {
           this.saveData(value["data"])
-          console.log(value);
         },
         error: (err) => {
           // alert(
@@ -111,7 +109,6 @@ export class ManageListComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.webSocket.getMessages().subscribe({
         next: (value) => {
-          console.log(value);
           if (value['message']['type'] == 'update') {
             this.saveData(value['message']['data']);
           } else if (value['message']['type'] == 'call') {
@@ -182,34 +179,36 @@ export class ManageListComponent implements OnInit, OnDestroy {
     this.webSocket.sendMessage({ message: message });
   }
   callTicket() {
+    if(!this.calledTicket){
+      const ticketToCall = this.list[0]
+      this.calledTicket = new Ticket(ticketToCall.code,ticketToCall.number,ticketToCall.user);
+      this.calledTicket.id=ticketToCall.id
+    }
+
     let message = {
       type: 'call',
-      id: this.list[0].id,
-      number: this.list[0].number,
-      code: this.list[0].code,
+      id: this.calledTicket.id,
+      number: this.calledTicket.number,
+      code: this.calledTicket.code,
       user: this.authService.user?.username
     };
 
-    this.calledTicket = new Ticket(this.list[0].code,this.list[0].number,this.list[0].user);
-    this.calledTicket.id=this.list[0].id
 
     this.webSocket.sendMessage({ message: message });
   }
 
   callNext() {
-    let message = {
-      type: 'next',
-      id: this.list[0].id,
-      number: this.list[0].number,
-      code: this.list[0].code,
-      user: this.authService.user?.username
-    };
-
-    console.log(this.authService.user?.username)
+    // let message = {
+    //   type: 'next',
+    //   id: this.list[0].id,
+    //   number: this.list[0].number,
+    //   code: this.list[0].code,
+    //   user: this.authService.user?.username
+    // };
 
     this.calledTicket = undefined
 
-    this.webSocket.sendMessage({ message: message });
+    // this.webSocket.sendMessage({ message: message });
   }
 
   _callticket(data: any) {
