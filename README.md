@@ -19,6 +19,10 @@ Turnero para una clinica
 
 ``` docker compose up -d --no-build ```
 
+## Test Compose
+
+``` docker compose -f ./test-docker-compose.yml up -d ```
+
 ## migracion DB
 
 ```docker exec -it back python manage.py makemigrations``` o ```docker exec -it back python manage.py makemigrations --update```
