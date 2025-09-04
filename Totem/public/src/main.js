@@ -23,6 +23,9 @@ $(document).ready(function () {
   let active = false;
   let timerPopups = 5000;
 
+  let idTimeout = null;
+  const goBackTimeout = 30000
+
   let tryAgainList = []
   tryAgainList=JSON.parse(localStorage.getItem("faileds"))
 
@@ -117,6 +120,7 @@ $(document).ready(function () {
       .children()
       .click(function (e) {
         groupSelected= $(this).data("b-group")
+        clearTimeout(idTimeout)
         if(groupSelected=="Back"){
           goBack()
         }else{
@@ -129,6 +133,13 @@ $(document).ready(function () {
           $("[data-b-group='Back']").parent().show()
           $(".button-turn[data-group='"+groupSelected+"']").show()
           $(this).parent().hide()
+
+          idTimeout=setTimeout(function(){
+            // const a = groupSelected
+            // console.log("Timeout: "+a)
+            goBack()
+          },goBackTimeout)
+          
         }
 
       });
@@ -146,6 +157,8 @@ $(document).ready(function () {
   });
 
   function goBack(){
+          $("#loadingbar").show()
+          $("#loadingbar").hide(1000)
     $(".button-group").show();
     $(".button-turn").show();
     $(".button-turn[data-group]").hide();
