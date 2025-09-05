@@ -18,7 +18,8 @@ import { AuthService } from '../../services/auth.service';
 export class ManageListComponent implements OnInit, OnDestroy {
   subs: Subscription = new Subscription();
   loading = false;
-  hasSelections=false
+  hasSelections=false;
+  audioPaused=false;
 
   calledTicket:Ticket|undefined;
   lastSelectedTicket:Ticket|undefined;
@@ -35,7 +36,7 @@ export class ManageListComponent implements OnInit, OnDestroy {
   audio = new Audio('music.mp3');
 
   timeout: any;
-  timer = 5;
+  timer = 8;
 
   constructor(
     private service: TicketsService,
@@ -248,6 +249,7 @@ export class ManageListComponent implements OnInit, OnDestroy {
   playSound(){
     try{
       this.audio.play();
+      this.audioPaused=false
     }catch{
       console.error("Error de audio")
     }
@@ -255,6 +257,7 @@ export class ManageListComponent implements OnInit, OnDestroy {
   stopSound(){
     try{
       this.audio.pause();
+      this.audioPaused=true
     }catch{
       console.error("Error de audio")
     }
