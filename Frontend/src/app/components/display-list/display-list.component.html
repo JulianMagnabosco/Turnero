@@ -17,7 +17,8 @@
                 <div class="w-3/5 text-start bg-red-400 uppercase">{{ticket.user||" ."}}</div>
 
                 <div class="bg-red-500 opacity-50 absolute top-0 start-0 w-full h-full animate-ping"
-                    [hidden]="audioPaused"></div>
+                    [style.animation-iteration-count]="timeout/2" 
+                    style="animation-fill-mode: forwards; animation-duration: 2s"></div>
             </div>
         </div>
         <!-- <div class="bg-blue-400">
