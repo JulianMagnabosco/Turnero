@@ -36,7 +36,7 @@ export class ManageListComponent implements OnInit, OnDestroy {
   audio = new Audio('music.mp3');
 
   timeout: any;
-  timer = 8;
+  timer = 15;
 
   constructor(
     private service: TicketsService,

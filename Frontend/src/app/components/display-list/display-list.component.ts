@@ -31,7 +31,7 @@ export class DisplayListComponent implements OnInit, OnDestroy {
   audioPaused=true
 
   timeout: any;
-  soundTimer = 8;
+  soundTimer = 15;
 
   datetime=new Date();
   constructor(
