@@ -6,6 +6,7 @@ import { DatePipe, NgClass, NgFor, NgIf } from '@angular/common';
 import { Ticket } from '../../models/ticket';
 import { WebSocketService } from '../../services/web-socket.service';
 import { ActivatedRoute } from '@angular/router';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-display-list',
@@ -31,7 +32,7 @@ export class DisplayListComponent implements OnInit, OnDestroy {
   audioPaused=true
 
   timeout: any;
-  soundTimer = 15;
+  soundTimer = environment.soundTimeout;
 
   datetime=new Date();
   constructor(

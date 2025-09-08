@@ -16,9 +16,9 @@
                 <div class="w-2/5 text-end">{{ticket.code+" - "+ticket.number}}</div>
                 <div class="w-3/5 text-start bg-red-400 uppercase">{{ticket.user||" ."}}</div>
 
-                <div class="bg-red-500 opacity-50 absolute top-0 start-0 w-full h-full animate-ping"
-                    [style.animation-iteration-count]="timeout/2" 
-                    style="animation-fill-mode: forwards; animation-duration: 2s"></div>
+                <div class="bg-red-500 z-50 opacity-75 absolute top-0 start-0 w-full h-full animate-ping"
+                    [style.animation-iteration-count]="soundTimer" 
+                    style="animation-fill-mode: forwards; animation-duration: 1s"></div>
             </div>
         </div>
         <!-- <div class="bg-blue-400">
