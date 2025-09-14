@@ -8,6 +8,7 @@ import { WebSocketService } from '../../services/web-socket.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { AuthService } from '../../services/auth.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-manage-list',
@@ -36,7 +37,7 @@ export class ManageListComponent implements OnInit, OnDestroy {
   audio = new Audio('music.mp3');
 
   timeout: any;
-  timer = 15;
+  soundTimer = environment.soundTimeout;
 
   constructor(
     private service: TicketsService,
@@ -224,7 +225,7 @@ export class ManageListComponent implements OnInit, OnDestroy {
     
     this.timeout = setTimeout(() => {
       this.stopSound();
-    }, this.timer * 1000);
+    }, this.soundTimer * 1000);
   }
 
   addticket(code: string) {
