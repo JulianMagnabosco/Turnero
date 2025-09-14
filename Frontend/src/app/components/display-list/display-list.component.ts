@@ -117,7 +117,14 @@ export class DisplayListComponent implements OnInit, OnDestroy {
       return
     }
     
-    this.calledList=this.calledList.filter((t)=>{return t.user!=data['user']})
+    this.calledList=this.calledList.filter((t)=>{
+      this.list.unshift(new Ticket(t['code'],t['number'],t['user']))
+      return t.user!=data['user']
+    })
+
+    this.list=this.list.filter((t)=>{
+      return !(t.code==data['code'] && t.number==data['number'])
+    })
     this.calledList.unshift(new Ticket(data['code'],data['number'],data['user']))
     this.playSound();
     
