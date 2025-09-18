@@ -27,7 +27,7 @@ $(document).ready(function () {
   const goBackTimeout = 30000
 
   let tryAgainList = []
-  tryAgainList=JSON.parse(localStorage.getItem("faileds"))
+  tryAgainList=JSON.parse(localStorage.getItem("faileds") || "[]")
 
   $("#scroll-up").click(function (){
     scroll=0
@@ -50,9 +50,9 @@ $(document).ready(function () {
     
     apiUrl = data["apiUrl"];
     totemName = data["totem"];
-    let oldOptions = JSON.parse(localStorage.getItem("options"))
-    console.log("Parsed: ")
-    console.log(oldOptions)
+    let oldOptions = JSON.parse(localStorage.getItem("options") || "[]")
+    // console.log("Parsed: ")
+    // console.log(oldOptions)
     options = data["lines"].map((l)=>{
       let oldO=undefined;
       if(oldOptions){
@@ -63,8 +63,8 @@ $(document).ready(function () {
       }
       return l
     });
-    console.log("Fetched: ")
-    console.log(options)
+    // console.log("Fetched: ")
+    // console.log(options)
     groups = data["groups"];
     options.forEach(function (option, index) {
       e.children().children()[1].innerText = option.code;
