@@ -31,9 +31,10 @@ class ChatConsumer(AsyncWebsocketConsumer):
             list = Line.getTickets()
             totem = message["totem"]
 
-            last = await sync_to_async(list.last)()
-            lastNumber = last.number+1 if not last is None else 1
-            await Ticket.asave(Ticket(number=lastNumber,line=line,totem=totem))
+            lastTicket = await sync_to_async(list.last)()
+            lastTicketNumber = lastTicket.number if not lastTicket is None else 99
+            newNumber = lastTicketNumber+1 if lastTicketNumber<99 else 1
+            await Ticket.asave(Ticket(number=newNumber,line=line,totem=totem))
             
         elif message["type"]=="call":
             username = self.scope["user"].username
