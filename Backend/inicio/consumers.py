@@ -28,7 +28,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         
         if message["type"]=="add" :
             line = await aget_object_or_404(Line,code=message["code"])
-            list = Line.getTickets()
+            list = line.getTickets()
             totem = message["totem"]
 
             lastTicket = await sync_to_async(list.last)()

@@ -10,17 +10,17 @@ class Line(models.Model):
     users = models.ManyToManyField(User,blank=True)
     ticket_list=[]
 
+    def getTickets(self):
+        return Ticket.objects.filter(line=self).order_by("date")
+    
     def json(self):
         return {"id":self.pk,"name":self.name,"code":self.code,"tickets":list(self.getTickets().values())}
     
     async def ajson(self):
-        tks = self.getTickets()
+        tks = self.getTickets().filter(user=None)
         listA = await sync_to_async(tks.values)()
         newList = await sync_to_async(list)(listA)
         return {"id":self.pk,"name":self.name,"code":self.code,"tickets":newList}
-
-    def getTickets(self):
-        return Ticket.objects.filter(line=self).filter(user=None).order_by("date")
 
     def __str__(self):
         return self.name+"("+self.code+")"
