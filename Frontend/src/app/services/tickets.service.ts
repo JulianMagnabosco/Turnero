@@ -16,6 +16,11 @@ export class TicketsService {
     return this.http.get(this.baseUrl+"tickets/");
   }
   
+  searchTickets(paramList:any):Observable<any>{
+    return this.http.get(this.baseUrl+"search/",{params:paramList});
+  }
+  
+  
   getLines():Observable<any>{
     return this.http.get(this.baseUrl+"lines/");
   }

@@ -3,7 +3,7 @@ import { Subscription } from 'rxjs';
 import { TicketList } from '../../models/ticket-list';
 import { TicketsService } from '../../services/tickets.service';
 import { Ticket } from '../../models/ticket';
-import { NgFor, NgIf } from '@angular/common';
+import { DatePipe, NgFor, NgIf } from '@angular/common';
 import { WebSocketService } from '../../services/web-socket.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
@@ -12,7 +12,7 @@ import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-manage-list',
-  imports: [NgFor,NgIf],
+  imports: [NgFor,NgIf, DatePipe],
   templateUrl: './manage-list.component.html',
   styleUrl: './manage-list.component.css',
 })
@@ -39,6 +39,8 @@ export class ManageListComponent implements OnInit, OnDestroy {
   timeout: any;
   soundTimer = environment.soundTimeout;
 
+  admin=false;
+
   constructor(
     private service: TicketsService,
     private authService: AuthService,
@@ -47,13 +49,7 @@ export class ManageListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.audio.loop = true;
     this.charge();
-    // this.subs.add(
-    //   this.activeRoute.queryParams.subscribe({
-    //     next: (value)=>{
-    //       this.listSelected=value["code"]||""
-    //     }
-    //   })
-    // )
+    this.admin=this.authService.user?.admin||false
   }
 
   ngOnDestroy(): void {
@@ -165,6 +161,7 @@ export class ManageListComponent implements OnInit, OnDestroy {
   }
 
   deleteSelected() {
+    if(!this.admin) return
     let message = {
       type: 'dellist',
       tickets: this.list
@@ -238,6 +235,7 @@ export class ManageListComponent implements OnInit, OnDestroy {
   }
 
   deleteTicket(id: number) {
+    if(!this.admin) return
     let message = {
       type: 'del',
       id: id,
@@ -283,6 +281,11 @@ export class ManageListComponent implements OnInit, OnDestroy {
         newList.push(ticket)
       }
     });
-    this.list=newList;
+    this.list=newList.sort((a,b)=>{
+      if(a.withTurn&&b.withTurn) return 0
+      if(a.withTurn) return -1
+      if(b.withTurn) return 1
+      return 0
+    });
   }
 }

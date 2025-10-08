@@ -5,6 +5,7 @@ export class TicketList {
   tickets: Ticket[]=[]
   code=""
   name=""
+  withTurn=false
 
   selected=false
 

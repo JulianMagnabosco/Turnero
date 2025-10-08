@@ -6,6 +6,7 @@ export class Ticket {
   user="";
   selected=false;
   date="";
+  withTurn=false;
 
   constructor(code:string,number:number,user:string=""){
     this.code=code

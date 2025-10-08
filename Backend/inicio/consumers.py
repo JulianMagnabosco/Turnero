@@ -71,7 +71,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
     #     return JsonResponse({"login": False},status=401)
         username = self.scope["user"].username
         # print(self.scope["user"].is_superuser)
-        listRaw0 = Ticket.objects.select_related("user").select_related("line").filter(user=None).order_by("date")
+        listRaw0 = Ticket.objects.select_related("user").select_related("line").filter(user=None).order_by("-date")
 
         # if not self.scope["user"].is_superuser:
         #     listRaw1 = listRaw0.filter(line__users__username=username).all() 

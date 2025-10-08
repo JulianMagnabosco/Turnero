@@ -37,6 +37,7 @@ class Ticket(models.Model):
     def json(self):
         return {"id":self.pk,
                 "code":self.line.code,
+                "withTurn": "con turno" in self.line.name.lower(),
                 "number":self.number,
                 "totem":self.totem,
                 "user":self.user.username if self.user else None,
@@ -47,6 +48,7 @@ class Ticket(models.Model):
         ticketUser = await sync_to_async(self.user)()
         return {"id":self.pk,
                 "code":ticketLine.code,
+                "withTurn": "con turno" in ticketLine.name.lower(),
                 "number":self.number,
                 "totem":self.totem,
                 "user":ticketUser.username if self.user else None,

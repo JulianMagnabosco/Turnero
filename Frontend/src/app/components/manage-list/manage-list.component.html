@@ -28,7 +28,7 @@
         </span>
     </div>
     <div [class.invisible]="!hasSelections" class="flex justify-end mb-2 text-2xl text-white *:p-2 *:text-center *:cursor-pointer *:hover:brightness-75">
-        <span class="rounded-s-xl bg-red-500" (click)="deleteSelected()">
+        <span class="rounded-s-xl bg-red-500" (click)="deleteSelected()" [hidden]="!admin">
             <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 448 512"
@@ -44,15 +44,18 @@
         </span>
     </div>
     <div class="divide-black divide-y-2 bg-gray-200">
-        <div class="text-2xl hover:bg-gray-400 relative hover:*:last:inline select-none"
+        <div class="text-2xl p-2  hover:bg-gray-400 relative flex justify-between hover:*:last:inline select-none"
         [class]="{'bg-gray-300':ticket.selected}" *ngFor="let ticket of list; index as i" >
-            <div class="p-2 " (click)="selectTicket($event,ticket)"
+            <div (click)="selectTicket($event,ticket)"
             [class]="{'font-bold':ticket.selected}">
                 <span [hidden]="!ticket.selected">✓</span>
                 {{ticket.code+" - "+ticket.number}}
                 <span [hidden]="i!=0">→Siguiente→</span>
             </div>
-            <button class="absolute top-0 end-0 p-2 px-4 bg-red-500 hidden hover:brightness-75" 
+            <div  class="text-gray-500 italic ">
+                <span class="text-base">{{ticket.date | date:"dd MMM"}} </span> {{ticket.date | date:"HH:mm:ss"}}
+            </div>
+            <button class="absolute top-0 end-0 p-2 px-4 bg-red-500 hidden hover:brightness-75" [hidden]="!admin"
             (click)="deleteTicket(ticket.id)" >X</button>
         </div>
     </div>

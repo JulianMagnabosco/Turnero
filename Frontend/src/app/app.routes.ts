@@ -10,6 +10,7 @@ import { DisplayListComponent } from './components/display-list/display-list.com
 import { ManageListComponent } from './components/manage-list/manage-list.component';
 import { LinesComponent } from './components/lines/lines.component';
 import { AboutComponent } from './components/about/about.component';
+import { TicketsComponent } from './components/tickets/tickets.component';
 
 export const routes: Routes = [
     {path:"",component:HomeComponent},
@@ -18,6 +19,7 @@ export const routes: Routes = [
     {path:"display",component:DisplayListComponent, title:"Mostrar"},
     {path:"about",component:AboutComponent, title:"Acerca De"},
     {path:"manage",component:ManageListComponent, title:"Gestion listas", canActivate:[authGuard]},
+    {path:"tickets",component:TicketsComponent, title:"Todos los tickets", canActivate:[authGuard]},
 
     {path:"showuser",component:ShowUserComponent, title:"Mi usuario", canActivate:[authGuard]},
     {path:"lines",component:LinesComponent, title:"Lineas de Ticket", canActivate:[authGuardAdmin]},

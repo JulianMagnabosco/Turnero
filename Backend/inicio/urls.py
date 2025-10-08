@@ -15,6 +15,7 @@ urlpatterns = [
     path('api/resetpass/', views.api_resetpass),
 
     path("api/tickets/", views.getAll),
+    path("api/search/", views.searchTickets),
     path("api/lines/", views.getLines),
     path("api/line/", views.addLine),
     path("api/line/<int:id>/", views.deleteLine),

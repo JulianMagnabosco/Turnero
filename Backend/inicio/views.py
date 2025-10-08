@@ -7,6 +7,7 @@ from django.db import IntegrityError
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.middleware.csrf import get_token
+from django.core.paginator import Paginator
 
 from django.http import JsonResponse
 from channels.layers import get_channel_layer
@@ -159,7 +160,7 @@ def getLines(request):
 
 @csrf_exempt
 def getAll(request):
-    listRaw0 = Ticket.objects.select_related("user").select_related("line").filter(user=None).order_by("date")
+    listRaw0 = Ticket.objects.select_related("user").select_related("line").filter(user=None).order_by("-date")
     listRaw1 = listRaw0.all() 
 
     listValues=list()
@@ -178,6 +179,29 @@ def getAll(request):
         }
     )
     return JsonResponse({"data": listValues})
+
+
+@csrf_exempt
+def searchTickets(request):
+    order = request.GET.get("order","date")
+    dir = "-" if request.GET.get("dir","desc")=="desc" else ""
+    listRaw0 = Ticket.objects.select_related("user").select_related("line").filter(user=None)
+    if order=="line":
+        listRaw0 = listRaw0.order_by(f"{dir}line__name","-date")
+    else:
+        listRaw0 = listRaw0.order_by(f"{dir}{order}","-date")
+    page_size = request.GET.get("size",10)
+    listRaw1 = Paginator(listRaw0.all() ,page_size)
+
+    page_number = request.GET.get("page",1)
+    listValues=list()
+    for t in list(listRaw1.get_page(page_number)):
+        listValues.append(t.json())
+
+    return JsonResponse({"data": listValues, "total": listRaw1.count, "num_pages": listRaw1.num_pages, 
+                         "next": listRaw1.get_page(page_number).has_next(), 
+                         "previous": listRaw1.get_page(page_number).has_previous(), 
+                         "page": page_number})
 
 @csrf_exempt
 def addLine(request):
