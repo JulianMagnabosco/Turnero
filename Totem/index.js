@@ -35,7 +35,7 @@ let config = {
     ]
   }
   
-fs.readFile('config.json', function(err, data) { 
+fs.readFile(__dirname+'/config.json', function(err, data) { 
     if (err) {
         console.log("Sin config")
         return
@@ -53,7 +53,7 @@ app.listen(port, () => {
 
 // app.use("/src",express.static('public/src'))
 // app.use("/libs",express.static('public/libs'))
-app.use(express.static('public'))
+app.use(express.static(__dirname + '/public'))
 app.get('/', (req, res) =>
     res.sendFile(__dirname + '/public/index.html')
 );
