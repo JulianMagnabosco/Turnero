@@ -72,7 +72,8 @@ app.post('/totem/ticket', (req, res) => {
     const nameSelected = req.body["name"]
     const codeSelected = req.body["code"]
     const lastNumber = req.body["lastNumber"]
-    const dateNow = new Date();
+    let dateNow = req.body["date"]
+    dateNow = !dateNow ? new Date(): new Date(dateNow);
     const dateString = date.format(dateNow,'DD/MM/YYYY HH:mm:ss');
     console.log(dateString)
 

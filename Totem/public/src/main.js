@@ -18,6 +18,7 @@ $(document).ready(function () {
   let nameSelected = "";
   let groupSelected = "";
   let lastNumber = 0;
+  let date = "";
 
   const ajaxTimeout = 5000;
   let active = false;
@@ -178,6 +179,7 @@ $(document).ready(function () {
       .done(function (data, status) {
         
         lastNumber = data["ticketNumber"];
+        date = data["date"];
         const op = options.find((e)=>e.code==codeSelected)
         op.lastNumber = lastNumber
         localStorage.setItem("options",JSON.stringify(options))
@@ -276,7 +278,7 @@ $(document).ready(function () {
       contentType: "application/json",
       timeout:ajaxTimeout,
       // async: false,
-      data: JSON.stringify({"list":tryAgainList,"totem":totemName}),
+      data: JSON.stringify({"list":tryAgainList,"totem":totemName,"date":date}),
     })
       .done(function (data, status) {
         // delete tryAgainList[index]

@@ -222,9 +222,10 @@ def addTicket(request):
         lastTicket = line.getTickets().last()
         lastTicketNumber = lastTicket.number if not lastTicket is None else 99
         newNumber = lastTicketNumber+1 if lastTicketNumber<99 else 1
-        Ticket.save(Ticket(number=newNumber,line=line,totem=totem))
+        newTicket = Ticket(number=newNumber,line=line,totem=totem)
+        newTicket.save()
         getAll(request)
-        return JsonResponse({"ticketNumber": newNumber})
+        return JsonResponse({"ticketNumber": newTicket.number,"date": newTicket.date})
     return getAll(request)
 
 
