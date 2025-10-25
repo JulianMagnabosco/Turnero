@@ -69,7 +69,7 @@ export class UsersComponent implements OnInit,OnDestroy{
           alert("Error credenciales incorrectas");
           return
         }
-        alert("Error inesperado en el servidor, revise su conexion a internet");
+        alert("Error "+ err.status+":" + err.message );
       },
     }))
   }
@@ -91,7 +91,7 @@ export class UsersComponent implements OnInit,OnDestroy{
             this.charge()
           },
           error: err => {
-            alert("Error inesperado en el servidor, revise su conexion a internet");
+            alert("Error "+ err.status+":" + err.message );
           }
         }
       )
@@ -106,7 +106,7 @@ export class UsersComponent implements OnInit,OnDestroy{
             this.users=value["list"]
           },
           error: err => {
-            alert("Error inesperado en el servidor, revise su conexion a internet");
+            alert("Error "+ err.status+":" + err.message );
           }
         }
       )
@@ -119,7 +119,7 @@ export class UsersComponent implements OnInit,OnDestroy{
             this.lines=value["data"]
           },
           error: err => {
-            alert("Error inesperado en el servidor, revise su conexion a internet");
+            alert("Error "+ err.status+":" + err.message );
           }
         }
       )
@@ -141,7 +141,7 @@ export class UsersComponent implements OnInit,OnDestroy{
             if(err.status == 403 || err.status == 401){
               return
             }
-            alert("Error inesperado en el servidor, revise su conexion a internet");
+            alert("Error "+ err.status+":" + err.message );
           }
         })
       )

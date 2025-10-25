@@ -63,7 +63,7 @@ export class RegisterComponent implements OnInit,OnDestroy{
             if(err["code"]==400){
               alert(err["error"]);
             }else{
-              alert("Error inesperado en el servidor, revise su conexion a internet");
+              alert("Error "+ err.status+":" + err.message );
             }
           }
         }

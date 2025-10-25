@@ -56,7 +56,7 @@ export class LoginComponent implements OnInit,OnDestroy{
               alert("No existe usuario con esas credenciales");
               // alert("No existe usuario con esas credenciales")
             }else {
-              alert("Error inesperado en el servidor, revise su conexion a internet");
+              alert("Error "+ err.status+":" + err.message );
             }
             this.loading=false
           },

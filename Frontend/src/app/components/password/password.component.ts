@@ -88,7 +88,7 @@ export class PasswordComponent implements OnInit,OnDestroy{
         if(err["status"]==404){
           alert("No existe usuario con ese mail");
         }else {
-          alert("Error inesperado en el servidor, revise su conexion a internet");
+          alert("Error "+ err.status+":" + err.message );
         }
       }
     }))
@@ -112,7 +112,7 @@ export class PasswordComponent implements OnInit,OnDestroy{
         if(err["status"]==404){
           alert("Token Invalido");
         }else {
-          alert("Error inesperado en el servidor, revise su conexion a internet");
+          alert("Error "+ err.status+":" + err.message );
         }
       }
     }))

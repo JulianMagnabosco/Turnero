@@ -49,8 +49,7 @@ export class LinesComponent implements OnInit, OnDestroy {
         },
         error: (err) => {
           alert(
-            'Error inesperado en el servidor, revise su conexion a internet'
-          );
+"Error "+ err.status+":" + err.message          );
           this.charge()
         },
         complete: () => {
@@ -77,8 +76,7 @@ export class LinesComponent implements OnInit, OnDestroy {
         },
         error: (err) => {
           alert(
-            'Error inesperado en el servidor, revise su conexion a internet'
-          );
+"Error "+ err.status+":" + err.message          );
           this.charge()
         }
       })
@@ -97,8 +95,7 @@ export class LinesComponent implements OnInit, OnDestroy {
         },
         error: (err) => {
           alert(
-            'Error inesperado en el servidor, revise su conexion a internet'
-          );
+"Error "+ err.status+":" + err.message          );
           this.charge()
         }
       })

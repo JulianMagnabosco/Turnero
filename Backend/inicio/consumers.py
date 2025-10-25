@@ -25,6 +25,14 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
         message = text_data_json["message"]
+
+        username = self.scope["user"].username
+        try:
+            user = await aget_object_or_404(User,username=username)
+        except:
+            errorMessage = {"type":"error","code":401,"message":"User not authenticated"}
+            await self.send(text_data=json.dumps({"type": "chat.message", "message": errorMessage}))
+            return
         
         if message["type"]=="add" :
             line = await aget_object_or_404(Line,code=message["code"])
@@ -37,8 +45,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
             await Ticket.asave(Ticket(number=newNumber,line=line,totem=totem))
             
         elif message["type"]=="call":
-            username = self.scope["user"].username
-            user = await aget_object_or_404(User,username=username)
             ticket = await aget_object_or_404(Ticket,pk=message["id"])
             ticket.user = user
             await Ticket.asave(ticket)
