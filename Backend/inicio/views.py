@@ -185,7 +185,7 @@ def getAll(request):
 def searchTickets(request):
     order = request.GET.get("order","date")
     dir = "-" if request.GET.get("dir","desc")=="desc" else ""
-    listRaw0 = Ticket.objects.select_related("user").select_related("line").filter(user=None)
+    listRaw0 = Ticket.objects.select_related("user").select_related("line")
     if order=="line":
         listRaw0 = listRaw0.order_by(f"{dir}line__name","-date")
     else:
