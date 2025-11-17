@@ -32,7 +32,7 @@
               </div>
             </td>
             <td class="p-1 ">
-              <div class="flex items-center justify-center h-full *:transition-all *:hover:brightness-75">
+              <div class="flex items-center justify-center h-full space-x-1 *:transition-all *:hover:brightness-75">
                 <button (click)="deleteUser(item.id)" class="p-2 h-full cursor-pointer rounded-xl bg-red-500">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="white" class="size-8" >
                   <path
@@ -64,15 +64,17 @@
 <div class="fixed p-2 top-0 left-0 w-full h-full flex justify-center items-center overflow-y-auto bg-gray-500/75 z-10"
   *ngIf="selectedUser">
   <div class="bg-white rounded-xl p-2 opacity-100">
-    <div class="text-center text-3xl font-bold m-2">Editar ({{selectedUser.username}})</div>
+    <div class="text-center text-3xl font-bold m-2">Editar usuario: {{selectedUser.username}}</div>
 
     <div class="text-center text-2xl m-2">Cambiar contraseña</div>
-    <div class="text-center m-2 *:block *:w-full *:border-2 *:border-black max-w-xl rounded-xl  *:p-2 *:rounded-xl">
+    <div class="text-center m-2 *:mb-2 *:block *:w-full *:border-2 *:border-black max-w-xl rounded-xl  *:p-2 *:rounded-xl">
       <input type="password" [(ngModel)]="password" placeholder="Contraseña del Administrador">
       <input type="password" [(ngModel)]="newPassword" placeholder="Nueva Contraseña para el Usuario">
       <button class="bg-cyan-300 hover:brightness-75 disabled:opacity-50" 
       (click)="savePassword()"  [disabled]="!password || !newPassword">Cambiar</button>
     </div>
+
+    <div class="my-5 border-t-2 border-black"></div>
     
     <div class="text-center text-2xl m-2">Cambiar Lineas Accesibles</div>
     <div class="text-center m-2">Seleccione las lineas de tickets accesibles por este usuario

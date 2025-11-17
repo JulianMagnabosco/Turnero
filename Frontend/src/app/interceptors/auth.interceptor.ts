@@ -27,8 +27,11 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
 export function handleErrorRes(error: HttpErrorResponse,router:Router,service:AuthService): Observable<never> {
   if (error.status === 401 || error.status === 403) {
-    service.logout();
+    service.deleteData();
+    service.logout().subscribe();
+    
     router.navigate(["/login"]);
+    return throwError(() => new Error('Unauthorized'));
   }
   return throwError(() => error);
 }
