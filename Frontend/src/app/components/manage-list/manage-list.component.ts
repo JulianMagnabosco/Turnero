@@ -42,6 +42,8 @@ export class ManageListComponent implements OnInit, OnDestroy {
 
   admin = false;
 
+  callerId:string=""
+
   constructor(
     private service: TicketsService,
     private authService: AuthService,
@@ -51,6 +53,7 @@ export class ManageListComponent implements OnInit, OnDestroy {
     this.audio.loop = true;
     this.charge();
     this.admin = this.authService.user?.admin || false;
+    this.generateCallerId();
   }
 
   ngOnDestroy(): void {
@@ -69,11 +72,7 @@ export class ManageListComponent implements OnInit, OnDestroy {
           this.startWS();
         },
         error: (err) => {
-          // alert(
-          //   'Error inesperado en el servidor, revise su conexion a internet'
-          // );
-          // this.charge()
-          // return
+          console.error(err);
           this.getData();
           this.startWS();
         },
@@ -91,11 +90,7 @@ export class ManageListComponent implements OnInit, OnDestroy {
           this.saveData(value['data']);
         },
         error: (err) => {
-          // alert(
-          //   'Error inesperado en el servidor, revise su conexion a internet'
-          // );
-          // this.charge()
-          // return
+          console.error(err);
         },
         complete: () => {
           this.loading = false;
@@ -108,16 +103,18 @@ export class ManageListComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.webSocket.getMessages().subscribe({
         next: (value) => {
-          if (value['message']['type'] == 'update') {
-            this.saveData(value['message']['data']);
-          } else if (value['message']['type'] == 'call') {
-            this._callticket(value['message']);
-          } else if (value['message']['type'] == 'error') {
+          const message = value['message'];
+
+          if (message['type'] == 'update') {
+            this.saveData(message['data']);
+          } else if (message['type'] == 'call') {
+            this._callticket(message);
+          } else if (message['type'] == 'error') {
             const error = confirm(
-              `Error: ${value['message']['code']} - ${value['message']['message']}`
+              `Error: ${message['code']} - ${message['message']}`
             );
-            if (error && value['message']['code'] == 401) {
-              this.logout()
+            if (error && message['code'] == 401) {
+              this.logout();
             }
           }
         },
@@ -130,6 +127,18 @@ export class ManageListComponent implements OnInit, OnDestroy {
         },
       })
     );
+  }
+
+  generateCallerId() {
+    const callerId = sessionStorage.getItem('callerId') || ""
+    if (!callerId) {
+      sessionStorage.setItem(
+        'callerId',
+        Math.random().toString(36).substring(2, 15) +
+          Math.random().toString(36).substring(2, 15)
+      );
+    }
+    this.callerId = callerId;
   }
 
   logout() {
@@ -211,22 +220,12 @@ export class ManageListComponent implements OnInit, OnDestroy {
   }
 
   callNext() {
-    // let message = {
-    //   type: 'next',
-    //   id: this.list[0].id,
-    //   number: this.list[0].number,
-    //   code: this.list[0].code,
-    //   user: this.authService.user?.username
-    // };
-
     this.calledTicket = undefined;
-
-    // this.webSocket.sendMessage({ message: message });
   }
 
   _callticket(data: any) {
     this.startLoading();
-    if (data['user'] != this.authService.user?.username) {
+    if (data['callerId'] != this.callerId) {
       return;
     }
     this.calledTicket = new Ticket(data['code'], data['number'], data['user']);
@@ -238,15 +237,6 @@ export class ManageListComponent implements OnInit, OnDestroy {
     this.timeout = setTimeout(() => {
       this.stopSound();
     }, this.soundTimer * 1000);
-  }
-
-  addticket(code: string) {
-    let message = {
-      type: 'add',
-      code: code,
-    };
-
-    this.webSocket.sendMessage({ message: message });
   }
 
   deleteTicket(id: number) {

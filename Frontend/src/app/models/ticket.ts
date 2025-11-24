@@ -5,6 +5,7 @@ export class Ticket {
   code="";
   user="";
   selected=false;
+  callerId="";
   date="";
   withTurn=false;
 
