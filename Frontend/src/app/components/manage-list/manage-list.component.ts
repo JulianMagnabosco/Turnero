@@ -214,6 +214,7 @@ export class ManageListComponent implements OnInit, OnDestroy {
       number: this.calledTicket.number,
       code: this.calledTicket.code,
       user: this.authService.user?.username,
+      callerId:this.callerId
     };
 
     this.webSocket.sendMessage({ message: message });
