@@ -14,28 +14,13 @@ import { environment } from '../environments/environment';
 })
 export class AppComponent implements OnInit, OnDestroy{
   title = 'Turnos';
-  whatsappUrl=""
 
-  dialogOpen=false;
   subs=new Subscription();
 
-  types:{name:string,value:string}[]=[
-    {name:"Perfumes Corporales",value:"CORPORAL"},
-    {name:"Perfumes de Ambiente",value:"AMBIENTE"},
-    {name:"Cosmética",value:"COSMETICA"},
-  ]
-  // listRoutes:{name:string,route:string}[]=[
-  //   {name:"Catalogo",route:"/catalog"},
-  //   {name:"Entrar",route:"/login"},
-  //   {name:"Registrarse",route:"/register"},
-  // ]
   constructor(protected service:AuthService, private router:Router){
     
   }
   ngOnInit(): void {
-    this.router.events.subscribe(()=>{
-      this.dialogOpen=false
-    })
   }
   ngOnDestroy(): void {
     this.subs.unsubscribe()
@@ -43,7 +28,6 @@ export class AppComponent implements OnInit, OnDestroy{
 
 
   logout() {
-    this.dialogOpen=false
     this.subs.add(
       this.service.logout().subscribe({
         next: ()=> {
@@ -52,7 +36,7 @@ export class AppComponent implements OnInit, OnDestroy{
           this.router.navigate(["/home"])
         },
         error: ()=>{
-          alert("Sesion cerrada")
+          alert("Sesion cerrada incorrectamente")
           this.service.deleteData()
           this.router.navigate(["/home"])
         }

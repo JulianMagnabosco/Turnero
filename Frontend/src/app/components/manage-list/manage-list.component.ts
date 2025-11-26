@@ -68,13 +68,13 @@ export class ManageListComponent implements OnInit, OnDestroy {
           this.lines = value['data'].map((l: TicketList) => {
             return l.code;
           });
+          console.log(value);
           this.getData();
           this.startWS();
         },
         error: (err) => {
           console.error(err);
-          this.getData();
-          this.startWS();
+          this.repeatOnFAil(this.charge);
         },
         complete: () => {
           this.loading = false;
@@ -119,14 +119,20 @@ export class ManageListComponent implements OnInit, OnDestroy {
           }
         },
         error: (err) => {
-          alert(err);
-          this.charge();
+          this.repeatOnFAil(this.startWS);
         },
         complete: () => {
           this.loading = false;
         },
       })
     );
+  }
+
+  repeatOnFAil(repeatMethod: () => void){
+    alert("Error, reintentando");
+    this.timeout = setTimeout(() => {
+      repeatMethod();
+    }, 5000);
   }
 
   generateCallerId() {
