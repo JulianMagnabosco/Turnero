@@ -40,33 +40,11 @@ export class PasswordComponent implements OnInit,OnDestroy{
 
   ngOnInit(): void {
     // this.subs.add(
-    //   this.emailForm.valueChanges.subscribe({
+    //   this.form.valueChanges.subscribe({
     //     next: value =>  {
     //       this.test();
     //     }
     //   }));
-    this.subs.add(
-      this.form.valueChanges.subscribe({
-        next: value =>  {
-          this.test();
-        }
-      }));
-  }
-  test(){
-    let user = {
-      "username": "a",
-      "password": this.form.controls['password'].value||"a",
-      "email": this.emailForm.controls['email'].value||"a"
-    }
-    this.subs.add(
-      this.authService.testRegister(user).subscribe(
-        {
-          next: value => {
-            this.tips=value;
-          }
-        }
-      )
-    );
   }
   ngOnDestroy(): void {
     this.subs.unsubscribe();

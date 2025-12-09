@@ -6,6 +6,7 @@ urlpatterns = [
     path("api/trigger/", views.trigger_mensaje),
 
     path('api/user/', views.getUsers),
+    path('api/me/', views.myUser),
     path('api/user/<int:id>/', views.user),
     path('api/userlines/', views.userLines),
 

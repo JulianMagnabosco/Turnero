@@ -35,6 +35,14 @@ def room(request, room_name):
 
 #API
 @csrf_exempt
+def myUser(request):
+    myUser = request.user
+    if not myUser.is_authenticated:
+        return JsonResponse({"error":"No encontrado"},status=404)
+    userJson = {"id":myUser.id,"username":myUser.username,"admin":myUser.is_superuser}
+    return JsonResponse(userJson)
+
+@csrf_exempt
 def user(request,id):
     
     user = User.objects.get(id=id)

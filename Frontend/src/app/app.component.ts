@@ -21,6 +21,13 @@ export class AppComponent implements OnInit, OnDestroy{
     
   }
   ngOnInit(): void {
+    this.subs.add(
+      this.service.myUser().subscribe({
+        error: ()=>{
+          this.service.deleteData()
+        }
+      })
+    )
   }
   ngOnDestroy(): void {
     this.subs.unsubscribe()

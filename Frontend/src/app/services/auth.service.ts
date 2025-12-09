@@ -40,8 +40,8 @@ export class AuthService {
     return this.client.post(this.baseUrl + "signup/", data, {withCredentials: true});
   }
 
-  testRegister(data: any):Observable<any>{
-    return this.client.post(this.baseUrl + "test/register/", data);
+  myUser():Observable<any>{
+    return this.client.get(this.baseUrl + "me/");
   }
 
   requestChangePassword(email: any):Observable<any>{
