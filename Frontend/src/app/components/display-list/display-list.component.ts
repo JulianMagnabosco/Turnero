@@ -119,8 +119,11 @@ export class DisplayListComponent implements OnInit, OnDestroy {
     }
     
     this.calledList=this.calledList.filter((t)=>{
+      const match = t.user!=data['user']
+      if(match) return true
+      
       this.list.unshift(new Ticket(t['code'],t['number'],t['user']))
-      return t.user!=data['user']
+      return false
     })
 
     this.list=this.list.filter((t)=>{
